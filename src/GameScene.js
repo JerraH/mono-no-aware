@@ -9,6 +9,8 @@ export default class GameScene extends Scene {
         // var logo = this.add.image(400, 150, 'logo');
         this.cat = this.physics.add.sprite(400, 300, 'cat')
 
+        this.NPCs = this.add.group();
+
         let toys = this.physics.add.staticGroup();
         let furryToy = toys.create(600, 400, 'toy')
 
