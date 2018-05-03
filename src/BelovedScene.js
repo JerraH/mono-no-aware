@@ -39,7 +39,7 @@ export default class BelovedScene extends Scene {
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
                 store.setBeloved(BELOVEDS[this.selectionIndex]);
-                this.scene.start('game');
+                this.scene.start('EmpressBedroom');
                 break;
             default:
                 break;
@@ -52,7 +52,7 @@ export default class BelovedScene extends Scene {
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
-    update() {  
+    update() {
         this.selection.y = 279 + this.selectionIndex * 43;
     }
 }
