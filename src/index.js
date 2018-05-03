@@ -8,7 +8,7 @@ var config = {
     scene: {
         preload: preload,
         create: create,
-        update: update
+        update: update,
     },
     physics: {
         default: 'arcade',
@@ -37,7 +37,7 @@ function create ()
 
     let toys = this.physics.add.staticGroup();
     let furryToy = toys.create(600, 400, 'toy')
-    
+
     cat.setCollideWorldBounds(true);
     this.physics.add.collider(cat, toys);
 
@@ -57,18 +57,19 @@ function create ()
 function update() {
     if (cursors.left.isDown) {
         cat.setVelocityX(-160);
-    } 
+    }
     else if (cursors.right.isDown) {
         cat.setVelocityX(160);
-    } 
+    }
     else if(cursors.up.isDown) {
         cat.setVelocityY(-160);
-    } 
+    }
     else if(cursors.down.isDown) {
         cat.setVelocityY(160);
-    } 
+    }
     else {
         cat.setVelocityX(0);
         cat.setVelocityY(0);
     }
 }
+
