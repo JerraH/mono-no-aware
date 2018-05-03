@@ -1,12 +1,23 @@
 class Store {
     constructor() {
-        this.cool = 5;
+        this.pronoun = '';
+        this.beloved = '';
     }
-    makeCooler() {
-        this.cool++;
+
+    setPronoun(pronoun) {
+        this.pronoun = pronoun;
     }
-    getTemperature() {
-        return -this.cool;
+
+    setBeloved(beloved) {
+        this.beloved = beloved;
+    }
+
+    getPronoun() {
+        return this.pronoun;
+    }
+
+    getBeloved() {
+        return this.beloved;
     }
 }
 
