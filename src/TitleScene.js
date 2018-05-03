@@ -1,6 +1,6 @@
-import {Scene} from 'phaser';
+import Phaser from 'phaser';
 
-export default class TitleScene extends Scene {
+export default class TitleScene extends Phaser.Scene {
     constructor(config) {
         super(config);
     }
@@ -15,7 +15,10 @@ export default class TitleScene extends Scene {
     create() {
         let theme = this.sound.add('intro');
         theme.play();
-        let title = this.add.image(400, 300, 'title')
+
+        let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
+
         this.start = this.add.image(400, 320, 'start')
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {

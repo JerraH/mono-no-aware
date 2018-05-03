@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import PreloadScene from './PreloadScene';
 import TitleScene from './TitleScene';
 import PronounScene from './PronounScene';
 import BelovedScene from './BelovedScene';
@@ -21,10 +22,11 @@ let config = {
 };
 
 let game = new Phaser.Game(config);
+game.scene.add('preload', PreloadScene);
 game.scene.add('title', TitleScene);
 game.scene.add('pronoun', PronounScene);
 game.scene.add('beloved', BelovedScene);
 game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
 game.scene.add('ending', EndingScene);
-game.scene.start('title');
+game.scene.start('preload');
