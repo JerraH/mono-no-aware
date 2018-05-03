@@ -9,10 +9,10 @@ export const Character = new Phaser.Class({
     initialize:
     function Character(scene, x, y, type)
     {
-        GameObject.call(this, scene, 'character')
+        // GameObject.call(this, scene, 'character')
         this.scene = scene
         this.type = type
-        this.setPosition(x, y)
+        // this.setPosition(x, y)
     }
 })
 
