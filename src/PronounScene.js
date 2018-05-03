@@ -13,21 +13,26 @@ export default class PronounScene extends Scene {
     preload() {
         this.load.image('pronoun', 'assets/pronouns.png')
         this.load.image('selection', 'assets/listSelection.png')
+        this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
     handleKey(event) {
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
+                    this.sound.add('tap').play();
                     this.selectionIndex--;
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < 2) {
+                    this.sound.add('tap').play();
                     this.selectionIndex++;
                 }
                 break;
             case 'Enter':
+                this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
                 store.setPronoun(PRONOUNS[this.selectionIndex]);
                 this.scene.start('beloved');

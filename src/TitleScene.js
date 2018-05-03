@@ -8,6 +8,7 @@ export default class TitleScene extends Scene {
     preload() {
         this.load.image('title', 'assets/title.png')
         this.load.image('start', 'assets/start.png')
+        this.load.audio('select', 'assets/audio/select.m4a')
     }
 
     create() {
@@ -15,8 +16,9 @@ export default class TitleScene extends Scene {
         this.start = this.add.image(400, 320, 'start')
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
+            this.sound.add('select').play();
             this.scene.start('pronoun');
-        });        
+        });
     }
 
     update(thime, delta) {
