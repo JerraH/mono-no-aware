@@ -3,8 +3,9 @@ import TitleScene from './TitleScene';
 import GameScene from './GameScene';
 import EndingScene from './EndingScene';
 import EmpressBedroom from './EmpressBedroom'
+import store from './store';
 
-var config = {
+let config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
     width: 800,
