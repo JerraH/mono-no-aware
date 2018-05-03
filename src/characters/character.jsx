@@ -1,4 +1,4 @@
-import 'phaser'
+import 'phaser';
 
 export const sceneConfig = {
     create: create,
@@ -12,6 +12,8 @@ var config = {
     parent: 'phaser-example',
     scene: sceneConfig
 }
+
+var
 
 
 function create() {
