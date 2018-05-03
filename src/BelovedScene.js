@@ -18,6 +18,10 @@ export default class BelovedScene extends Scene {
     }
 
     handleKey(event) {
+        if (event.repeat) {
+            return;
+        }
+
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
