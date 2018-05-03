@@ -2,8 +2,9 @@ import Phaser from 'phaser';
 import TitleScene from './TitleScene';
 import GameScene from './GameScene';
 import EndingScene from './EndingScene';
+import store from './store';
 
-var config = {
+let config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
     width: 800,
@@ -17,6 +18,7 @@ var config = {
 };
 
 let game = new Phaser.Game(config);
+
 game.scene.add('title', new TitleScene());
 game.scene.add('game', new GameScene());
 game.scene.add('ending', new EndingScene());
