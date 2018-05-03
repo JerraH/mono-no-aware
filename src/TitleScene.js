@@ -8,14 +8,18 @@ export default class TitleScene extends Scene {
     preload() {
         this.load.image('title', 'assets/title.png')
         this.load.image('start', 'assets/start.png')
+        this.load.audio('intro', 'assets/audio/intro.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
     }
 
     create() {
+        let theme = this.sound.add('intro');
+        theme.play();
         let title = this.add.image(400, 300, 'title')
         this.start = this.add.image(400, 320, 'start')
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
+            theme.stop();
             this.sound.add('select').play();
             this.scene.start('pronoun');
         });
