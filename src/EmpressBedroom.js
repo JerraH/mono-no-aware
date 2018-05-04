@@ -17,12 +17,13 @@ export default class EmpressBedroom extends GameScene {
         let bedroom = background.create(600, 400, 'bedroom')
         const akiko = new Akiko({
             scene: this,
-            type: 'akiko',
+            key: 'akiko',
             x: 100,
             y: 600
         })
+        console.log(akiko);
 
-        this.NPCs.add(akiko);
+        // this.NPCs.add(akiko);
 
 
 
@@ -31,9 +32,9 @@ export default class EmpressBedroom extends GameScene {
 
 
        this.cursors = this.input.keyboard.createCursorKeys();
-       this.cat = this.physics.add.sprite(400, 300, 'cat')
-       this.physics.add.collider(this.cat, this.akiko)
-       NPCs.addChildren(akiko)
+       this.protag = this.physics.add.sprite(400, 300, 'protag')
+       this.physics.add.collider(this.protag, this.akiko)
+    //    NPCs.addChildren(akiko)
 
 
     }
