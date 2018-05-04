@@ -19,7 +19,11 @@ class Store {
     getBeloved() {
         return this.beloved;
     }
+    /**
+     * Character methods
+     */
 }
+
 
 let store = new Store();
 
