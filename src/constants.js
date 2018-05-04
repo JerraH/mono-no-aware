@@ -4,6 +4,7 @@ let data = {
     PRONOUN_THEY: 'they',
 }
 
+// ordered array when using in a menu
 data.PRONOUNS = [
     data.PRONOUN_SHE,
     data.PRONOUN_THEY, 

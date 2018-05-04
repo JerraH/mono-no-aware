@@ -18,7 +18,6 @@ export default class BelovedScene extends Scene {
     }
 
     preload() {
-        this.load.image('selection', 'assets/listSelection.png')
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
@@ -53,19 +52,26 @@ export default class BelovedScene extends Scene {
     }
 
     create() {
-        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Montserrat" });
+        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
 
         for (let i = 0; i < BELOVEDS.length; i++) {
-            let beloved = this.add.text(0, 0, BELOVEDS[i], { font: "28px Montserrat" });
-            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*50, 0, 0));
+            let beloved = this.add.text(0, 0, BELOVEDS[i], { font: "40px Amatic SC" });
+            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*60, 0, 0));
         }
 
-        this.selection = this.add.image(400, 0, 'selection')
+        this.selection = this.add.graphics(200, 54);
+        this.selection.lineStyle(2, 0xffffff, 1);
+        this.selection.strokeRect(0, 0, 200, 54);
+        this.selection.x = 300;
+        this.blink = 0;
+
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
-    update() {
-        this.selection.y = 270 + this.selectionIndex * 50;
+    update(time, delta) {
+        this.selection.y = 243 + this.selectionIndex * 60;
+        this.blink += delta;
+        this.selection.alpha = [1,0.5][Math.floor(this.blink / 500) % 2];
     }
 }
