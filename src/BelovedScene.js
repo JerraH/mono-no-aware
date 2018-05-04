@@ -1,7 +1,14 @@
 import {Scene} from 'phaser';
 import store from './store';
+import Constants from './constants';
 
-let BELOVEDS = ['she', 'they', 'he'];
+let PRONOUN_MAP = {
+    [Constants.PRONOUN_HE]: 'Emperor',
+    [Constants.PRONOUN_SHE]: 'Empress',
+    [Constants.PRONOUN_THEY]: 'Eminence'
+}
+
+let BELOVEDS = Constants.PRONOUNS.map(pronoun => PRONOUN_MAP[pronoun]);
 
 export default class BelovedScene extends Scene {
     constructor(config) {
@@ -11,7 +18,6 @@ export default class BelovedScene extends Scene {
     }
 
     preload() {
-        this.load.image('beloved', 'assets/beloved.png')
         this.load.image('selection', 'assets/listSelection.png')
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
@@ -38,7 +44,7 @@ export default class BelovedScene extends Scene {
             case 'Enter':
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
-                store.setBeloved(BELOVEDS[this.selectionIndex]);
+                store.setBeloved(Constants.PRONOUNS[this.selectionIndex]);
                 this.scene.start('EmpressBedroom');
                 break;
             default:
@@ -47,12 +53,19 @@ export default class BelovedScene extends Scene {
     }
 
     create() {
-        let title = this.add.image(400, 300, 'beloved')
-        this.selection = this.add.image(403, 0, 'selection')
+        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Montserrat" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
+
+        for (let i = 0; i < BELOVEDS.length; i++) {
+            let beloved = this.add.text(0, 0, BELOVEDS[i], { font: "28px Montserrat" });
+            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*50, 0, 0));
+        }
+
+        this.selection = this.add.image(400, 0, 'selection')
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
     update() {
-        this.selection.y = 279 + this.selectionIndex * 43;
+        this.selection.y = 270 + this.selectionIndex * 50;
     }
 }
