@@ -44,7 +44,7 @@ export default class BelovedScene extends Scene {
             case 'Enter':
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
-                store.setBeloved(BELOVEDS[this.selectionIndex]);
+                store.setBeloved(Constants.PRONOUNS[this.selectionIndex]);
                 this.scene.start('EmpressBedroom');
                 break;
             default:

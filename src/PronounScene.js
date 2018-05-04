@@ -44,7 +44,7 @@ export default class PronounScene extends Scene {
             case 'Enter':
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
-                store.setPronoun(PRONOUNS[this.selectionIndex]);
+                store.setPronoun(Constants.PRONOUNS[this.selectionIndex]);
                 this.scene.start('beloved');
                 break;
             default:
