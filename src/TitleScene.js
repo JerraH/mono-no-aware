@@ -1,26 +1,35 @@
-import {Scene} from 'phaser';
+import Phaser from 'phaser';
 
-export default class TitleScene extends Scene {
+export default class TitleScene extends Phaser.Scene {
     constructor(config) {
         super(config);
     }
 
     preload() {
-        this.load.image('title', 'assets/title.png')
-        this.load.image('start', 'assets/start.png')
+        this.load.audio('intro', 'assets/audio/intro.m4a')
+        this.load.audio('select', 'assets/audio/select.m4a')
     }
 
     create() {
-        let title = this.add.image(400, 300, 'title')
-        this.start = this.add.image(400, 320, 'start')
+        let theme = this.sound.add('intro');
+        theme.play();
+
+        let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
+
+        this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC" });
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 0, 0));
+
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
+            theme.stop();
+            this.sound.add('select').play();
             this.scene.start('pronoun');
-        });        
+        });
     }
 
-    update(thime, delta) {
+    update(time, delta) {
         this.blink += delta;
-        this.start.alpha = 1 - Math.floor(this.blink / 500) % 2;
+        this.start.alpha = [1,0.75,0.5,0.75][Math.floor(this.blink / 250) % 4];
     }
 }

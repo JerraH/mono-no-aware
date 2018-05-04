@@ -1,29 +1,43 @@
 
 import {default as GameScene} from './GameScene.js';
 import Phaser from 'phaser'
+import { default as Akiko } from './characters/akiko'
 
 export default class EmpressBedroom extends GameScene {
-    constructor(config) {
-        super(config);
-    }
 
     preload() {
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/largeroom.jpg')
     }
     create() {
-        let NPCs = this.physics.add.staticGroup()
+
+        let background = this.physics.add.staticGroup();
+        let NPCs = this.physics.add.staticGroup();
+        let sprite = NPCs.create(600, 400, 'akiko')
+        let bedroom = background.create(600, 400, 'bedroom')
+        const akiko = new Akiko({
+            scene: this,
+            type: 'akiko',
+            x: 100,
+            y: 600
+        })
+
+        this.NPCs.add(akiko);
 
 
-        let background = new Phaser.Image(this, 0, 0, 'bedroom')
-       let akiko = NPCs.create(600, 400, 'akiko')
+
+
 
 
 
        this.cursors = this.input.keyboard.createCursorKeys();
        this.cat = this.physics.add.sprite(400, 300, 'cat')
-       this.physics.add.collider(this.cat, NPCs)
+       this.physics.add.collider(this.cat, this.akiko)
+       NPCs.addChildren(akiko)
+
 
     }
+
+
 
 }
