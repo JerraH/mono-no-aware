@@ -1,7 +1,14 @@
 import {Scene} from 'phaser';
 import store from './store';
+import Constants from './constants';
 
-let PRONOUNS = ['she', 'they', 'he'];
+let PRONOUN_MAP = {
+    [Constants.PRONOUN_HE]: 'He/Him',
+    [Constants.PRONOUN_SHE]: 'She/Her',
+    [Constants.PRONOUN_THEY]: 'They/Them'
+}
+
+let PRONOUNS = Constants.PRONOUNS.map(pronoun => PRONOUN_MAP[pronoun]);
 
 export default class PronounScene extends Scene {
     constructor(config) {
@@ -11,7 +18,6 @@ export default class PronounScene extends Scene {
     }
 
     preload() {
-        this.load.image('pronoun', 'assets/pronouns.png')
         this.load.image('selection', 'assets/listSelection.png')
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
@@ -47,12 +53,19 @@ export default class PronounScene extends Scene {
     }
 
     create() {
-        let title = this.add.image(400, 300, 'pronoun')
-        this.selection = this.add.image(403, 0, 'selection')
+        let title = this.add.text(0, 0, "Choose Your Pronouns", { font: "40px Montserrat" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
+
+        for (let i = 0; i < PRONOUNS.length; i++) {
+            let pronoun = this.add.text(0, 0, PRONOUNS[i], { font: "28px Montserrat" });
+            Phaser.Display.Align.In.Center(pronoun, this.add.zone(400, 270+i*50, 0, 0));
+        }
+
+        this.selection = this.add.image(400, 0, 'selection')
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
     update() {  
-        this.selection.y = 272 + this.selectionIndex * 47;
+        this.selection.y = 270 + this.selectionIndex * 50;
     }
 }

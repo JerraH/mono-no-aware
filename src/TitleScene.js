@@ -6,8 +6,6 @@ export default class TitleScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('title', 'assets/title.png')
-        this.load.image('start', 'assets/start.png')
         this.load.audio('intro', 'assets/audio/intro.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
     }
@@ -19,7 +17,9 @@ export default class TitleScene extends Phaser.Scene {
         let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
 
-        this.start = this.add.image(400, 320, 'start')
+        this.start = this.add.text(0, 0, "START", { font: "30px Montserrat" });
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 0, 0));
+
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
             theme.stop();
