@@ -1,6 +1,5 @@
 
 import {default as GameScene} from './GameScene.js';
-import Phaser from 'phaser'
 import { default as Akiko } from './characters/akiko'
 
 export default class EmpressBedroom extends GameScene {
@@ -34,7 +33,6 @@ export default class EmpressBedroom extends GameScene {
        this.cursors = this.input.keyboard.createCursorKeys();
        this.protag = this.physics.add.sprite(400, 300, 'protag')
        this.physics.add.collider(this.protag, this.akiko)
-    //    NPCs.addChildren(akiko)
 
 
     }

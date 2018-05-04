@@ -23,12 +23,12 @@ export default class Character extends Phaser.GameObjects.Image{
     // }
 }
 
-// Character.startConversation = function(convoKey) {
-//     var speech = this.game.cache.getJSON('speech');
-//     this.game.paused = true;
-//     this.activeConversation = convo;
-//     this.updateConversationState(this.activeConversation.start);
-// };
+Character.startConversation = function(convoKey) {
+    var speech = this.game.cache.getJSON('speech');
+    this.game.paused = true;
+    this.activeConversation = convo;
+    this.updateConversationState(this.activeConversation.start);
+};
 
 
 
