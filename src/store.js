@@ -2,22 +2,37 @@ class Store {
     constructor() {
         this.pronoun = '';
         this.beloved = '';
+        this.dialogue = null;
     }
+
+    // The player's chosen pronoun
 
     setPronoun(pronoun) {
         this.pronoun = pronoun;
-    }
-
-    setBeloved(beloved) {
-        this.beloved = beloved;
     }
 
     getPronoun() {
         return this.pronoun;
     }
 
+    // The player's chosen beloved
+
+    setBeloved(beloved) {
+        this.beloved = beloved;
+    }
+
     getBeloved() {
         return this.beloved;
+    }
+
+    // The dialogue for the current scene
+
+    setDialogue(dialogue) {
+        this.dialogue = dialogue;
+    }
+
+    getDialogue() {
+        return this.dialogue;
     }
 }
 

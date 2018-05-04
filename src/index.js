@@ -6,6 +6,7 @@ import BelovedScene from './BelovedScene';
 import GameScene from './GameScene';
 import EndingScene from './EndingScene';
 import EmpressBedroom from './EmpressBedroom'
+import DialogueScene from './DialogueScene'
 import store from './store';
 
 let config = {
@@ -28,5 +29,6 @@ game.scene.add('pronoun', PronounScene);
 game.scene.add('beloved', BelovedScene);
 game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
+game.scene.add('dialogue', DialogueScene);
 game.scene.add('ending', EndingScene);
 game.scene.start('preload');
