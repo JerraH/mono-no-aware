@@ -10,9 +10,14 @@ export default class General extends Character {
 
     }
 
+
     beginConvo(character, protag) {
         this.scene.physics.world.collide(this, this.protag);
 
+    }
+    handleKey(event) {
+        if()
+        beginConvo(this)
     }
 }
 

@@ -1,4 +1,6 @@
-import Phaser, {GameObject, Image} from 'phaser';
+import Phaser, {GameObject, Image, Collider} from 'phaser';
+import EmpressBedroom from '../EmpressBedroom';
+
 
 
 
@@ -9,9 +11,48 @@ export default class Character extends Phaser.GameObjects.Image{
         super(config.scene, config.x, config.y, config.key)
         this.type = 'character';
         config.scene.add.existing(this);
+        config.scene.physics.world.enable(this)
         this.protag = this.scene.protag;
+        this.body.immovable = true;
+        console.log(this.body)
+
+
+
+
+
+
+
 
     }
+    // handleKey() {
+
+    // }
+    create() {
+        if(this.touching) {
+            console.log("i am touching you")
+        }
+        this.bending = false
+        this.characterMap = new Phaser.Geom.Rectangle(0, 0, 100, 100)
+        this.characterMap.immovable = true;
+        this.touching = {left: true, right: true, down: true, up: true}
+
+        this.body.onCollide = true;
+
+        console.log(this)
+        Phaser.Physics.Arcade.collide(this.body, this.protag, this.startConversation)
+
+
+
+
+
+
+
+
+    }
+
+    update() {
+
+
     // initialize:
     // function Character(scene, x, y, type)
 
@@ -22,13 +63,38 @@ export default class Character extends Phaser.GameObjects.Image{
     //     console.log(scene)
     // }
 }
+}
 
-Character.startConversation = function(convoKey) {
+Character.prototype.checkCollision = function () {
+    console.log(this.x)
+    console.log(this.protag.x)
+    if (this.body.x + this.body.width === this.protag.x || this.body.x === this.protag.x + this.protag.width) {
+    console.log("scream")
+
+}
+}
+
+Character.prototype.startConversation = function(convoKey) {
     var speech = this.game.cache.getJSON('speech');
     this.game.paused = true;
-    this.activeConversation = convo;
+    this.activeConversation = convoKey;
     this.updateConversationState(this.activeConversation.start);
+
 };
+
+
+
+
+
+Character.prototype.increaseHappiness = function(amount){
+    let happinessHolder = this.state.happiness + amount;
+    this.setState({happinessMeter: happinessHolder})
+}
+
+Character.prototype.decreaseHappiness = function(amount){
+    let happinessHolder = this.state.happiness - amount;
+    this.setState({happinessMeter: happinessHolder})
+}
 
 
 

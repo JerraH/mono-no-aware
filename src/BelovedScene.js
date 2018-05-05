@@ -63,6 +63,7 @@ export default class BelovedScene extends Scene {
 
         this.selection = this.add.image(400, 0, 'selection')
         this.input.keyboard.on('keydown', this.handleKey);
+
     }
 
     update() {
