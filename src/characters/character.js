@@ -14,6 +14,11 @@ export default class Character extends Phaser.GameObjects.Image{
         this.protag = this.scene.protag;
         this.body.immovable = true;
         console.log(this.body)
+        this.body.height = this.height / 4
+        this.body.width = this.width * .75
+        this.body.x = 0;
+        this.body.y = 0;
+        console.log(this.body.anchor)
         this.startConversation = this.startConversation.bind(this)
 
 
@@ -28,19 +33,15 @@ export default class Character extends Phaser.GameObjects.Image{
 
     // }
     create() {
-        if(this.touching) {
-            console.log("i am touching you")
-        }
-        this.bending = false
-        let characterMap = new Phaser.Geom.Rectangle(0, 0, 100, 100)
-        this.characterMap.immovable = true;
-        this.touching = {left: true, right: true, down: true, up: true}
 
-        this.body.onCollide = true;
+        // this.bending = false
+        // let characterMap = new Phaser.Geom.Rectangle(0, 0, 100, 100)
+        // this.characterMap.immovable = true;
+        // this.touching = {left: true, right: true, down: true, up: true}
 
-        console.log(this)
+        // this.body.onCollide = true;
 
-        this.properties.onCollide = this.startConversation()
+        // this.properties.onCollide = this.startConversation()
 
 
 
@@ -70,14 +71,14 @@ export default class Character extends Phaser.GameObjects.Image{
 }
 }
 
-Character.prototype.checkCollision = function () {
-    console.log(this.x)
-    console.log(this.protag.x)
-    if (this.body.x + this.body.width === this.protag.x || this.body.x === this.protag.x + this.protag.width) {
-    console.log("scream")
+// Character.prototype.checkCollision = function () {
+//     console.log(this.x)
+//     console.log(this.protag.x)
+//     if (this.body.x + this.body.width === this.protag.x || this.body.x === this.protag.x + this.protag.width) {
+//     console.log("scream")
 
-}
-}
+// }
+// }
 
 Character.prototype.startConversation = function() {
     console.log("scream")

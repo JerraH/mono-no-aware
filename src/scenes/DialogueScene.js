@@ -1,5 +1,5 @@
 import {Scene} from 'phaser';
-import store from './store';
+import store from '../store';
 
 export default class DialogueScene extends Scene {
     constructor(config) {

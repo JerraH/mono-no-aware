@@ -1,23 +1,24 @@
 import Phaser from 'phaser';
-import PreloadScene from './PreloadScene';
-import TitleScene from './TitleScene';
-import PronounScene from './PronounScene';
-import BelovedScene from './BelovedScene';
-import GameScene from './GameScene';
-import EndingScene from './EndingScene';
-import EmpressBedroom from './EmpressBedroom'
-import DialogueScene from './DialogueScene'
+import PreloadScene from './scenes/PreloadScene';
+import TitleScene from './scenes/TitleScene';
+import PronounScene from './scenes/PronounScene';
+import BelovedScene from './scenes/BelovedScene';
+import GameScene from './scenes/GameScene';
+import EndingScene from './scenes/EndingScene';
+import EmpressBedroom from './scenes/EmpressBedroom'
+import DialogueScene from './scenes/DialogueScene'
+import Garden from './scenes/Garden'
 import store from './store';
 
 let config = {
     type: Phaser.AUTO,
-    parent: 'phaser-example',
+    parent: 'mono-no-aware',
     width: 800,
     height: 600,
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     }
 };
@@ -31,4 +32,5 @@ game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
 game.scene.add('dialogue', DialogueScene);
 game.scene.add('ending', EndingScene);
+game.scene.add('garden', Garden)
 game.scene.start('preload');

@@ -1,7 +1,7 @@
 
 import {default as GameScene} from './GameScene.js';
 import Phaser from 'phaser'
-import { default as Akiko } from './characters/akiko'
+import { default as Akiko } from '../characters/akiko'
 
 export default class EmpressBedroom extends GameScene {
 
@@ -29,13 +29,18 @@ export default class EmpressBedroom extends GameScene {
         this.akiko = new Akiko({
             scene: this,
             key: 'akiko',
-            x: 200,
-            y: 300
+            x: 0,
+            y: 0
         })
-        this.emp = this.NPCs.create(400, 300, 'empress')
+        this.emp = this.NPCs.create(400, 500, 'empress')
 
         this.NPCs.add(this.akiko);
         this.NPCs.add(this.emp)
+
+        let akikoContainer = this.add.container(350, 350)
+        akikoContainer.add(this.akiko);
+
+        // this.akiko.setInteractive(circle, console.log("yes hello"))
 
         this.emp.angle = -160
 
@@ -46,7 +51,7 @@ export default class EmpressBedroom extends GameScene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         //Protagonist
-        this.protag = this.physics.add.sprite(400, 300, 'protag');
+        this.protag = this.physics.add.sprite(500, 300, 'protag');
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
 
 
@@ -54,7 +59,7 @@ export default class EmpressBedroom extends GameScene {
 
 
 
-       this.physics.add.collider(this.protag, this.akiko, this.akiko.startConversation)
+       this.physics.add.collider(this.protag, this.akiko, console.log("yelling"))
 
 
        //Camera info

@@ -26,7 +26,7 @@ export default class TitleScene extends Phaser.Scene {
             this.sound.add('select').play();
             console.log(this);
             console.log(this.scene)
-            this.scene.start('pronoun');
+            this.scene.start('EmpressBedroom');
         });
     }
 

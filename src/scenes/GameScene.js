@@ -38,9 +38,12 @@ export default class GameScene extends Scene {
     update() {
         if (this.cursors.left.isDown) {
             this.protag.setVelocityX(-160);
+            this.protag.flipx = false
         }
         else if (this.cursors.right.isDown) {
             this.protag.setVelocityX(160);
+            this.protag.flipx = true
+
         }
         else if(this.cursors.up.isDown) {
             this.protag.setVelocityY(-160);

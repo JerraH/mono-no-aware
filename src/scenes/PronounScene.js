@@ -1,16 +1,16 @@
 import {Scene} from 'phaser';
-import store from './store';
-import Constants from './constants';
+import store from '../store';
+import Constants from '../constants';
 
 let PRONOUN_MAP = {
-    [Constants.PRONOUN_HE]: 'Emperor',
-    [Constants.PRONOUN_SHE]: 'Empress',
-    [Constants.PRONOUN_THEY]: 'Eminence'
+    [Constants.PRONOUN_HE]: 'He/Him',
+    [Constants.PRONOUN_SHE]: 'She/Her',
+    [Constants.PRONOUN_THEY]: 'They/Them'
 }
 
-let BELOVEDS = Constants.PRONOUNS.map(pronoun => PRONOUN_MAP[pronoun]);
+let PRONOUNS = Constants.PRONOUNS.map(pronoun => PRONOUN_MAP[pronoun]);
 
-export default class BelovedScene extends Scene {
+export default class PronounScene extends Scene {
     constructor(config) {
         super(config);
         this.selectionIndex = 1;
@@ -43,8 +43,8 @@ export default class BelovedScene extends Scene {
             case 'Enter':
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
-                store.setBeloved(Constants.PRONOUNS[this.selectionIndex]);
-                this.scene.start('EmpressBedroom');
+                store.setPronoun(Constants.PRONOUNS[this.selectionIndex]);
+                this.scene.start('beloved');
                 break;
             default:
                 break;
@@ -52,12 +52,12 @@ export default class BelovedScene extends Scene {
     }
 
     create() {
-        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Berkshire Swash" });
+        let title = this.add.text(0, 0, "Choose Your Pronouns", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
 
-        for (let i = 0; i < BELOVEDS.length; i++) {
-            let beloved = this.add.text(0, 0, BELOVEDS[i], { font: "40px Amatic SC" });
-            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*60, 0, 0));
+        for (let i = 0; i < PRONOUNS.length; i++) {
+            let pronoun = this.add.text(0, 0, PRONOUNS[i], { font: "40px Amatic SC" });
+            Phaser.Display.Align.In.Center(pronoun, this.add.zone(400, 270+i*60, 0, 0));
         }
 
         this.selection = this.add.graphics(200, 54);
@@ -73,5 +73,5 @@ export default class BelovedScene extends Scene {
         this.selection.y = 243 + this.selectionIndex * 60;
         this.blink += delta;
         this.selection.alpha = [1,0.5][Math.floor(this.blink / 500) % 2];
-    }
+   }
 }
