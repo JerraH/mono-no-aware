@@ -1,20 +1,30 @@
 import {Character} from './character'
 import Phaser, {Class} from 'phaser';
+import Character from './character'
+
+export default class Akiko extends Character {
+  constructor(config) {
+    super(config);
+    this.state = {
+      happinessMeter: 50,
+      inConversation: false
+    }
 
 
-const Akiko = new Character( {
-  initialize:
 
-  function Akiko(scene, x, y, type)
-  {
 
-    Character.call(scene, x, y, type);
-    this.scene = scene;
-    this.type = type;
-    this.setPosition(x, y);
-    this.setScale(.5)
+
+
+
+
+  }
+  create() {
+    this.checkCollision()
+
+  } update() {
+    this.checkCollision()
   }
 
 
-})
-export default Akiko;
+
+}

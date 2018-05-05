@@ -84,6 +84,7 @@ export default class DialogueScene extends Scene {
         let WIDTH = 400;
 
         let dialogue = store.getDialogue();
+        console.log(this);
 
         this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(this.title, this.add.zone(400, 100, 0, 0));
@@ -100,7 +101,7 @@ export default class DialogueScene extends Scene {
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
-    update(time, delta) {  
+    update(time, delta) {
         // this.selection.y = 243 + this.selectionIndex * 60;
         this.blink += delta;
         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];

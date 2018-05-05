@@ -7,33 +7,59 @@ export default class EmpressBedroom extends GameScene {
 
     preload() {
         this.load.image('akiko', 'assets/images/akiko.png')
-        this.load.image('bedroom', 'assets/images/largeroom.jpg')
+        this.load.image('bedroom', 'assets/images/roomredo.jpg')
+        this.load.image('protag', 'assets/images/protag.png')
+        this.load.image('empress', 'assets/images/emp.png')
+        this.load.image('walls', 'assets/images/walls.png')
     }
     create() {
-
+        //create static groups
         let background = this.physics.add.staticGroup();
-        let NPCs = this.physics.add.staticGroup();
-        let sprite = NPCs.create(600, 400, 'akiko')
-        let bedroom = background.create(600, 400, 'bedroom')
-        const akiko = new Akiko({
+        this.NPCs = this.physics.add.staticGroup();
+
+
+        // let sprite = NPCs.create(600, 400, 'akiko')
+        this.groundLayer = background.create(500, 300, 'bedroom')
+
+
+        this.physics.world.bounds.width = this.groundLayer.width
+        this.physics.world.bounds.height = this.groundLayer.height
+
+
+        this.akiko = new Akiko({
             scene: this,
-            type: 'akiko',
-            x: 100,
-            y: 600
+            key: 'akiko',
+            x: 200,
+            y: 300
         })
+        this.emp = this.NPCs.create(400, 300, 'empress')
 
-        this.NPCs.add(akiko);
+        this.NPCs.add(this.akiko);
+        this.NPCs.add(this.emp)
+
+        this.emp.angle = -160
+
+
+
+
+        //Cursors
+        this.cursors = this.input.keyboard.createCursorKeys();
+
+        //Protagonist
+        this.protag = this.physics.add.sprite(400, 300, 'protag');
+        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
 
 
 
 
 
 
+       this.physics.add.collider(this.protag, this.akiko, this.akiko.startConversation)
 
-       this.cursors = this.input.keyboard.createCursorKeys();
-       this.cat = this.physics.add.sprite(400, 300, 'cat')
-       this.physics.add.collider(this.cat, this.akiko)
-       NPCs.addChildren(akiko)
+
+       //Camera info
+       this.cameras.main.startFollow(this.protag)
+       this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
 
     }

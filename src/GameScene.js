@@ -7,15 +7,15 @@ export default class GameScene extends Scene {
 
     create() {
         // var logo = this.add.image(400, 150, 'logo');
-        this.cat = this.physics.add.sprite(400, 300, 'cat')
+
 
         this.NPCs = this.add.group();
 
         let toys = this.physics.add.staticGroup();
         let furryToy = toys.create(600, 400, 'toy')
 
-        this.cat.setCollideWorldBounds(true);
-        this.physics.add.collider(this.cat, toys);
+        // this.cat.setCollideWorldBounds(true);
+        // this.physics.add.collider(this.cat, toys);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
@@ -37,20 +37,20 @@ export default class GameScene extends Scene {
 
     update() {
         if (this.cursors.left.isDown) {
-            this.cat.setVelocityX(-160);
+            this.protag.setVelocityX(-160);
         }
         else if (this.cursors.right.isDown) {
-            this.cat.setVelocityX(160);
+            this.protag.setVelocityX(160);
         }
         else if(this.cursors.up.isDown) {
-            this.cat.setVelocityY(-160);
+            this.protag.setVelocityY(-160);
         }
         else if(this.cursors.down.isDown) {
-            this.cat.setVelocityY(160);
+            this.protag.setVelocityY(160);
         }
         else {
-            this.cat.setVelocityX(0);
-            this.cat.setVelocityY(0);
+            this.protag.setVelocityX(0);
+            this.protag.setVelocityY(0);
         }
     }
 }
