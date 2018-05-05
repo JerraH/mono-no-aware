@@ -17,7 +17,7 @@ export default class TitleScene extends Phaser.Scene {
         let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
 
-        this.start = this.add.text(0, 0, "START", { font: "30px Montserrat" });
+        this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC" });
         Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 0, 0));
 
         this.blink = 0;
@@ -28,8 +28,8 @@ export default class TitleScene extends Phaser.Scene {
         });
     }
 
-    update(thime, delta) {
+    update(time, delta) {
         this.blink += delta;
-        this.start.alpha = 1 - Math.floor(this.blink / 500) % 2;
+        this.start.alpha = [1,0.75,0.5,0.75][Math.floor(this.blink / 250) % 4];
     }
 }

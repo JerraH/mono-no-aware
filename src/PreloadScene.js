@@ -1,9 +1,16 @@
 import {Scene} from 'phaser';
 import FontFaceObserver from 'fontfaceobserver';
 
+import store from './store';
+import Dialogue from './dialogue';
+
 export default class PreloadScene extends Scene {
     preload() {
-        let fonts = ['Berkshire Swash'];
+        let fonts = [
+            // Must update these fonts in style.css
+            'Berkshire Swash',
+            'Amatic SC'
+        ];
         Promise.all(
             fonts.map(font => new FontFaceObserver(font).load())
         )
@@ -14,6 +21,8 @@ export default class PreloadScene extends Scene {
 
     update() {
         if (this.complete) {
+            // store.setDialogue(new Dialogue('Title', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet urna nec augue facilisis ultrices nec id urna. Mauris tincidunt sapien id arcu volutpat, nec varius leo tempor. Quisque dolor justo, porta ut sagittis in, tincidunt sed metus. Morbi tristique felis et diam tempus, id eleifend tortor tempus.'));
+            // this.scene.start('dialogue');
             this.scene.start('title');
         }
     }
