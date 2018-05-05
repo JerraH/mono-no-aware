@@ -39,7 +39,7 @@ export default class Character extends Phaser.GameObjects.Image{
         this.body.onCollide = true;
 
         console.log(this)
-        Phaser.Physics.Arcade.collide(this.body, this.protag, this.startConversation)
+        // Phaser.Physics.Arcade.collide(this.body, this.protag, this.startConversation)
 
 
 

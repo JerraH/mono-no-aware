@@ -34,10 +34,10 @@ export default class EmpressBedroom extends GameScene {
             y: 300,
             scale: .25
         })
-        let x = new Phaser.Input.Keyboard.Key(88)
+        let myx = new Phaser.Input.Keyboard.Key(88)
 
         this.input.keyboard.once('keydown', (event) => {
-            if(event.value === x){
+            if(event.value === myx){
                 console.log("screaming")}
 
         });
@@ -54,7 +54,7 @@ export default class EmpressBedroom extends GameScene {
        this.cursors = this.input.keyboard.createCursorKeys();
        this.protag = this.physics.add.sprite(400, 300, 'protag');
        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
-       this.emp = this.physics.add.sprite(500, 400, 'empress')
+      //  this.emp = this.physics.add.sprite(500, 400, 'empress')
 
     //    this.protag.setBounds(0, 0, this.groundLayer.width * this.groundLayer.scaleX, this.groundLayer.height *this.groundLayer.scaleY );
 
@@ -68,6 +68,9 @@ export default class EmpressBedroom extends GameScene {
 
 
 
+    }
+    update() {
+      console.log("fuckkk")
     }
 
     // update() {
