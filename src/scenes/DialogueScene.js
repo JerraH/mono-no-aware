@@ -6,6 +6,7 @@ export default class DialogueScene extends Scene {
         super(config);
         this.selectionIndex = 1;
         this.handleKey = this.handleKey.bind(this);
+        this.protag = store.protag;
     }
 
     preload() {

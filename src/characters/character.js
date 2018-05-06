@@ -14,11 +14,6 @@ export default class Character extends Phaser.GameObjects.Image{
         this.protag = this.scene.protag;
         this.body.immovable = true;
         console.log(this.body)
-        this.body.height = this.height / 4
-        this.body.width = this.width * .75
-        this.body.x = 0;
-        this.body.y = 0;
-        console.log(this.body.anchor)
         this.startConversation = this.startConversation.bind(this)
 
 
@@ -81,10 +76,20 @@ export default class Character extends Phaser.GameObjects.Image{
 // }
 
 Character.prototype.startConversation = function() {
-    console.log("scream")
-    console.log(this)
+    let textbox = new Rectangle(400, 300, 400, 300)
+    this.asyncCall = this.asyncCall.bind(this)
+
+    async function asyncCall() {
+        let result = await this.scene.physics.world.pause();
+        return result
+    }
+    // asyncCall().then(this.scene.scene.start('dialogue'))
     this.inConversation = true;
-    this.scene.scene.start('dialogue')
+
+
+
+
+
     // var speech = this.game.cache.getJSON('speech');
     // this.game.paused = true;
     // this.activeConversation = convoKey;
