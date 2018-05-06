@@ -5,8 +5,7 @@ export default class Akiko extends Character {
     super(config);
     this.name = 'Akiko';
     this.pronouns = 'She';
-    this.scene = config.scene;
-    this.type = config.type;
+
 
     this.state = {
       happinessMeter: 50,

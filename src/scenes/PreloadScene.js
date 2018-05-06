@@ -17,6 +17,7 @@ export default class PreloadScene extends Scene {
         .then(() => {
             this.complete = true;
         });
+
     }
 
     update() {

@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
+import {smokemachine} from '../../smoke.js-master/smoke'
 
 export default class TitleScene extends Phaser.Scene {
     constructor(config) {
-        super(config);
+        super(config)
+
+
     }
 
     preload() {
@@ -13,6 +16,8 @@ export default class TitleScene extends Phaser.Scene {
     create() {
         let theme = this.sound.add('intro');
         theme.play();
+
+
 
         let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));

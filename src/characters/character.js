@@ -2,6 +2,7 @@ import Phaser, {GameObject, Image, Collider} from 'phaser';
 import TextBox from '../TextBox';
 
 import {game} from '../index'
+import HandleKeyVertical from '../utilityFunctions'
 
 
 
@@ -28,6 +29,12 @@ export default class Character extends Phaser.GameObjects.Image{
 Character.prototype.enterConvo = function() {
     let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
     Phaser.Display.Align.In.BottomCenter(question, this.scene.add.zone(400, 210, 0, 0))
+    // this.scene.background.create(new HandleKeyVertical({
+    //     callback: this.startConversation,
+    //     exitFunc: question.destroy,
+    //     scene: this.scene,
+    //     options: ['Yes', 'No']
+    // }))
 }
 
 Character.prototype.startConversation = function() {

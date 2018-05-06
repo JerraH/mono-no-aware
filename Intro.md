@@ -231,8 +231,8 @@ Let's take a look at a handy thing to put in an update method, opening a chest!
 
 ```
 //INSIDE THE UPDATE METHOD FOR A "CHESTS" CLASS
-    this.scene.physics.world.collide(this, this.scene.groundLayer);
-    this.scene.physics.world.overlap(this, this.scene.link, this.openChest);
+    this.scene.physics.add.collider(this, this.scene.groundLayer);
+    this.scene.physics.overlap(this, this.scene.link, this.openChest);
 ```
 (D)
 
