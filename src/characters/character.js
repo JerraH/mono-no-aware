@@ -1,24 +1,23 @@
-import Phaser, {GameObject, Image, Collider} from 'phaser';
-import TextBox from '../TextBox';
-
-import {game} from '../index'
-import HandleKeyVertical from '../utilityFunctions'
+import Phaser from 'phaser';
+import { handleKeyVertical} from '../utilityFunctions'
 
 
-
-
-
-
-export default class Character extends Phaser.GameObjects.Image{
+export default class Character extends Phaser.GameObjects.Image {
     constructor(config) {
         super(config.scene, config.x, config.y, config.key)
         this.type = 'character';
+        this.scene = config.scene
         config.scene.add.existing(this);
         config.scene.physics.world.enable(this)
         this.protag = this.scene.protag;
         this.body.immovable = true;
         console.log(this.body)
+
+        //bindings
+        this.handleKeyVertical = handleKeyVertical.bind(this.scene);
         this.startConversation = this.startConversation.bind(this)
+        this.endConversation = this.endConversation.bind(this);
+        this.startScene = this.startScene.bind(this)
 
         this.scene.physics.add.collider(this, this.protag, this.startConversation);
 
@@ -26,64 +25,59 @@ export default class Character extends Phaser.GameObjects.Image{
 }
 
 //these methods are shared between all characters!
-Character.prototype.enterConvo = function() {
-    let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
-    Phaser.Display.Align.In.BottomCenter(question, this.scene.add.zone(400, 210, 0, 0))
-    // this.scene.background.create(new HandleKeyVertical({
-    //     callback: this.startConversation,
-    //     exitFunc: question.destroy,
-    //     scene: this.scene,
-    //     options: ['Yes', 'No']
-    // }))
+Character.prototype.enterConvo = function () {
+    this.question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", {
+        font: "40px Berkshire Swash"
+    })
+    Phaser.Display.Align.In.Center(this.question, this.scene.add.zone(400, 210, 0, 0))
+    this.scene.inConversation = true;
+    this.scene.characterConvo = this;
+    this.body.checkCollision.none = true;
+
+    this.handleKeyVertical(this.startScene, this.endConversation, ['Yes', 'No'])
+
+
+}
+Character.prototype.startScene = function () {
+    console.log(this)
+    this.scene.scene.start('dialogue')
 }
 
-Character.prototype.startConversation = function() {
+Character.prototype.startConversation = function () {
     console.log("conversation beginning")
-    let textbox = new TextBox({
-        x: 500,
-        y: 600,
-        width: 800,
-        height: 200,
-        scene: this.scene,
-        key: 'Textbox'
-    })
+    //I've left this here as an attempted workaround for a bug I was getting
     this.enterConvo()
-
-    // this.scene.background.create('Textbox')
-    // console.log(textbox)
-    // this.asyncCall = this.asyncCall.bind(this)
-
-    // async function asyncCall() {
-    //     let result = await this.scene.physics.world.pause();
-    //     return result
-    // }
-    // asyncCall().then(this.scene.scene.start('dialogue'))
-    this.inConversation = true;
-
-
-
-
-
-    // var speech = this.game.cache.getJSON('speech');
-    // this.game.paused = true;
-    // this.activeConversation = convoKey;
-    // this.updateConversationState(this.activeConversation.start);
-
 };
 
+Character.prototype.endConversation = function () {
+
+
+    this.body.checkCollision.none = false;
+    console.log(this.scene.children)
+    this.scene.children.list.forEach((child) => {
+        if ( child.type == 'Text' || child.type == 'Graphics') {
+            child.visible = false;
+        }
+    })
+    this.scene.physics.resume();
+    this.scene.inConversation = false;
+    this.body.checkCollision.none = false;
 
 
 
+}
 
-Character.prototype.increaseHappiness = function(amount){
+
+Character.prototype.increaseHappiness = function (amount) {
     let happinessHolder = this.state.happiness + amount;
-    this.setState({happinessMeter: happinessHolder})
+    this.setState({
+        happinessMeter: happinessHolder
+    })
 }
 
-Character.prototype.decreaseHappiness = function(amount){
+Character.prototype.decreaseHappiness = function (amount) {
     let happinessHolder = this.state.happiness - amount;
-    this.setState({happinessMeter: happinessHolder})
+    this.setState({
+        happinessMeter: happinessHolder
+    })
 }
-
-
-

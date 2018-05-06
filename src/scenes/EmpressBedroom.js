@@ -6,6 +6,7 @@ import { default as Akiko } from '../characters/akiko'
 export default class EmpressBedroom extends GameScene {
 
 
+
     preload() {
         this.load.image('protag', 'assets/images/protag.png')
         this.load.image('akiko', 'assets/images/akiko.png')

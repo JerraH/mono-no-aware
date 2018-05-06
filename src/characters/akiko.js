@@ -6,6 +6,8 @@ export default class Akiko extends Character {
     this.name = 'Akiko';
     this.pronouns = 'She';
 
+    console.log(this.scene)
+
 
     this.state = {
       happinessMeter: 50,
