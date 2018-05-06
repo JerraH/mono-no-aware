@@ -23,7 +23,7 @@ let config = {
     }
 };
 
-let game = new Phaser.Game(config);
+export let game = new Phaser.Game(config);
 game.scene.add('preload', PreloadScene);
 game.scene.add('title', TitleScene);
 game.scene.add('pronoun', PronounScene);
@@ -34,3 +34,5 @@ game.scene.add('dialogue', DialogueScene);
 game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.start('preload');
+
+

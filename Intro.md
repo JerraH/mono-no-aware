@@ -234,6 +234,7 @@ Let's take a look at a handy thing to put in an update method, opening a chest!
     this.scene.physics.world.collide(this, this.scene.groundLayer);
     this.scene.physics.world.overlap(this, this.scene.link, this.openChest);
 ```
+(D)
 
 First, this creates a collider for the chest that prevents it from falling through the ground and off into the infinite depths of an unforgiving universe.  You'll notice two parameters - 'this', referring to the instance of the chest in question, and this.scene.groundlayer, or, the groundlayer of the scene that contains the chest.  (It doesn't have to be called the groundlayer; if it's sitting on a cloud, maybe you called it the cloudmuffin in the scene -- once again, I'm not here to judge).  The first parameter gets checked for collision first, the second, naturally, second.  Practically speaking, it usually doesn't matter which goes where; if you are at a point in your game development journey where you find that it matters, you're probably way beyond the level of this tutorial and should share your wisdom in the comments.
 

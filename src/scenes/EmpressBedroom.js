@@ -17,27 +17,15 @@ export default class EmpressBedroom extends GameScene {
 
     create() {
         //create static groups
-        let background = this.physics.add.staticGroup();
+        this.background = this.physics.add.staticGroup();
         this.NPCs = this.physics.add.staticGroup();
 
         //create background and set the world bounds equal to the size of the background
-        this.groundLayer = background.create(500, 300, 'bedroom')
+        this.groundLayer = this.background.create(500, 300, 'bedroom')
         this.physics.world.bounds.width = this.groundLayer.width
         this.physics.world.bounds.height = this.groundLayer.height
 
-        //create and instantiate characters/sprites
-        this.akiko = new Akiko({
-            scene: this,
-            key: 'akiko',
-            x: 350,
-            y: 350
-        })
-        this.emp = this.physics.add.image(750, 340, 'empress')
 
-        this.emp.angle = 28
-        this.emp.body.rotation = 28
-        this.emp.body.immovable = true;
-        console.log(this.emp.body)
 
         //Add Colliders
 
@@ -56,8 +44,22 @@ export default class EmpressBedroom extends GameScene {
         this.protag.body.offset = {x: 30, y: 150};
         console.log(this.protag.body)
 
+        //create and instantiate characters/sprites
+        this.akiko = new Akiko({
+            scene: this,
+            key: 'akiko',
+            x: 350,
+            y: 350
+        }, console.log(this))
+        this.emp = this.physics.add.image(750, 340, 'empress')
+
+        this.emp.angle = 28
+        this.emp.body.rotation = 28
+        this.emp.body.immovable = true;
+        console.log(this.emp.body)
+
         this.physics.add.collider(this.protag, this.emp, console.log("yelling"))
-        this.physics.add.collider(this.akiko, this.protag, this.akiko.startConversation)
+        // this.physics.add.collider(this.akiko, this.protag, this.akiko.startConversation)
         console.log(this.physics)
 
 
