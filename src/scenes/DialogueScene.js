@@ -1,13 +1,14 @@
 import {Scene} from 'phaser';
 import store from '../store';
 
+const WIDTH = 400;
+const SPACE_PX = 15;
+const LINE_HEIGHT = 40;
+
 export default class DialogueScene extends Scene {
     constructor(config) {
         super(config);
-        this.selectionIndex = 0;
-        this.responses = [];
         this.handleKey = this.handleKey.bind(this);
-        this.protag = store.protag;
     }
 
     preload() {
@@ -52,9 +53,6 @@ export default class DialogueScene extends Scene {
     }
 
     justifyText(text, sx, sy, width, height) {
-        let SPACE_PX = 15;
-        let LINE_HEIGHT = 40;
-
         let splitText = text.split(' ');
         let words = splitText.map(word => this.add.text(sx, sy, word, { font: "40px Amatic SC" }));
         let y = sy;
@@ -90,7 +88,9 @@ export default class DialogueScene extends Scene {
     }
 
     create() {
-        let WIDTH = 400;
+        this.selectionIndex = 0;
+        this.responses = [];
+        this.protag = store.protag;
 
         let dialogue = store.getDialogue();
         this.responses = dialogue.responses;
