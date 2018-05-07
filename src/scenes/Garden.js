@@ -49,7 +49,7 @@ export default class Garden extends GameScene {
 
 
         //Cursors
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.addKeys();
 
         //Protagonist
         this.protag = this.physics.add.sprite(400, 300, 'protag');

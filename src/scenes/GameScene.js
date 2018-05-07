@@ -8,6 +8,12 @@ export default class GameScene extends Scene {
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
+    addKeys() {
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
+        this.stateChangeKeyReleased = false;
+    }
+
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         if (this.groundLayer) {
@@ -17,7 +23,7 @@ export default class GameScene extends Scene {
 
     }
 
-    update() {
+    update(time, delta) {
         //if you're not in conversation mode, the keys control the protagonist
         if (this && !this.inConversation) {
             if (this.cursors.left.isDown) {
@@ -49,6 +55,7 @@ export default class GameScene extends Scene {
                     this.behinders.children.iterate((child) => {
                         child.depth = child.y + child.height / 2
                     })
+        this.addKeys();
 
                 }
                 if (this.smoke && this.smoke.children) {
@@ -65,7 +72,7 @@ export default class GameScene extends Scene {
         let velX = 0;
         let velY = 0;
 
-        if (!store.getDialogue()) {
+        if (!store.getDialogue() && !store.getInventoryActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }
@@ -78,7 +85,19 @@ export default class GameScene extends Scene {
             else if (this.cursors.down.isDown) {
                 velY = 120;
             }
+            if (this.keys.enter.isDown) {
+                if (this.stateChangeKeyReleased) {
+                    store.setInventoryActive(true);
+                    this.scene.launch('inventory');
+                }
+            } else {
+                this.stateChangeKeyReleased = true;
+            }
+        } else {
+            // key must be lifted in between state changes
+            this.stateChangeKeyReleased = false;
         }
+
         this.protag.setVelocityX(velX);
         this.protag.setVelocityY(velY);
     }

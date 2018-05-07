@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { handleKeyVertical} from '../utilityFunctions'
 
 import {game} from '../index'
-import Dialogue from '../dialogue';
+import Dialogue from '../Dialogue';
 
 import store from '../store';
 import DialogueScene from '../scenes/DialogueScene';

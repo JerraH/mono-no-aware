@@ -29,8 +29,6 @@ export default class TitleScene extends Phaser.Scene {
         this.input.keyboard.once('keydown', (event) => {
             theme.stop();
             this.sound.add('select').play();
-            console.log(this);
-            console.log(this.scene)
             this.scene.start('EmpressBedroom');
         });
     }

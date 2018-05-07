@@ -1,13 +1,18 @@
 import {Scene} from 'phaser';
 import store from '../store';
 
+const WIDTH = 400;
+const MAX_HEIGHT = 500;
+const SPACE_PX = 15;
+const TITLE_HEIGHT = 50;
+const BORDER_HEIGHT = 20;
+const LINE_HEIGHT = 40;
+const SELECTION_HEIGHT = 54;
+
 export default class DialogueScene extends Scene {
     constructor(config) {
         super(config);
-        this.selectionIndex = 0;
-        this.responses = [];
         this.handleKey = this.handleKey.bind(this);
-        this.protag = store.protag;
     }
 
     preload() {
@@ -22,6 +27,18 @@ export default class DialogueScene extends Scene {
         }
     }
 
+    updateSelectionTween() {
+        if (this.selectionTween) {
+            this.selectionTween.stop();
+        }
+        this.selectionTween = this.tweens.add({
+            targets: this.selection,
+            ease: 'Sine.easeInOut',
+            duration: 300,
+            y: this.getSelectionY()
+        });
+    }
+
     handleKey(event) {
         if (event.repeat) {
             return;
@@ -32,12 +49,14 @@ export default class DialogueScene extends Scene {
                 if (this.selectionIndex > 0) {
                     this.sound.add('tap').play();
                     this.selectionIndex--;
+                    this.updateSelectionTween();
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < store.getDialogue().responses.length-1) {
                     this.sound.add('tap').play();
                     this.selectionIndex++;
+                    this.updateSelectionTween();
                 }
                 break;
             case 'Enter':
@@ -51,68 +70,100 @@ export default class DialogueScene extends Scene {
         }
     }
 
-    justifyText(text, sx, sy, width, height) {
-        let SPACE_PX = 15;
-        let LINE_HEIGHT = 40;
-
+    justifyText(text, width) {
         let splitText = text.split(' ');
-        let words = splitText.map(word => this.add.text(sx, sy, word, { font: "40px Amatic SC" }));
-        let y = sy;
+        this.words = splitText.map(word => this.add.text(0, 0, word, { font: "40px Amatic SC" }));
+        let y = LINE_HEIGHT / 4;
         let curWord = 0;
-        while (curWord < words.length) {
+        while (curWord < this.words.length) {
             // more words, so make a line of text
-            let lineWidth = words[curWord].width;
+            let lineWidth = this.words[curWord].width;
             let startingWord = curWord;
-            words[curWord++].y = y;
-            while (curWord < words.length &&
-                lineWidth + SPACE_PX + words[curWord].width < width) {
-                words[curWord].x = words[curWord - 1].x + words[curWord - 1].width + SPACE_PX;
-                words[curWord].y = y;
-                lineWidth += SPACE_PX + words[curWord].width;
+            this.words[curWord++].y = y;
+            while (curWord < this.words.length &&
+                lineWidth + SPACE_PX + this.words[curWord].width < width) {
+                this.words[curWord].x = this.words[curWord - 1].x + this.words[curWord - 1].width + SPACE_PX;
+                this.words[curWord].y = y;
+                lineWidth += SPACE_PX + this.words[curWord].width;
                 curWord++;
             }
-            if (curWord !== words.length && curWord - startingWord > 1) {
+            if (curWord !== this.words.length && curWord - startingWord > 1) {
                 let addWidth = (width - lineWidth) / (curWord - startingWord - 1);
                 for (let i = startingWord; i < curWord; i++) {
-                    words[i].x += addWidth * (i - startingWord);
+                    this.words[i].x += addWidth * (i - startingWord);
                 }
             }
             y += LINE_HEIGHT;
         }
 
-        // too tall, so compress lines
-        if (y > sy + height) {
-            words.forEach(word => {
-                word.y = (word.y - sy) * height / (y - sy) + sy;
-                word.scaleY = (sy + height) / y;
-            })
-        }
+        this.wordHeight = y + LINE_HEIGHT / 2;
+    }
+
+    getSelectionY() {
+        return this.contentY + 
+            this.contentHeight - 
+            BORDER_HEIGHT -
+            (this.responses.length - this.selectionIndex) * SELECTION_HEIGHT;
     }
 
     create() {
-        let WIDTH = 400;
+        this.selectionIndex = 0;
+        this.responses = [];
+        this.protag = store.protag;
 
         let dialogue = store.getDialogue();
         this.responses = dialogue.responses;
 
-        this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
-        Phaser.Display.Align.In.Center(this.title, this.add.zone(400, 100, 0, 0));
+        let bkg = this.add.graphics();
+        bkg.lineStyle(2, 0xffffff, 1);
+        bkg.fillStyle(0, 1);
 
         // justify text
-        this.justifyText(dialogue.text, 200, 130, 400, 350);
+        this.justifyText(dialogue.text.trim(), 400);
+        this.contentHeight = this.wordHeight + 
+            SELECTION_HEIGHT * this.responses.length +
+            BORDER_HEIGHT * 2 +
+            TITLE_HEIGHT;
+        let wordScaleY = 1;
+        if (this.contentHeight > MAX_HEIGHT) {
+            // compress text so it fits
+            wordScaleY = (this.wordHeight - (this.contentHeight - MAX_HEIGHT)) / this.wordHeight;
+            this.contentHeight = MAX_HEIGHT;
+        }
+        this.contentY = (600 - this.contentHeight) / 2;
+
+        bkg.strokeRect(0, 0, 450, this.contentHeight);
+        bkg.fillRect(0, 0, 450, this.contentHeight);
+        bkg.x = 175;
+        bkg.y = this.contentY;
+
+        // too tall, so compress lines
+        // if (this.wordHeight > sy + height) {
+        this.words.forEach(word => {
+            word.x += 200;
+            word.y = this.contentY + BORDER_HEIGHT + TITLE_HEIGHT + word.y * wordScaleY;
+            word.scaleY = wordScaleY;
+        })
+        
+        this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
+        Phaser.Display.Align.In.Center(this.title, this.add.zone(400,
+            this.contentY + BORDER_HEIGHT + TITLE_HEIGHT / 2, 0, 0));
 
         let maxWidth = 0;
         for (let i = 0; i < this.responses.length; i++) {
             let response = this.add.text(0, 0, this.responses[i].response, { font: "40px Amatic SC" });
-            Phaser.Display.Align.In.Center(response, this.add.zone(400, 270+i*60, 0, 0));
+            Phaser.Display.Align.In.Center(response, this.add.zone(400, 
+                this.contentY + this.contentHeight - BORDER_HEIGHT - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
+                0, 0));
             maxWidth = Math.max(maxWidth, response.width);
         }
         maxWidth += 20;
-
-        this.selection = this.add.graphics(maxWidth, 54);
+    
+        this.selection = this.add.graphics();
         this.selection.lineStyle(2, 0xffffff, 1);
         this.selection.strokeRect(0, 0, maxWidth, 54);
         this.selection.x = 400-maxWidth/2;
+        this.selection.y = this.getSelectionY();
 
         this.blink = 0;
 
@@ -120,9 +171,6 @@ export default class DialogueScene extends Scene {
     }
 
     update(time, delta) {
-        if (this.responses.length) {
-            this.selection.y = 243 + this.selectionIndex * 60;
-        }
         this.blink += delta;
         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
    }

@@ -9,7 +9,11 @@ import EmpressBedroom from './scenes/EmpressBedroom'
 import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
 import store from './store';
+<<<<<<< HEAD
 import Room2 from './scenes/Room2';
+=======
+import InventoryScene from './scenes/InventoryScene';
+>>>>>>> 73ba02c6c4985cf64b60343e1bdd5ce22cf8d47e
 
 let config = {
     type: Phaser.AUTO,
@@ -33,6 +37,7 @@ game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
 game.scene.add('room2', Room2)
 game.scene.add('dialogue', DialogueScene);
+game.scene.add('inventory', InventoryScene);
 game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.start('preload');
