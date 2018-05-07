@@ -36,7 +36,7 @@ export default class DialogueScene extends Scene {
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
                 // store.setPronoun(Constants.PRONOUNS[this.selectionIndex]);
-                this.scene.start('title');
+                this.scene.stop();
                 break;
             default:
                 break;
