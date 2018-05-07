@@ -56,13 +56,20 @@ export default class EmpressBedroom extends GameScene {
             x: 350,
             y: 350
         }, console.log(this))
-        this.emp = this.physics.add.image(750, 340, 'empress')
-        this.emp.angle = 28
-        this.emp.body.setRotation = 28 //not currently functioning for... reasons????
+        this.bedZone = this.add.container(750, 340)
+
+        this.emp = this.physics.add.image(0, 0, 'empress')
+        this.bedZone.add(this.emp)
+        this.bedZone.maxSize = 100;
+        this.bedZone.width = 100
+        this.bedZone.height = 100
+        this.bedZone.angle = 28
+        console.log(this.bedZone)
+        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
         this.emp.body.immovable = true;
 
         //this creates a collider between the protagonist and the empress that does nothing
-        this.physics.add.collider(this.protag, this.emp)
+        this.physics.add.collider(this.protag, this.bedZone)
 
 
        //Camera setup
