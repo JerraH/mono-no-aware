@@ -4,7 +4,8 @@ import store from '../store';
 export default class DialogueScene extends Scene {
     constructor(config) {
         super(config);
-        this.selectionIndex = 1;
+        this.selectionIndex = 0;
+        this.responses = [];
         this.handleKey = this.handleKey.bind(this);
         this.protag = store.protag;
     }
@@ -12,6 +13,12 @@ export default class DialogueScene extends Scene {
     preload() {
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
+    }
+
+    handleResponse() {
+        if (this.responses.length > this.selectionIndex) {
+            this.responses[this.selectionIndex].cb();
+        }
     }
 
     handleKey(event) {
@@ -27,7 +34,7 @@ export default class DialogueScene extends Scene {
                 }
                 break;
             case 'ArrowDown':
-                if (this.selectionIndex < 2) {
+                if (this.selectionIndex < store.getDialogue().responses.length-1) {
                     this.sound.add('tap').play();
                     this.selectionIndex++;
                 }
@@ -35,8 +42,8 @@ export default class DialogueScene extends Scene {
             case 'Enter':
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
-                // store.setPronoun(Constants.PRONOUNS[this.selectionIndex]);
                 this.scene.stop();
+                this.handleResponse();
                 break;
             default:
                 break;
@@ -85,7 +92,7 @@ export default class DialogueScene extends Scene {
         let WIDTH = 400;
 
         let dialogue = store.getDialogue();
-        console.log(this);
+        this.responses = dialogue.responses;
 
         this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(this.title, this.add.zone(400, 100, 0, 0));
@@ -93,17 +100,28 @@ export default class DialogueScene extends Scene {
         // justify text
         this.justifyText(dialogue.text, 200, 130, 400, 350);
 
-        // this.selection = this.add.graphics(200, 54);
-        // this.selection.lineStyle(2, 0xffffff, 1);
-        // this.selection.strokeRect(0, 0, 200, 54);
-        // this.selection.x = 300;
+        let maxWidth = 0;
+        for (let i = 0; i < this.responses.length; i++) {
+            let response = this.add.text(0, 0, this.responses[i].response, { font: "40px Amatic SC" });
+            Phaser.Display.Align.In.Center(response, this.add.zone(400, 270+i*60, 0, 0));
+            maxWidth = Math.max(maxWidth, response.width);
+        }
+        maxWidth += 20;
+
+        this.selection = this.add.graphics(maxWidth, 54);
+        this.selection.lineStyle(2, 0xffffff, 1);
+        this.selection.strokeRect(0, 0, maxWidth, 54);
+        this.selection.x = 400-maxWidth/2;
+
         this.blink = 0;
 
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
     update(time, delta) {
-        // this.selection.y = 243 + this.selectionIndex * 60;
+        if (this.responses.length) {
+            this.selection.y = 243 + this.selectionIndex * 60;
+        }
         this.blink += delta;
         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
    }
