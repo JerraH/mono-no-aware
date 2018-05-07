@@ -1,4 +1,6 @@
-import { default as GameScene } from './GameScene';
+import {
+    default as GameScene
+} from './GameScene';
 import Phaser from 'phaser';
 
 
@@ -17,6 +19,7 @@ export default class Room2 extends GameScene {
         this.load.image('smoke3', 'assets/images/smoke3.png');
     }
     create() {
+        let currScene = this;
         //create static groups
         this.background = this.physics.add.staticGroup();
         this.behinders = this.physics.add.staticGroup();
@@ -29,7 +32,7 @@ export default class Room2 extends GameScene {
         // this.smoke2 = this.background.create(600, 200, 'smoke2')
         this.smoke3 = this.smoke.create(75, 50, 'smoke3')
         this.smoke4 = this.smoke.create(75, 50, 'smoke4')
-        this.slidingDoor = this.behinders.create(520, 100, 'slidingDoor')
+        this.slidingDoor = this.behinders.create(450, 100, 'slidingDoor')
         this.screenDoors = this.behinders.create(700, 100, 'screenDoors')
         //set screen door hit box
         this.screenDoors.body.height = 20
@@ -46,11 +49,14 @@ export default class Room2 extends GameScene {
 
         //declare protag
         this.protag = this.physics.add.sprite(700, 500, 'protag');
-        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
+        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
         this.protag.body.height = 75
         this.protag.body.width = 170
-        this.protag.body.offset = {x: 30, y: 225};
+        this.protag.body.offset = {
+            x: 30,
+            y: 225
+        };
 
         //add colliders
         this.behinders.children.iterate((child) => {
@@ -58,8 +64,41 @@ export default class Room2 extends GameScene {
         })
 
         //Camera setup
-       this.cameras.main.startFollow(this.protag)
-       this.cameras.main.setBounds(0, 0, this.groundLayer.width + 50, this.groundLayer.height + 50)
+        this.cameras.main.startFollow(this.protag)
+        this.cameras.main.setBounds(0, 0, this.groundLayer.width + 50, this.groundLayer.height + 50)
+
+        this.room2Door = this.add.zone(750, 0, 50, 650).setName('room2Door').setInteractive();
+        this.physics.world.enable(this.room2Door)
+        this.room2Door.body.immovable = true;
+        console.log(this.room2Door)
+        this.changeRooms = () => {
+            async function func() {
+                currScene.input.enabled = false;
+                await currScene.physics.pause()
+            }
+            if (this.cursors.right.isDown) {
+                func().then(setTimeout(() => {
+                    this.scene.start('EmpressBedroom')
+                }, 10))
+            }
+            console.log(this.protag)
+            //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
+
+        }
+        let checkMotion = () => {
+            if (this.cursors.right.isDown) {
+                return true
+            } else {
+                return false;
+            }
+        }
+
+
+        // .then(this.scene.start('room2'))
+
+
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms, checkMotion, this.cursors.right.isDown)
+        console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
 
 
     }

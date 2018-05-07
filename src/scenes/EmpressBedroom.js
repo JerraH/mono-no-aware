@@ -1,9 +1,16 @@
 
 import {default as GameScene} from './GameScene.js';
-import Phaser from 'phaser'
+import Phaser, {Body} from 'phaser'
 import { default as Akiko } from '../characters/akiko'
+import Protag from '../characters/protag';
 
 export default class EmpressBedroom extends GameScene {
+    constructor(props) {
+        super(props)
+
+
+    }
+
 
 
 
@@ -16,10 +23,11 @@ export default class EmpressBedroom extends GameScene {
     }
 
     create() {
+        let currScene = this;
         //create static groups
         this.background = this.physics.add.staticGroup();
-        this.NPCs = this.physics.add.staticGroup();
-        this.zones = this.physics.add.staticGroup();
+        this.NPCs = this.physics.add.staticGroup()
+
 
         //create background and set the world bounds equal to the size of the background
         this.groundLayer = this.background.create(500, 300, 'bedroom')
@@ -30,24 +38,42 @@ export default class EmpressBedroom extends GameScene {
         //Cursors
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        //Protagonist
+        // Protagonist
         this.protag = this.physics.add.sprite(500, 300, 'protag');
-        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
+
         //set's the protag's hit box
         this.protag.body.height = 30
         this.protag.body.width = 120
         this.protag.body.offset = {x: 30, y: 150};
+        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
+
 
         //makes zones
-        let checker = console.log("BOO")
-        let room2Door = this.add.zone(400, 200, 100, 100);
-        room2Door.rotate = -20
-        this.physics.add.collider(this.protag, room2Door, checker )
-        // room2Door.checkCollision.up = true
-        // room2Door.checkCollision.right = true;
-        // room2Door.height = 100
-        // room2Door.width = 100
-        console.log(room2Door)
+
+        this.room2Door = this.add.zone(350, 100, 200, 200).setName('room2Door').setInteractive();
+        this.physics.world.enable(this.room2Door)
+        this.room2Door.body.allowRotation = true;
+        this.room2Door.body.isCircle = true;
+        this.room2Door.body.immovable = true;
+        this.changeRooms = () => {
+            console.log(currScene)
+            async function func() {
+                currScene.input.enabled = false;
+                await currScene.physics.pause()
+            }
+            //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
+            func().then(setTimeout(() => {
+                this.scene.start('room2')
+            }, 10))
+            // .then(this.scene.start('room2'))
+
+        }
+        this.changeRooms = this.changeRooms.bind(this)
+
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+
+
+
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({
@@ -55,21 +81,16 @@ export default class EmpressBedroom extends GameScene {
             key: 'akiko',
             x: 350,
             y: 350
-        }, console.log(this))
-        this.bedZone = this.add.container(750, 340)
+        })
 
-        this.emp = this.physics.add.image(0, 0, 'empress')
-        this.bedZone.add(this.emp)
-        this.bedZone.maxSize = 100;
-        this.bedZone.width = 100
-        this.bedZone.height = 100
-        this.bedZone.angle = 28
-        console.log(this.bedZone)
-        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
+        this.emp = this.physics.add.image(750, 340, 'empress');
+        this.emp.angle = 28;
         this.emp.body.immovable = true;
+        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
+        this.physics.add.collider(this.protag, this.emp)
+        console.log(this.emp.body)
 
         //this creates a collider between the protagonist and the empress that does nothing
-        this.physics.add.collider(this.protag, this.bedZone)
 
 
        //Camera setup
@@ -83,7 +104,7 @@ export default class EmpressBedroom extends GameScene {
 
 
 
-
     }
+
 
 }

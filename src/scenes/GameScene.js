@@ -1,13 +1,8 @@
-import {
-    Scene
-} from 'phaser';
+import {Scene} from 'phaser';
+import store from '../store';
 
 export default class GameScene extends Scene {
-    constructor(config) {
-        super(config);
-        this.handleKeyConvo = this.handleKeyConvo.bind(this)
 
-    }
     preload() {
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
@@ -15,6 +10,10 @@ export default class GameScene extends Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        if (this.groundLayer) {
+            this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
+        }
+
 
     }
 
@@ -63,44 +62,24 @@ export default class GameScene extends Scene {
                 }
 
             }
+        let velX = 0;
+        let velY = 0;
 
+        if (!store.getDialogue()) {
+            if (this.cursors.left.isDown) {
+                velX = -120;
+            }
+            else if (this.cursors.right.isDown) {
+                velX = 120;
+            }
+            else if (this.cursors.up.isDown) {
+                velY = -120;
+            }
+            else if (this.cursors.down.isDown) {
+                velY = 120;
+            }
         }
+        this.protag.setVelocityX(velX);
+        this.protag.setVelocityY(velY);
     }
-
-    GameScene.prototype.handleKeyConvo = function (event) {
-        //if they keep holding down the key, don't keep repeating the action!
-        if (event.repeat) {
-            return;
-        }
-
-        switch (event.key) {
-            case 'ArrowUp':
-                if (this.selectionIndex > 0) {
-                    // this.sound.add('tap').play();
-                    console.log(this)
-                    this.selectionIndex--;
-                }
-                break;
-            case 'ArrowDown':
-                if (this.selectionIndex < 1) {
-                    // this.sound.add('tap').play();
-                    console.log(this)
-                    this.selectionIndex++;
-
-                }
-                break;
-            case 'Enter':
-                // this.sound.add('select').play();
-                this.input.keyboard.off('keydown', this.handleKey)
-                if (this.selectionIndex === 0) {
-                    this.characterConvo.startScene();
-                } else {
-                    console.log(this)
-                    this.characterConvo.endConversation();
-                }
-                break;
-            default:
-                break;
-        }
-        this.selection.y = 243 + this.selectionIndex * 60;
-    }
+}

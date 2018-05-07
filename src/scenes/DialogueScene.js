@@ -17,6 +17,7 @@ export default class DialogueScene extends Scene {
 
     handleResponse() {
         if (this.responses.length > this.selectionIndex) {
+            store.setDialogue(); // hide dialogue
             this.responses[this.selectionIndex].cb();
         }
     }
