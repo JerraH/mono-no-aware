@@ -9,6 +9,7 @@ export default class GameScene extends Scene {
     addKeys() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});        
+        this.stateChangeKeyReleased = false;
     }
 
     create() {
@@ -41,7 +42,7 @@ export default class GameScene extends Scene {
         this.load.image('toy', 'assets/catToy.png');
     }
 
-    update() {
+    update(time, delta) {
         let velX = 0;
         let velY = 0;
 
@@ -59,10 +60,18 @@ export default class GameScene extends Scene {
                 velY = 120;
             }
             if (this.keys.enter.isDown) {
-                store.setInventoryActive(true);
-                this.scene.launch('inventory');
+                if (this.stateChangeKeyReleased) {
+                    store.setInventoryActive(true);
+                    this.scene.launch('inventory');
+                }
+            } else {
+                this.stateChangeKeyReleased = true;
             }
+        } else {
+            // key must be lifted in between state changes
+            this.stateChangeKeyReleased = false;
         }
+
         this.protag.setVelocityX(velX);
         this.protag.setVelocityY(velY);
     }
