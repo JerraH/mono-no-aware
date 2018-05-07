@@ -72,6 +72,6 @@ export default class PronounScene extends Scene {
     update(time, delta) {
         this.selection.y = 243 + this.selectionIndex * 60;
         this.blink += delta;
-        this.selection.alpha = [1,0.5][Math.floor(this.blink / 500) % 2];
+        this.selection.alpha = [1,0.5][Math.floor(this.blink / 500) % 2]; //this is the fading in and out effect
    }
 }

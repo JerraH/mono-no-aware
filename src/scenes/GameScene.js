@@ -2,47 +2,73 @@ import {Scene} from 'phaser';
 import store from '../store';
 
 export default class GameScene extends Scene {
-    constructor(config) {
-        super(config);
+
+    preload() {
+        this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
     addKeys() {
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});        
+        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
         this.stateChangeKeyReleased = false;
     }
 
     create() {
-        // var logo = this.add.image(400, 150, 'logo');
+        this.cursors = this.input.keyboard.createCursorKeys();
+        if (this.groundLayer) {
+            this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
+        }
 
 
-        this.NPCs = this.add.group();
-
-        let toys = this.physics.add.staticGroup();
-        let furryToy = toys.create(600, 400, 'toy')
-
-        // this.cat.setCollideWorldBounds(true);
-        // this.physics.add.collider(this.cat, toys);
-
-        this.addKeys();
-
-        // this.tweens.add({
-        //     targets: logo,
-        //     y: 450,
-        //     duration: 2000,
-        //     ease: 'Power2',
-        //     yoyo: true,
-        //     loop: -1
-        // });
-    }
-
-    preload() {
-        this.load.image('logo', 'assets/logo.png');
-        this.load.image('cat', 'assets/blackCat.png');
-        this.load.image('toy', 'assets/catToy.png');
     }
 
     update(time, delta) {
+        //if you're not in conversation mode, the keys control the protagonist
+        if (this && !this.inConversation) {
+            if (this.cursors.left.isDown) {
+                this.protag.setVelocityX(-120);
+            } else if (this.cursors.right.isDown) {
+                this.protag.setVelocityX(120);
+            } else if (this.cursors.up.isDown) {
+                this.protag.setVelocityY(-120);
+            } else if (this.cursors.down.isDown) {
+                this.protag.setVelocityY(120);
+            } else {
+                this.protag.setVelocityX(0);
+                this.protag.setVelocityY(0);
+            }
+            //if you are in conversation mode
+        } else if (this.inConversation) {
+            this.physics.pause()
+            this.input.keyboard.on('keydown', this.handleKeyConvo)
+        } else {
+            return;
+        }
+
+
+
+            //Depth sorting!!! Allows you to go behind charadters and stuff
+            if (this.protag.velocity !== 0) {
+                this.protag.depth = this.protag.y + this.protag.height / 2;
+                if (this.behinders && this.behinders.children) {
+                    this.behinders.children.iterate((child) => {
+                        child.depth = child.y + child.height / 2
+                    })
+        this.addKeys();
+
+                }
+                if (this.smoke && this.smoke.children) {
+                    this.smoke.children.iterate((child) => {
+                        child.depth = child.y + child.height / 2
+                    })
+
+                }
+                if (this.akiko) {
+                    this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+                }
+
+            }
         let velX = 0;
         let velY = 0;
 
