@@ -2,7 +2,7 @@ import Phaser, {GameObject, Image, Collider} from 'phaser';
 import TextBox from '../TextBox';
 
 import {game} from '../index'
-import Dialogue from '../dialogue';
+import Dialogue from '../Dialogue';
 
 import store from '../store';
 import DialogueScene from '../scenes/DialogueScene';

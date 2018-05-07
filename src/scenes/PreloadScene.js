@@ -2,7 +2,7 @@ import {Scene} from 'phaser';
 import FontFaceObserver from 'fontfaceobserver';
 
 import store from '../store';
-import Dialogue from '../dialogue';
+import Dialogue from '../Dialogue';
 
 export default class PreloadScene extends Scene {
     preload() {
