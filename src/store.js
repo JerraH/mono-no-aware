@@ -2,7 +2,7 @@ class Store {
     constructor() {
         this.pronoun = '';
         this.beloved = '';
-        this.dialogue = {title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
+        this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
     }
 
     // The player's chosen pronoun
@@ -27,12 +27,12 @@ class Store {
 
     // The dialogue for the current scene
 
-    setDialogue(dialogue) {
+    setDialogue(dialogue = null) {
         this.dialogue = dialogue;
     }
 
     getDialogue() {
-        console.log('inside dialogue my this is', this)
+        // console.log('inside dialogue my this is', this)
         return this.dialogue;
     }
 }

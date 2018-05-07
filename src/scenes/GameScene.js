@@ -1,4 +1,5 @@
 import {Scene} from 'phaser';
+import store from '../store';
 
 export default class GameScene extends Scene {
     constructor(config) {
@@ -36,21 +37,24 @@ export default class GameScene extends Scene {
     }
 
     update() {
-        if (this.cursors.left.isDown) {
-            this.protag.setVelocityX(-120);
+        let velX = 0;
+        let velY = 0;
+
+        if (!store.getDialogue()) {
+            if (this.cursors.left.isDown) {
+                velX = -120;
+            }
+            else if (this.cursors.right.isDown) {
+                velX = 120;
+            }
+            else if (this.cursors.up.isDown) {
+                velY = -120;
+            }
+            else if (this.cursors.down.isDown) {
+                velY = 120;
+            }
         }
-        else if (this.cursors.right.isDown) {
-            this.protag.setVelocityX(120);
-        }
-        else if (this.cursors.up.isDown) {
-            this.protag.setVelocityY(-120);
-        }
-        else if (this.cursors.down.isDown) {
-            this.protag.setVelocityY(120);
-        }
-        else {
-            this.protag.setVelocityX(0);
-            this.protag.setVelocityY(0);
-        }
+        this.protag.setVelocityX(velX);
+        this.protag.setVelocityY(velY);
     }
 }
