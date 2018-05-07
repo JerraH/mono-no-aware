@@ -3,6 +3,8 @@ class Store {
         this.pronoun = '';
         this.beloved = '';
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
+        this.inventory = ['X', 'Y', 'Z'];
+        this.inventoryActive = false;
     }
 
     // The player's chosen pronoun
@@ -34,6 +36,31 @@ class Store {
     getDialogue() {
         // console.log('inside dialogue my this is', this)
         return this.dialogue;
+    }
+
+    // The player's inventory
+
+    addToInventory(item) {
+        this.inventory.push(item);
+    }
+
+    getInventory() {
+        return this.inventory;
+    }
+
+    removeFromInventory(item) {
+        let index = this.inventory.indexOf(item);
+        if (index !== -1) {
+            this.inventory.splice(index, 1);
+        }
+    }
+
+    setInventoryActive(active) {
+        this.inventoryActive = active;
+    }
+
+    getInventoryActive() {
+        return this.inventoryActive;
     }
 }
 

@@ -6,6 +6,11 @@ export default class GameScene extends Scene {
         super(config);
     }
 
+    addKeys() {
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});        
+    }
+
     create() {
         // var logo = this.add.image(400, 150, 'logo');
 
@@ -18,7 +23,7 @@ export default class GameScene extends Scene {
         // this.cat.setCollideWorldBounds(true);
         // this.physics.add.collider(this.cat, toys);
 
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.addKeys();
 
         // this.tweens.add({
         //     targets: logo,
@@ -40,7 +45,7 @@ export default class GameScene extends Scene {
         let velX = 0;
         let velY = 0;
 
-        if (!store.getDialogue()) {
+        if (!store.getDialogue() && !store.getInventoryActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }
@@ -52,6 +57,10 @@ export default class GameScene extends Scene {
             }
             else if (this.cursors.down.isDown) {
                 velY = 120;
+            }
+            if (this.keys.enter.isDown) {
+                store.setInventoryActive(true);
+                this.scene.launch('inventory');
             }
         }
         this.protag.setVelocityX(velX);

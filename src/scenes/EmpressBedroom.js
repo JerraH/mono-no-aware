@@ -34,7 +34,7 @@ export default class EmpressBedroom extends GameScene {
 
 
         //Cursors
-        this.cursors = this.input.keyboard.createCursorKeys();
+        this.addKeys();
 
         //Protagonist
         this.protag = this.physics.add.sprite(700, 500, 'protag');

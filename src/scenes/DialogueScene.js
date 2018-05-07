@@ -114,7 +114,7 @@ export default class DialogueScene extends Scene {
         let dialogue = store.getDialogue();
         this.responses = dialogue.responses;
 
-        let bkg = this.add.graphics(450, MAX_HEIGHT);
+        let bkg = this.add.graphics();
         bkg.lineStyle(2, 0xffffff, 1);
         bkg.fillStyle(0, 1);
 
@@ -159,7 +159,7 @@ export default class DialogueScene extends Scene {
         }
         maxWidth += 20;
     
-        this.selection = this.add.graphics(maxWidth, 54);
+        this.selection = this.add.graphics();
         this.selection.lineStyle(2, 0xffffff, 1);
         this.selection.strokeRect(0, 0, maxWidth, 54);
         this.selection.x = 400-maxWidth/2;
