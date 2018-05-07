@@ -36,7 +36,10 @@ export default class Character extends Phaser.GameObjects.Image{
 //these methods are shared between all characters!
 Character.prototype.enterConvo = function() {
     if (!this.scene.scene.isActive('dialogue')) {
-        store.setDialogue(new Dialogue(this.name, "Can I help you with something?"));
+        let dialogue = new Dialogue(this.name, "Can I help you with something?");
+        dialogue.addResponse("Yes, you definitely can!", () => {});
+        dialogue.addResponse("Naw, boo.", () => {});
+        store.setDialogue(dialogue);
         this.scene.scene.launch('dialogue');
     }
 
