@@ -1,8 +1,17 @@
 import Phaser from 'phaser';
 import { handleKeyVertical} from '../utilityFunctions'
 
+import {game} from '../index'
+import Dialogue from '../dialogue';
 
-export default class Character extends Phaser.GameObjects.Image {
+import store from '../store';
+import DialogueScene from '../scenes/DialogueScene';
+
+
+
+
+
+export default class Character extends Phaser.GameObjects.Image{
     constructor(config) {
         super(config.scene, config.x, config.y, config.key)
         this.type = 'character';
@@ -25,9 +34,25 @@ export default class Character extends Phaser.GameObjects.Image {
 }
 
 //these methods are shared between all characters!
-Character.prototype.enterConvo = function () {
-    this.question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", {
-        font: "40px Berkshire Swash"
+Character.prototype.enterConvo = function() {
+    if (!this.scene.scene.isActive('dialogue')) {
+        store.setDialogue(new Dialogue(this.name, "Can I help you with something?"));
+        this.scene.scene.launch('dialogue');
+    }
+
+    // let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
+    // Phaser.Display.Align.In.BottomCenter(question, this.scene.add.zone(400, 210, 0, 0))
+}
+
+Character.prototype.startConversation = function() {
+    console.log("conversation beginning")
+    let textbox = new TextBox({
+        x: 500,
+        y: 600,
+        width: 800,
+        height: 200,
+        scene: this.scene,
+        key: 'Textbox'
     })
     Phaser.Display.Align.In.Center(this.question, this.scene.add.zone(400, 210, 0, 0))
     this.scene.inConversation = true;
