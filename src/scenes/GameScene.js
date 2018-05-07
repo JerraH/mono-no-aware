@@ -47,13 +47,13 @@ export default class GameScene extends Scene {
             if (this.protag.velocity !== 0) {
                 this.protag.depth = this.protag.y + this.protag.height / 2;
                 if (this.behinders && this.behinders.children) {
-                    this.behinders.children.forEach((child) => {
+                    this.behinders.children.iterate((child) => {
                         child.depth = child.y + child.height / 2
                     })
 
                 }
                 if (this.smoke && this.smoke.children) {
-                    this.smoke.children.forEach((child) => {
+                    this.smoke.children.iterate((child) => {
                         child.depth = child.y + child.height / 2
                     })
 

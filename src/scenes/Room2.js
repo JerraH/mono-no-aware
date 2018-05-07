@@ -29,20 +29,33 @@ export default class Room2 extends GameScene {
         // this.smoke2 = this.background.create(600, 200, 'smoke2')
         this.smoke3 = this.smoke.create(75, 50, 'smoke3')
         this.smoke4 = this.smoke.create(75, 50, 'smoke4')
-        this.slidingDoor = this.behinders.create(600, 200, 'slidingDoor')
-        this.screenDoors = this.behinders.create(600, 200, 'screenDoors')
+        this.slidingDoor = this.behinders.create(520, 100, 'slidingDoor')
+        this.screenDoors = this.behinders.create(700, 100, 'screenDoors')
+        //set screen door hit box
+        this.screenDoors.body.height = 20
+        this.screenDoors.body.y = 200
+        //set sliding door hit box
+        this.slidingDoor.body.height = 20
+        this.slidingDoor.body.y = 200
         this.smokeTopLevel = this.smoke.create(600, 200, 'smoke-top-level')
-        console.log(this.smoke3, this.smoke4, this.slidingDoor, this.screenDoors, this.smokeTopLevel)
+
 
         //declare cursors
         this.cursors = this.input.keyboard.createCursorKeys();
 
+
+        //declare protag
         this.protag = this.physics.add.sprite(700, 500, 'protag');
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
-        this.protag.body.height = 30
-        this.protag.body.width = 120
-        this.protag.body.offset = {x: 30, y: 150};
+        this.protag.body.height = 75
+        this.protag.body.width = 170
+        this.protag.body.offset = {x: 30, y: 225};
+
+        //add colliders
+        this.behinders.children.iterate((child) => {
+            this.physics.add.collider(this.protag, child)
+        })
 
         //Camera setup
        this.cameras.main.startFollow(this.protag)

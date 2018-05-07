@@ -1,5 +1,4 @@
 import Phaser from 'phaser';
-import {smokemachine} from '../../smoke.js-master/smoke'
 
 export default class TitleScene extends Phaser.Scene {
     constructor(config) {
