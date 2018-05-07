@@ -30,12 +30,15 @@ export default class EmpressBedroom extends GameScene {
         this.cursors = this.input.keyboard.createCursorKeys();
 
         //Protagonist
-        this.protag = this.physics.add.sprite(700, 500, 'protag');
+        this.protag = this.physics.add.sprite(500, 300, 'protag');
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
         this.protag.body.height = 30
         this.protag.body.width = 120
         this.protag.body.offset = {x: 30, y: 150};
+
+        //makes zones
+        let room2Door = this.add.container(200, 400, 200, 200);
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({
@@ -58,6 +61,9 @@ export default class EmpressBedroom extends GameScene {
        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
        //depth sorting
+       if (this.protag.velocity !== 0) {
+        this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+    }
 
 
 

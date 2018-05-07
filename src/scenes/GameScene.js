@@ -46,7 +46,22 @@ export default class GameScene extends Scene {
             //Depth sorting!!! Allows you to go behind charadters and stuff
             if (this.protag.velocity !== 0) {
                 this.protag.depth = this.protag.y + this.protag.height / 2;
-                this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+                if (this.behinders && this.behinders.children) {
+                    this.behinders.children.forEach((child) => {
+                        child.depth = child.y + child.height / 2
+                    })
+
+                }
+                if (this.smoke && this.smoke.children) {
+                    this.smoke.children.forEach((child) => {
+                        child.depth = child.y + child.height / 2
+                    })
+
+                }
+                if (this.akiko) {
+                    this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+                }
+
             }
 
         }

@@ -124,7 +124,6 @@ physics: {
     THAT HEART'/S DESIRE: {
     	debug: true //(or false if you hate the debug)
     }
-
 }
 ```
 

@@ -9,6 +9,7 @@ import EmpressBedroom from './scenes/EmpressBedroom'
 import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
 import store from './store';
+import Room2 from './scenes/Room2';
 
 let config = {
     type: Phaser.AUTO,
@@ -30,9 +31,11 @@ game.scene.add('pronoun', PronounScene);
 game.scene.add('beloved', BelovedScene);
 game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
+game.scene.add('room2', Room2)
 game.scene.add('dialogue', DialogueScene);
 game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.start('preload');
+
 
 

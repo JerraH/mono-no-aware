@@ -23,7 +23,8 @@ export default class TitleScene extends Phaser.Scene {
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
 
         this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC" });
-        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 0, 0));
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 200, 200));
+
 
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
