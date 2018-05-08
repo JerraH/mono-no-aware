@@ -1,7 +1,8 @@
 import {Scene} from 'phaser';
 import store from '../store';
 
-const WIDTH = 400;
+const BOX_WIDTH = 450;
+const TEXT_WIDTH = 400;
 const MAX_HEIGHT = 500;
 const SPACE_PX = 15;
 const TITLE_HEIGHT = 50;
@@ -133,7 +134,7 @@ export default class DialogueScene extends Scene {
         // justify text
         this.wordWidth = 0;
         this.wordHeight = 0;
-        this.justifyText(dialogue.text.trim(), 400);
+        this.justifyText(dialogue.text.trim(), TEXT_WIDTH);
         this.contentHeight = this.wordHeight + 
             SELECTION_HEIGHT * this.responses.length +
             BORDER_HEIGHT * 2 +
@@ -150,9 +151,9 @@ export default class DialogueScene extends Scene {
 
         this.bkg.clear();
         this.bkg.lineStyle(2, 0xffffff, 1);
-        this.bkg.fillStyle(0, 1);
-        this.bkg.strokeRect(0, 0, 450, this.contentHeight);
-        this.bkg.fillRect(0, 0, 450, this.contentHeight);
+        this.bkg.fillStyle(0, 0.75);
+        this.bkg.strokeRect(0, 0, BOX_WIDTH, this.contentHeight);
+        this.bkg.fillRect(0, 0, BOX_WIDTH, this.contentHeight);
         this.bkg.x = 175;
         this.bkg.y = this.contentY;
 
