@@ -5,10 +5,11 @@ class Store {
         this.pronoun = '';
         this.beloved = '';
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
-        this.inventory = [items.bow, items.calligraphyBrush, items.lamp];
+        this.inventory = [items.bow, items.calligraphyBrush, items.sake];
         this.inventoryActive = false;
         this.cure1 = items.bow;
         this.cure2 = items.sake;
+        this.inConversation = false;
     }
 
     // The player's chosen pronoun
@@ -65,6 +66,15 @@ class Store {
 
     getInventoryActive() {
         return this.inventoryActive;
+    }
+    getDialogueActive() {
+        return this.inConversation;
+    }
+    setDialogueInactive() {
+        this.inConversation = false;
+    }
+    setDialogueActive() {
+        this.inConversation = true;
     }
 }
 

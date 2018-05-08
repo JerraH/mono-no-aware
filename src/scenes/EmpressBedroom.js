@@ -1,16 +1,14 @@
 
 import {default as GameScene} from './GameScene.js';
-import Phaser, {Body} from 'phaser'
 import { default as Akiko } from '../characters/akiko'
-import Protag from '../characters/protag';
-import utilityFunctions from '../utilityFunctions';
-import store from '../store'
 import Empress from '../characters/Emp'
+import Item from '../Item'
 
 export default class EmpressBedroom extends GameScene {
-    constructor(props) {
-        super(props)
+    constructor(config) {
+        super(config)
         this.changeRooms = this.changeRooms.bind(this)
+
     }
 
     preload() {
@@ -19,6 +17,7 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/roomredo.jpg')
         this.load.image('walls', 'assets/images/walls.png')
+        this.load.image('koto', 'assets/images/koto.jpg')
     }
     createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
@@ -43,17 +42,7 @@ export default class EmpressBedroom extends GameScene {
     }
 
     changeRooms() {
-        // console.log(currScene)
-        // async function func() {
-        //     currScene.input.enabled = false;
-        //     await currScene.physics.pause()
-        // }
-        //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
-        // func().then(setTimeout(() => {
         this.scene.switch('room2')
-        // }, 10))
-        // .then(this.scene.start('room2'))
-
     }
 
     createRoomChangeZone() {
@@ -67,20 +56,20 @@ export default class EmpressBedroom extends GameScene {
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
     }
 
-    // saveEmpress() {
-    //     let inventory = store.getInventory();
-    //     if (inventory.includes(store.cure1 && store.cure2)) {
-    //         this.scene.launch('dialogue')
-    //     } else if (inventory.includes(store.cure1 || store.cure2)) {
-    //         console.log('You do not have all the things!')
-    //     } else {console.log("the empress is asleep")}
-    // }
-
     create() {
         super.create()
+        this.input.on('drag', function (pointer, dragX, dragY) {
+
+            this.x = dragX;
+            this.y = dragY;
+
+        });
+
         //create static groups
         this.background = this.physics.add.staticGroup();
         this.NPCs = this.physics.add.staticGroup()
+        this.cursors = this.input.keyboard.createCursorKeys();
+
 
         this.createBg();
         this.createProtag();
@@ -97,8 +86,19 @@ export default class EmpressBedroom extends GameScene {
             y: 350
         })
 
+
+
         this.createEmpress();
         console.log(this.emp.body)
+
+        this.koto = new Item({
+            scene: this,
+            texture: 'koto',
+            x: 500,
+            y: 300,
+            scaleX: .5,
+            scaleY: .5
+        }).setInteractive()
 
 
        //Camera setup

@@ -1,4 +1,4 @@
-import {Scene} from 'phaser';
+import  Phaser, {Scene} from 'phaser';
 import store from '../store';
 
 export default class GameScene extends Scene {
@@ -15,6 +15,7 @@ export default class GameScene extends Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
+        console.log(this.cursors)
         this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
         this.stateChangeKeyReleased = false;
     }
@@ -24,23 +25,23 @@ export default class GameScene extends Scene {
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
     }
 
-    updateFrame() {
-        // do something only every 1/10 second
-    }
+    // updateFrame() {
+    //     // do something only every 1/10 second
+    // }
 
     update(time, delta) {
         this.frameMS += delta;
         if (this.frameMS >= 100) {
             this.frameMS -= 100;
             this.frame++;
-            this.updateFrame();
+            // this.updateFrame();
         }
 
         let velX = 0;
         let velY = 0;
 
         //if you're not in conversation mode, the keys control the protagonist
-        if (!store.getDialogue() && !store.getInventoryActive()) {
+        if (!store.getDialogueActive() && !store.getInventoryActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }

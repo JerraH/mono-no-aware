@@ -36,20 +36,24 @@ export default class Character extends Phaser.GameObjects.Image{
 
 //these methods are shared between all characters!
 Character.prototype.enterConvo = function() {
-    if (this.dialogue) {
+    let dialogue;
+    if (this.dialogue  && !store.getDialogue()) {
         store.setDialogue(this.dialogue)
+        dialogue = store.getDialogue()
+        store.setDialogue(dialogue);
     }
-    if (!store.getDialogue()) {
-        let dialogue = new Dialogue(this.name, "Can I help you with something?")
-            .addResponse("Yes, you definitely can!", 
+    else if (!this.dialogue && !store.getDialogue()) {
+        dialogue = new Dialogue(this.name, "Can I help you with something?")
+            .addResponse("Yes, you definitely can!",
                 new Dialogue(this.name, "I like your optimism")
                 .addResponse("Cool.")
                 .addResponse("Whatever."))
             .addResponse("Naw, boo.");
+            store.setDialogue(dialogue);
     }
 
-        store.setDialogue(dialogue);
-    
+
+
     this.scene.scene.launch('dialogue');
 
     // let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
@@ -84,21 +88,6 @@ Character.prototype.startScene = function () {
 
 // Character.prototype.endConversation = function () {
 
-
-//     this.body.checkCollision.none = false;
-//     console.log(this.scene.children)
-//     this.scene.children.list.forEach((child) => {
-//         if ( child.type == 'Text' || child.type == 'Graphics') {
-//             child.visible = false;
-//         }
-//     })
-//     this.scene.physics.resume();
-//     this.scene.inConversation = false;
-//     this.body.checkCollision.none = false;
-
-
-
-// }
 
 
 Character.prototype.increaseHappiness = function (amount) {

@@ -11,6 +11,7 @@ export default class InventoryScene extends Scene {
     constructor(config) {
         super(config);
         this.handleKey = this.handleKey.bind(this);
+        this.everything = []
     }
 
     preload() {
@@ -106,15 +107,13 @@ export default class InventoryScene extends Scene {
         this.bkg.x = 0;
         this.bkg.y = HEIGHT;
 
-        this.everything = [];
-
         for (let i = 0; i < inventory.length; i++) {
             console.log(inventory)
             let item = this.add.text(0, 0, inventory[i].name, { font: "12px Berkshire Swash" });
             this.everything.push(item);
             Phaser.Display.Align.In.Center(item, this.add.zone(
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,
-                HEIGHT - BORDER_SIZE - ITEM_SIZE / 2, 0, 0));
+                HEIGHT - BORDER_SIZE - ITEM_SIZE / 2, 0, 0).setDropZone());
         }
 
         this.selection = this.add.graphics();
