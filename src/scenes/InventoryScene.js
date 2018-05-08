@@ -45,14 +45,14 @@ export default class InventoryScene extends Scene {
                     me.sound.add('select').play();
                     me.everything.forEach(item => {
                         item.alpha = 1;
-                    });    
+                    });
                 } else {
                     me.scene.stop();
                     store.setInventoryActive(false);
-                    // me.handleResponse();    
+                    // me.handleResponse();
                 }
             }
-        });        
+        });
     }
 
     handleKey(event) {
@@ -109,7 +109,8 @@ export default class InventoryScene extends Scene {
         this.everything = [];
 
         for (let i = 0; i < inventory.length; i++) {
-            let item = this.add.text(0, 0, inventory[i], { font: "40px Berkshire Swash" });
+            console.log(inventory)
+            let item = this.add.text(0, 0, inventory[i].name, { font: "12px Berkshire Swash" });
             this.everything.push(item);
             Phaser.Display.Align.In.Center(item, this.add.zone(
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,

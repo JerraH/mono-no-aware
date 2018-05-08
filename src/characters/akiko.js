@@ -4,7 +4,7 @@ export default class Akiko extends Character {
   constructor(config) {
     super(config);
     this.name = 'Akiko';
-    this.pronouns = 'She';
+    this.pronoun1 = 'She';
 
     console.log(this.scene)
 

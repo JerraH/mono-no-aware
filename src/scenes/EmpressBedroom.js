@@ -5,6 +5,7 @@ import { default as Akiko } from '../characters/akiko'
 import Protag from '../characters/protag';
 import utilityFunctions from '../utilityFunctions';
 import store from '../store'
+import Empress from '../characters/Emp'
 
 export default class EmpressBedroom extends GameScene {
     constructor(props) {
@@ -13,14 +14,11 @@ export default class EmpressBedroom extends GameScene {
 
     }
 
-
-
-
     preload() {
         this.load.image('protag', 'assets/images/protag.png')
+        this.load.image('empress', 'assets/images/empress.png')
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/roomredo.jpg')
-        this.load.image('empress', 'assets/images/empress.png')
         this.load.image('walls', 'assets/images/walls.png')
     }
     createBg() {
@@ -42,13 +40,9 @@ export default class EmpressBedroom extends GameScene {
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
     }
     createEmpress() {
-        this.emp = this.physics.add.image(750, 340, 'empress');
+        this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress'});
         this.emp.angle = 28;
         this.emp.body.immovable = true;
-        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
-        //this creates a collider between the protagonist and the empress that does nothing
-
-        this.physics.add.collider(this.protag, this.emp)
     }
     createRoomChangeZone() {
         let currScene = this;
@@ -75,12 +69,14 @@ export default class EmpressBedroom extends GameScene {
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
     }
 
-    saveEmpress() {
-        let inventory = store.getInventory;
-        if (inventory.contains(cure1 && cure2)) {
-            this.scene.launch('dialogue')
-        }
-    }
+    // saveEmpress() {
+    //     let inventory = store.getInventory();
+    //     if (inventory.includes(store.cure1 && store.cure2)) {
+    //         this.scene.launch('dialogue')
+    //     } else if (inventory.includes(store.cure1 || store.cure2)) {
+    //         console.log('You do not have all the things!')
+    //     } else {console.log("the empress is asleep")}
+    // }
 
     create() {
         super.create()
@@ -114,8 +110,6 @@ export default class EmpressBedroom extends GameScene {
        if (this.protag.velocity !== 0) {
         this.akiko.depth = this.akiko.y + this.akiko.height / 2;
     }
-
-
 
     }
 
