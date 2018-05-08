@@ -30,11 +30,6 @@ const utilityFunctions = {
 
         this.selection.y = 243;
 
-    },
-
-    setCameras: function() {
-        this.cameras.main.startFollow(this.protag)
-        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
     }
 }
 
