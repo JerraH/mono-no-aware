@@ -18,6 +18,7 @@ export default class GameScene extends Scene {
         console.log(this.cursors)
         this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
         this.stateChangeKeyReleased = false;
+        this.scene.launch('HUD')
     }
 
     setCameras() {

@@ -91,14 +91,14 @@ export default class EmpressBedroom extends GameScene {
         this.createEmpress();
         console.log(this.emp.body)
 
-        this.koto = new Item({
-            scene: this,
-            texture: 'koto',
-            x: 500,
-            y: 300,
-            scaleX: .5,
-            scaleY: .5
-        }).setInteractive()
+        // this.koto = new Item({
+        //     scene: this,
+        //     texture: 'koto',
+        //     x: 500,
+        //     y: 300,
+        //     scaleX: .5,
+        //     scaleY: .5
+        // }).setInteractive()
 
 
        //Camera setup
