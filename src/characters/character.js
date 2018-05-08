@@ -26,7 +26,7 @@ export default class Character extends Phaser.GameObjects.Image{
         // this.startConversation = this.startConversation.bind(this)
         // this.endConversation = this.endConversation.bind(this);
         this.enterConvo = this.enterConvo.bind(this);
-        this.startScene = this.startScene.bind(this)
+        // this.startScene = this.startScene.bind(this)
 
         this.scene.physics.add.collider(this, this.protag, this.enterConvo);
 
@@ -60,10 +60,10 @@ Character.prototype.enterConvo = function() {
 //     this.body.checkCollision.none = true;
 // }
 
-Character.prototype.startScene = function () {
-    console.log(this)
-    this.scene.scene.start('dialogue')
-}
+// Character.prototype.startScene = function () {
+//     console.log(this)
+//     this.scene.scene.start('dialogue')
+// }
 
 // Character.prototype.startConversation = function () {
 //     console.log("conversation beginning")

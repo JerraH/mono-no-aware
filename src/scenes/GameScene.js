@@ -68,7 +68,7 @@ export default class GameScene extends Scene {
             this.stateChangeKeyReleased = false;
         }
 
-        if (this.protag) {
+        if (this.protag && this.protag.body) {
             this.protag.setVelocityX(velX);
             this.protag.setVelocityY(velY);
 

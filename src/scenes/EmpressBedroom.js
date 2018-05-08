@@ -50,7 +50,8 @@ export default class EmpressBedroom extends GameScene {
         // }
         //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
         // func().then(setTimeout(() => {
-        this.scene.switch('room2')
+        this.physics.shutdown();
+        this.scene.start('room2')
         // }, 10))
         // .then(this.scene.start('room2'))
 
@@ -107,9 +108,7 @@ export default class EmpressBedroom extends GameScene {
        //depth sorting
        if (this.protag.velocity !== 0) {
         this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+        }
     }
-
-    }
-
 
 }
