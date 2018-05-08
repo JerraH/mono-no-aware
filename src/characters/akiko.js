@@ -4,7 +4,24 @@ export default class Akiko extends Character {
   constructor(config) {
     super(config);
     this.name = 'Akiko';
-    this.pronoun1 = 'She';
+    this.pronouns = 'She';
+    this.dialogue = {
+      name: 'Akiko',
+      textFrom: 'Can I help you with something?',
+      responses: [{
+          textTo: 'Yes, you definitely can!',
+          next: {
+              textFrom: 'I like your optimism',
+              responses: [{
+                  textTo: 'Cool.'
+              }, {
+                  textTo: 'Whatever.'
+              }]
+          }
+      }, {
+          textTo: 'Naw, boo'
+      }]
+    };  
 
     console.log(this.scene)
 

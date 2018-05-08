@@ -46,8 +46,10 @@ Character.prototype.enterConvo = function() {
                 .addResponse("Cool.")
                 .addResponse("Whatever."))
             .addResponse("Naw, boo.");
-        store.setDialogue(dialogue);
     }
+
+        store.setDialogue(dialogue);
+    
     this.scene.scene.launch('dialogue');
 
     // let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
