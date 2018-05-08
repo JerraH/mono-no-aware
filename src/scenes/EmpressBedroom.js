@@ -83,6 +83,7 @@ export default class EmpressBedroom extends GameScene {
     }
 
     create() {
+        super.create()
         //create static groups
         this.background = this.physics.add.staticGroup();
         this.NPCs = this.physics.add.staticGroup()
@@ -93,11 +94,6 @@ export default class EmpressBedroom extends GameScene {
         console.log(this.world)
 
         this.createRoomChangeZone()
-
-
-        //Cursors
-        this.addKeys();
-
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({

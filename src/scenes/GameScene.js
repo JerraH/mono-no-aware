@@ -13,20 +13,15 @@ export default class GameScene extends Scene {
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
-    addKeys() {
+    create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
         this.stateChangeKeyReleased = false;
-    }
-
-    create() {
-        this.cursors = this.input.keyboard.createCursorKeys();
         if (this.groundLayer) {
             this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
         }
-
-
     }
+
     updateFrame() {
         // do something only every 1/10 second
     }

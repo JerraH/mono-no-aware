@@ -13,6 +13,8 @@ export default class Garden extends GameScene {
         this.load.image('walls', 'assets/images/walls.png')
     }
     create() {
+        super.create();
+
         //create static groups
         let background = this.physics.add.staticGroup();
         this.NPCs = this.physics.add.staticGroup();
@@ -35,21 +37,10 @@ export default class Garden extends GameScene {
         this.emp = this.NPCs.create(400, 300, 'empress')
         let circle = new Phaser.Geom.Circle(0, 0, 60)
 
-        console.log()
-
         this.NPCs.add(this.akiko);
         this.NPCs.add(this.emp)
 
         this.emp.angle = -160
-
-
-        console.log(this.akiko.setInteractive)
-
-
-
-
-        //Cursors
-        this.addKeys();
 
         //Protagonist
         this.protag = this.physics.add.sprite(400, 300, 'protag');
