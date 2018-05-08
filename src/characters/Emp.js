@@ -29,9 +29,8 @@ export default class Emp extends Character {
           this.name = 'Empress'
       }
       let dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
-      dialogue.addResponse('I\'m ready!', () => {
-          this.saveEmpress();
-      });
+      dialogue.addResponse('I\'m ready!',
+          this.saveEmpress());
       dialogue.addResponse("I need more time.", () => {
           // do something
       });
@@ -40,9 +39,10 @@ export default class Emp extends Character {
     saveEmpress() {
         let inventory = store.getInventory();
         if (inventory.includes(store.cure1 && store.cure2)) {
-            store.setDialogue(new Dialogue("You cured " + this.pronoun2 + "!"))
+            let dialogue = new Dialogue("You cured " + this.pronoun2 + "!")
+            .addResponse("Yay!")
         } else if (inventory.includes(store.cure1 || store.cure2)) {
-            store.setDialogue(new Dialogue("You do not have all the things!"))
+            let dialogue = store.setDialogue(new Dialogue("Attendant", "Oh no!  Whatever you did didn't seem to work....."))
         } else {console.log("the empress is asleep")}
     }
 
