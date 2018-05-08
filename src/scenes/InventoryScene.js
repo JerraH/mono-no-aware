@@ -3,9 +3,9 @@ import store from '../store';
 
 const WIDTH = 800;
 const HEIGHT = 600;
-const ITEM_SIZE = 50;
-const BORDER_SIZE = 10;
-const SELECTION_SIZE = 60;
+const ITEM_SIZE = 100;
+const BORDER_SIZE = 15;
+const SELECTION_SIZE = 100;
 
 export default class InventoryScene extends Scene {
     constructor(config) {
@@ -110,7 +110,7 @@ export default class InventoryScene extends Scene {
 
         for (let i = 0; i < inventory.length; i++) {
             console.log(inventory)
-            let item = this.add.text(0, 0, inventory[i].name, { font: "12px Berkshire Swash" });
+            let item = this.add.text(0, 0, inventory[i].name.replace(' ', '\n'), { font: "16px Berkshire Swash" });
             this.everything.push(item);
             Phaser.Display.Align.In.Center(item, this.add.zone(
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,
