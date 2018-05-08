@@ -1,11 +1,12 @@
 import Character from './character'
+import Dialogue from '../Dialogue';
 
 export default class Akiko extends Character {
   constructor(config) {
     super(config);
     this.name = 'Akiko';
     this.pronouns = 'She';
-    this.dialogue = {
+    this.dialogue = new Dialogue({
       name: 'Akiko',
       textFrom: 'Can I help you with something?',
       responses: [{
@@ -21,7 +22,7 @@ export default class Akiko extends Character {
       }, {
           textTo: 'Naw, boo'
       }]
-    };  
+    });
 
     console.log(this.scene)
 

@@ -21,24 +21,26 @@ export default class DialogueScene extends Scene {
     }
 
     handleResponse() {
+        let response = null;
         if (this.responses.length > this.selectionIndex) {
-            let response = this.responses[this.selectionIndex];
+            response = this.responses[this.selectionIndex];
+        }
 
-            // set dialogue to child, if one exists, otherwise reset it
-            store.setDialogue(response.child);
+        // set dialogue to child, if one exists, otherwise reset it
+        store.setDialogue(response && response.child);
 
-            if (response.child) {
-                // re-render convo with child text
-                this.render();
-            } else {
-                // no child, so exit dialogue
-                this.input.keyboard.off('keydown', this.handleKey)
-                this.scene.stop();
-            }
-            if (response.cb) {
-                // run callback, if any
-                response.cb();
-            }
+        if (response && response.child) {
+            // re-render convo with child text
+            this.render();
+        } else {
+            // no child, so exit dialogue
+            this.input.keyboard.off('keydown', this.handleKey)
+            this.scene.stop();
+        }
+
+        if (response && response.cb) {
+            // run callback, if any
+            response.cb();
         }
     }
 
@@ -182,10 +184,12 @@ export default class DialogueScene extends Scene {
         maxWidth += 20;
     
         this.selection.clear();
-        this.selection.lineStyle(2, 0xffffff, 1);
-        this.selection.strokeRect(0, 0, maxWidth, 54);
-        this.selection.x = 400-maxWidth/2;
-        this.selection.y = this.getSelectionY();
+        if (this.responses.length) {
+            this.selection.lineStyle(2, 0xffffff, 1);
+            this.selection.strokeRect(0, 0, maxWidth, 54);
+            this.selection.x = 400-maxWidth/2;
+            this.selection.y = this.getSelectionY();
+        }
     }
 
     create() {
