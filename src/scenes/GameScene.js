@@ -4,6 +4,8 @@ import store from '../store';
 export default class GameScene extends Scene {
     constructor(config) {
         super(config);
+        this.frame = 0;
+        this.frameMS = 0;
     }
 
     addKeys() {
@@ -42,7 +44,18 @@ export default class GameScene extends Scene {
         this.load.image('toy', 'assets/catToy.png');
     }
 
+    updateFrame() {
+        // do something only every 1/10 second
+    }
+
     update(time, delta) {
+        this.frameMS += delta;
+        if (this.frameMS >= 100) {
+            this.frameMS -= 100;
+            this.frame++;
+            this.updateFrame();
+        }
+        
         let velX = 0;
         let velY = 0;
 
