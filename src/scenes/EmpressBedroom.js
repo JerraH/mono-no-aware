@@ -3,10 +3,13 @@ import {default as GameScene} from './GameScene.js';
 import Phaser, {Body} from 'phaser'
 import { default as Akiko } from '../characters/akiko'
 import Protag from '../characters/protag';
+import utilityFunctions from '../utilityFunctions';
 
 export default class EmpressBedroom extends GameScene {
     constructor(props) {
         super(props)
+
+        utilityFunctions.setCameras = utilityFunctions.setCameras.bind(this)
 
 
     }
@@ -21,23 +24,15 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('empress', 'assets/images/empress.png')
         this.load.image('walls', 'assets/images/walls.png')
     }
-
-    create() {
-        let currScene = this;
-        //create static groups
-        this.background = this.physics.add.staticGroup();
-        this.NPCs = this.physics.add.staticGroup()
-
-
-        //create background and set the world bounds equal to the size of the background
+    createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
+        //create background and set the world bounds equal to the size of the background
         this.physics.world.bounds.width = this.groundLayer.width
         this.physics.world.bounds.height = this.groundLayer.height
-
-
         //Cursors
         this.cursors = this.input.keyboard.createCursorKeys();
-
+    }
+    createProtag() {
         // Protagonist
         this.protag = this.physics.add.sprite(500, 300, 'protag');
 
@@ -46,6 +41,18 @@ export default class EmpressBedroom extends GameScene {
         this.protag.body.width = 120
         this.protag.body.offset = {x: 30, y: 150};
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
+    }
+
+    create() {
+        let currScene = this;
+        //create static groups
+        this.background = this.physics.add.staticGroup();
+        this.NPCs = this.physics.add.staticGroup()
+
+        this.createBg();
+        this.createProtag();
+
+        console.log(this.world)
 
 
         //makes zones
@@ -96,6 +103,7 @@ export default class EmpressBedroom extends GameScene {
 
 
        //Camera setup
+       utilityFunctions.setCameras();
        this.cameras.main.startFollow(this.protag)
        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
