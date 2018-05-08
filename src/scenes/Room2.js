@@ -5,7 +5,10 @@ import Phaser from 'phaser';
 
 
 export default class Room2 extends GameScene {
-
+    constructor(config) {
+        super(config);
+        this.changeRooms = this.changeRooms.bind(this);
+    }
 
     preload() {
         this.load.image('protag', 'assets/images/protagforroom2.png');
@@ -62,7 +65,21 @@ export default class Room2 extends GameScene {
         this.physics.world.bounds.width = this.groundLayer.width
         this.physics.world.bounds.height = this.groundLayer.height
     }
-    
+
+    changeRooms() {
+        // async function func() {
+        //     currScene.input.enabled = false;
+        //     await currScene.physics.pause()
+        // }
+        // if (this.protag.velocity) {
+        //     func().then(setTimeout(() => {
+            this.scene.switch('EmpressBedroom')
+            // }, 10))
+        // }
+        // console.log(this.protag)
+        //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
+    }
+
     create() {
         super.create();
 
@@ -74,12 +91,6 @@ export default class Room2 extends GameScene {
 
         //creating background objects
         this.createObjects()
-
-
-
-        //declare cursors
-        this.cursors = this.input.keyboard.createCursorKeys();
-
 
         //declare protag
         this.protag = this.physics.add.sprite(700, 500, 'protag');
@@ -116,35 +127,23 @@ export default class Room2 extends GameScene {
         this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.immovable = true;
-        console.log(this.room2Door)
-        this.changeRooms = () => {
-            async function func() {
-                currScene.input.enabled = false;
-                await currScene.physics.pause()
-            }
-            if (this.cursors.right.isDown) {
-                func().then(setTimeout(() => {
-                    this.scene.start('EmpressBedroom')
-                }, 10))
-            }
-            console.log(this.protag)
-            //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
-
-        }
-        let checkMotion = () => {
-            if (this.cursors.right.isDown) {
-                return true
-            } else {
-                return false;
-            }
-        }
+        // console.log(this.room2Door)
+        // let checkMotion = () => {
+        //     if (this.cursors.right.isDown) {
+        //         return true
+        //     } else {
+        //         return false;
+        //     }
+        // }
 
 
         // .then(this.scene.start('room2'))
 
+       //Camera setup
+       this.setCameras();
 
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms, checkMotion, this.cursors.right.isDown)
-        console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+        // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
 
 
     }
