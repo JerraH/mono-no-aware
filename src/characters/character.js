@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { handleKeyVertical} from '../utilityFunctions'
+import { utilityFunctions } from '../utilityFunctions'
 
 import {game} from '../index'
 import Dialogue from '../Dialogue';
@@ -22,8 +22,7 @@ export default class Character extends Phaser.GameObjects.Image{
         this.body.immovable = true;
         console.log(this.body)
 
-        //bindings
-        this.handleKeyVertical = handleKeyVertical.bind(this.scene);
+        //bindings]
         this.startConversation = this.startConversation.bind(this)
         this.endConversation = this.endConversation.bind(this);
         this.startScene = this.startScene.bind(this)
@@ -66,7 +65,7 @@ Character.prototype.startConversation = function() {
     this.scene.characterConvo = this;
     this.body.checkCollision.none = true;
 
-    this.handleKeyVertical(this.startScene, this.endConversation, ['Yes', 'No'])
+
 
 
 }
