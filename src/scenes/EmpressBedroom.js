@@ -4,13 +4,12 @@ import Phaser, {Body} from 'phaser'
 import { default as Akiko } from '../characters/akiko'
 import Protag from '../characters/protag';
 import utilityFunctions from '../utilityFunctions';
+import store from '../store'
 
 export default class EmpressBedroom extends GameScene {
     constructor(props) {
         super(props)
-
         utilityFunctions.setCameras = utilityFunctions.setCameras.bind(this)
-
 
     }
 
@@ -42,23 +41,17 @@ export default class EmpressBedroom extends GameScene {
         this.protag.body.offset = {x: 30, y: 150};
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
     }
+    createEmpress() {
+        this.emp = this.physics.add.image(750, 340, 'empress');
+        this.emp.angle = 28;
+        this.emp.body.immovable = true;
+        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
+        //this creates a collider between the protagonist and the empress that does nothing
 
-    create() {
-        super.create();
-        
+        this.physics.add.collider(this.protag, this.emp)
+    }
+    createRoomChangeZone() {
         let currScene = this;
-        //create static groups
-        this.background = this.physics.add.staticGroup();
-        this.NPCs = this.physics.add.staticGroup()
-
-        this.createBg();
-        this.createProtag();
-
-        console.log(this.world)
-
-
-        //makes zones
-
         this.room2Door = this.add.zone(350, 100, 200, 200).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.allowRotation = true;
@@ -80,6 +73,27 @@ export default class EmpressBedroom extends GameScene {
         this.changeRooms = this.changeRooms.bind(this)
 
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+    }
+
+    saveEmpress() {
+        let inventory = store.getInventory;
+        if (inventory.contains(cure1 && cure2)) {
+            this.scene.launch('dialogue')
+        }
+    }
+
+    create() {
+        super.create()
+        //create static groups
+        this.background = this.physics.add.staticGroup();
+        this.NPCs = this.physics.add.staticGroup()
+
+        this.createBg();
+        this.createProtag();
+
+        console.log(this.world)
+
+        this.createRoomChangeZone()
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({
@@ -89,20 +103,12 @@ export default class EmpressBedroom extends GameScene {
             y: 350
         })
 
-        this.emp = this.physics.add.image(750, 340, 'empress');
-        this.emp.angle = 28;
-        this.emp.body.immovable = true;
-        // this.emp.body.setRotation = 28 //not currently functioning for... reasons????
-        this.physics.add.collider(this.protag, this.emp)
+        this.createEmpress();
         console.log(this.emp.body)
-
-        //this creates a collider between the protagonist and the empress that does nothing
 
 
        //Camera setup
        utilityFunctions.setCameras();
-       this.cameras.main.startFollow(this.protag)
-       this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
        //depth sorting
        if (this.protag.velocity !== 0) {

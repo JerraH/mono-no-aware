@@ -33,7 +33,8 @@ const utilityFunctions = {
     },
 
     setCameras: function() {
-
+        this.cameras.main.startFollow(this.protag)
+        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
     }
 }
 
