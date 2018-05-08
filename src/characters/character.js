@@ -30,16 +30,27 @@ export default class Character extends Phaser.GameObjects.Image{
 
         this.scene.physics.add.collider(this, this.protag, this.enterConvo);
 
+
     }
 }
 
 //these methods are shared between all characters!
 Character.prototype.enterConvo = function() {
-    if (this.dialogue && !store.getDialogue()) {
-        let dialogue = new Dialogue(this.dialogue);
-        store.setDialogue(dialogue);
-        this.scene.scene.launch('dialogue');
+    if (this.dialogue) {
+        store.setDialogue(this.dialogue)
     }
+    if (!store.getDialogue()) {
+        let dialogue = new Dialogue(this.name, "Can I help you with something?")
+            .addResponse("Yes, you definitely can!", 
+                new Dialogue(this.name, "I like your optimism")
+                .addResponse("Cool.")
+                .addResponse("Whatever."))
+            .addResponse("Naw, boo.");
+    }
+
+        store.setDialogue(dialogue);
+    
+    this.scene.scene.launch('dialogue');
 
     // let question = this.scene.add.text(0, 0, "Do you want to talk to " + this.name + "?", { font: "40px Berkshire Swash"})
     // Phaser.Display.Align.In.BottomCenter(question, this.scene.add.zone(400, 210, 0, 0))
