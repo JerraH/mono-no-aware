@@ -10,8 +10,8 @@ export default class Akiko extends Character {
 
 
     this.state = {
-      happinessMeter: 50,
-      inConversation: false
+      happinessMeter: 50
+      // inConversation: false
     }
 
 
