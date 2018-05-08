@@ -62,7 +62,10 @@ export default class Room2 extends GameScene {
         this.physics.world.bounds.width = this.groundLayer.width
         this.physics.world.bounds.height = this.groundLayer.height
     }
+    
     create() {
+        super.create();
+
         let currScene = this;
         //create static groups
         this.background = this.physics.add.staticGroup();

@@ -44,6 +44,8 @@ export default class EmpressBedroom extends GameScene {
     }
 
     create() {
+        super.create();
+        
         let currScene = this;
         //create static groups
         this.background = this.physics.add.staticGroup();
@@ -78,11 +80,6 @@ export default class EmpressBedroom extends GameScene {
         this.changeRooms = this.changeRooms.bind(this)
 
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
-
-
-        //Cursors
-        this.addKeys();
-
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({
