@@ -22,8 +22,23 @@ export default class DialogueScene extends Scene {
 
     handleResponse() {
         if (this.responses.length > this.selectionIndex) {
-            store.setDialogue(); // hide dialogue
-            this.responses[this.selectionIndex].cb();
+            let response = this.responses[this.selectionIndex];
+
+            // set dialogue to child, if one exists, otherwise reset it
+            store.setDialogue(response.child);
+
+            if (response.child) {
+                // re-render convo with child text
+                this.render();
+            } else {
+                // no child, so exit dialogue
+                this.input.keyboard.off('keydown', this.handleKey)
+                this.scene.stop();
+            }
+            if (response.cb) {
+                // run callback, if any
+                response.cb();
+            }
         }
     }
 
@@ -61,8 +76,6 @@ export default class DialogueScene extends Scene {
                 break;
             case 'Enter':
                 this.sound.add('select').play();
-                this.input.keyboard.off('keydown', this.handleKey)
-                this.scene.stop();
                 this.handleResponse();
                 break;
             default:
@@ -72,6 +85,8 @@ export default class DialogueScene extends Scene {
 
     justifyText(text, width) {
         let splitText = text.split(' ');
+
+        this.words.forEach(word => word.destroy());
         this.words = splitText.map(word => this.add.text(0, 0, word, { font: "40px Amatic SC" }));
         let y = LINE_HEIGHT / 4;
         let curWord = 0;
@@ -94,6 +109,7 @@ export default class DialogueScene extends Scene {
                 }
             }
             y += LINE_HEIGHT;
+            this.wordWidth = Math.max(this.wordWidth, this.words[curWord-1].x + this.words[curWord-1].width);
         }
 
         this.wordHeight = y + LINE_HEIGHT / 2;
@@ -106,24 +122,22 @@ export default class DialogueScene extends Scene {
             (this.responses.length - this.selectionIndex) * SELECTION_HEIGHT;
     }
 
-    create() {
-        this.selectionIndex = 0;
-        this.responses = [];
-        this.protag = store.protag;
-
+    render() {
         let dialogue = store.getDialogue();
+
+        this.selectionIndex = 0;
         this.responses = dialogue.responses;
 
-        let bkg = this.add.graphics();
-        bkg.lineStyle(2, 0xffffff, 1);
-        bkg.fillStyle(0, 1);
-
         // justify text
+        this.wordWidth = 0;
+        this.wordHeight = 0;
         this.justifyText(dialogue.text.trim(), 400);
         this.contentHeight = this.wordHeight + 
             SELECTION_HEIGHT * this.responses.length +
             BORDER_HEIGHT * 2 +
             TITLE_HEIGHT;
+
+        // scale text height
         let wordScaleY = 1;
         if (this.contentHeight > MAX_HEIGHT) {
             // compress text so it fits
@@ -132,26 +146,34 @@ export default class DialogueScene extends Scene {
         }
         this.contentY = (600 - this.contentHeight) / 2;
 
-        bkg.strokeRect(0, 0, 450, this.contentHeight);
-        bkg.fillRect(0, 0, 450, this.contentHeight);
-        bkg.x = 175;
-        bkg.y = this.contentY;
+        this.bkg.clear();
+        this.bkg.lineStyle(2, 0xffffff, 1);
+        this.bkg.fillStyle(0, 1);
+        this.bkg.strokeRect(0, 0, 450, this.contentHeight);
+        this.bkg.fillRect(0, 0, 450, this.contentHeight);
+        this.bkg.x = 175;
+        this.bkg.y = this.contentY;
 
         // too tall, so compress lines
-        // if (this.wordHeight > sy + height) {
         this.words.forEach(word => {
-            word.x += 200;
+            word.x += 400 - this.wordWidth / 2;
             word.y = this.contentY + BORDER_HEIGHT + TITLE_HEIGHT + word.y * wordScaleY;
             word.scaleY = wordScaleY;
         })
         
+        if (this.title) {
+            this.title.destroy();
+        }
         this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(this.title, this.add.zone(400,
             this.contentY + BORDER_HEIGHT + TITLE_HEIGHT / 2, 0, 0));
 
         let maxWidth = 0;
+        this.responsesText.forEach(response => response.destroy());
+        this.responsesText.length = 0;
         for (let i = 0; i < this.responses.length; i++) {
             let response = this.add.text(0, 0, this.responses[i].response, { font: "40px Amatic SC" });
+            this.responsesText.push(response);
             Phaser.Display.Align.In.Center(response, this.add.zone(400, 
                 this.contentY + this.contentHeight - BORDER_HEIGHT - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
                 0, 0));
@@ -159,11 +181,24 @@ export default class DialogueScene extends Scene {
         }
         maxWidth += 20;
     
-        this.selection = this.add.graphics();
+        this.selection.clear();
         this.selection.lineStyle(2, 0xffffff, 1);
         this.selection.strokeRect(0, 0, maxWidth, 54);
         this.selection.x = 400-maxWidth/2;
         this.selection.y = this.getSelectionY();
+    }
+
+    create() {
+        this.protag = store.protag;
+
+        this.bkg = this.add.graphics();
+        this.selection = this.add.graphics();
+
+        this.words = [];
+        this.responsesText = [];
+        this.title = null;
+
+        this.render();
 
         this.blink = 0;
 
