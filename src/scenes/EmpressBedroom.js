@@ -73,11 +73,8 @@ export default class EmpressBedroom extends GameScene {
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
 
 
-<<<<<<< HEAD
-=======
         //Cursors
         this.addKeys();
->>>>>>> 73ba02c6c4985cf64b60343e1bdd5ce22cf8d47e
 
 
         //create and instantiate characters/sprites

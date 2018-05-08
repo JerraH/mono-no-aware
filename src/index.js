@@ -9,11 +9,8 @@ import EmpressBedroom from './scenes/EmpressBedroom'
 import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
 import store from './store';
-<<<<<<< HEAD
 import Room2 from './scenes/Room2';
-=======
 import InventoryScene from './scenes/InventoryScene';
->>>>>>> 73ba02c6c4985cf64b60343e1bdd5ce22cf8d47e
 
 let config = {
     type: Phaser.AUTO,
