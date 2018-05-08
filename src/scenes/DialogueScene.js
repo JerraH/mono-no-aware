@@ -164,7 +164,7 @@ export default class DialogueScene extends Scene {
         if (this.title) {
             this.title.destroy();
         }
-        this.title = this.add.text(0, 0, dialogue.title, { font: "40px Berkshire Swash" });
+        this.title = this.add.text(0, 0, dialogue.name, { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(this.title, this.add.zone(400,
             this.contentY + BORDER_HEIGHT + TITLE_HEIGHT / 2, 0, 0));
 
