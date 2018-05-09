@@ -17,14 +17,9 @@ export default class GameScene extends Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
-<<<<<<< HEAD
-        console.log(this.cursors)
-        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
-=======
         this.keys = this.input.keyboard.addKeys({
             inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
         });
->>>>>>> 758460739c0d8f1ad43b66aeb77c6c817b366991
         this.stateChangeKeyReleased = false;
         this.scene.launch('HUD')
     }

@@ -122,7 +122,7 @@ export default class InventoryScene extends Scene {
             this.everything.push(item);
             Phaser.Display.Align.In.Center(item, this.add.zone(
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,
-                HEIGHT - BORDER_SIZE - ITEM_SIZE / 2, 0, 0).setDropZone(50));
+                HEIGHT - BORDER_SIZE - ITEM_SIZE / 2, 0, 0));
         }
 
         this.selection = this.add.graphics();

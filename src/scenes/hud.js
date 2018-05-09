@@ -32,19 +32,46 @@ export default class HUD extends Phaser.Scene {
         this.timerContainer.add(this.text).setDepth(2000)
 
         let onEvent = console.log("FUCK YEAH")
+        this.tweens.add({
+            targets: this.timerWheel,
+            ease: 'Power1',
+            duration: 600000,
+            repeat: 2,
+            angle: 360
+        });
 
 
 
         this.timer = this.time.addEvent({delay: 1200000, callback: onEvent, callbackScope: this});
+        this.timeLeft = function() {
+            const ms = this.timer.delay - this.timer.getProgress();
+            this.inDays = ms * 144;
+            const secs = (this.inDays / 1000)
+            console.log(secs)
+            // 1200000 === 172800000
+            const totalMinutes = secs / 60;
+            const min = totalMinutes % 60;
+            const hours = Math.floor(totalMinutes / 60)
+            console.log('hours', hours)
+
+            const days = Math.floor(hours / 24)
+            console.log(days)
+            const finHours = hours % 24
+            console.log(finHours)
+            return days + " days and " + finHours + 'hours left'
+        }
+
 
 
 
     }
+
     update () {
-        this.timerContainer.scene.text.setText('You have ' + this.timer.getProgress().toString().substr(0, 4) + ' days left');
+
+        this.timerContainer.scene.text.setText(this.timeLeft());
 
         setInterval(1000, () => {
-            let angle = (360 / 600000) * this.timer.getOverallProgress();
+            const angle = (360 / 600000) * this.timer.getOverallProgress();
             this.timerWheel.angle = angle
 
         })

@@ -17,12 +17,8 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/roomredo.jpg')
         this.load.image('walls', 'assets/images/walls.png')
-<<<<<<< HEAD
-        this.load.image('koto', 'assets/images/koto.jpg')
-=======
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
->>>>>>> 758460739c0d8f1ad43b66aeb77c6c817b366991
     }
     createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
@@ -46,10 +42,10 @@ export default class EmpressBedroom extends GameScene {
         this.emp.body.immovable = true;
     }
 
-    createItems() {
-        this.fluffyToy = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
-        this.fluffyToy.create();
-    }
+    // createItems() {
+    //     this.fluffyToy = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
+    //     this.fluffyToy.create();
+    // }
 
     changeRooms() {
         // console.log(currScene)
@@ -94,7 +90,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.createBg();
         this.createProtag();
-        this.createItems();
+        // this.createItems();
 
         console.log(this.world)
 
