@@ -20,6 +20,7 @@ export default class Character extends Phaser.GameObjects.Image{
         config.scene.physics.world.enable(this)
         this.protag = this.scene.protag;
         this.body.immovable = true;
+        this.happiness = 50;
         console.log(this.body)
 
         //bindings]
@@ -76,16 +77,7 @@ Character.prototype.enterConvo = function() {
 
 
 
-Character.prototype.increaseHappiness = function (amount) {
-    let happinessHolder = this.state.happiness + amount;
-    this.setState({
-        happinessMeter: happinessHolder
-    })
-}
-
-Character.prototype.decreaseHappiness = function (amount) {
-    let happinessHolder = this.state.happiness - amount;
-    this.setState({
-        happinessMeter: happinessHolder
-    })
+Character.prototype.updateHappiness = function (amount) {
+    this.happiness = Math.min(Math.max(0, this.happiness + amount), 100);
+    console.log("happiness", this.happiness);
 }

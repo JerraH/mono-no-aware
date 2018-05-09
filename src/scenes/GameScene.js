@@ -5,6 +5,7 @@ export default class GameScene extends Scene {
     constructor(config) {
         super(config);
         this.timers = [];
+        this.updatableTimers = [];
         // this.frame = 0;
         this.frameMS = 0;
     }
@@ -16,8 +17,14 @@ export default class GameScene extends Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
+<<<<<<< HEAD
         console.log(this.cursors)
         this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
+=======
+        this.keys = this.input.keyboard.addKeys({
+            inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
+        });
+>>>>>>> 758460739c0d8f1ad43b66aeb77c6c817b366991
         this.stateChangeKeyReleased = false;
         this.scene.launch('HUD')
     }
@@ -35,7 +42,7 @@ export default class GameScene extends Scene {
         this.timers.push({
             cb,
             ms: this.frameMS + ms
-        })
+        });
     }
 
     setInterval(cb, ms) {
@@ -46,6 +53,21 @@ export default class GameScene extends Scene {
         }
         this.timers.push(timer)
         return timer;
+    }
+
+    setUpdatingTimeout(cb, ms, purpose) {
+        const updatableTimer = {
+            cb,
+            ms: this.frameMS + ms,
+            purpose: purpose
+        }
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if(purpose === timer.purpose) {
+                return false;
+            }
+            return true;
+        });
+        this.updatableTimers.push(updatableTimer);
     }
 
     clearInterval(timer) {
@@ -66,6 +88,16 @@ export default class GameScene extends Scene {
             }
             return true;
         });
+
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if (this.frameMS >= timer.ms) {
+                timer.cb();
+                if(this.frameMS + 3000 >= timer.ms) {
+                    return false;
+                }
+            }
+            return true;
+        })
 
         // if (this.frameMS >= 100) {
         //     this.frameMS -= 100;
@@ -90,7 +122,7 @@ export default class GameScene extends Scene {
             else if (this.cursors.down.isDown) {
                 velY = 120;
             }
-            if (this.keys.enter.isDown) {
+            if (this.keys.inventory.isDown) {
                 if (this.stateChangeKeyReleased) {
                     // this is a legitimate key press to open the inventory
                     store.setInventoryActive(true);
