@@ -15,7 +15,7 @@ export default class TitleScene extends Phaser.Scene {
 
     create() {
         let theme = this.sound.add('intro');
-        theme.play();
+        theme.play({ volume: 0.5 });
 
 
         let title = this.add.image(0, 0, 'startscreen');
@@ -28,7 +28,7 @@ export default class TitleScene extends Phaser.Scene {
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
             theme.stop();
-            this.sound.add('select').play();
+            this.sound.add('select').play({ volume: 0.5 });
             this.scene.start('pronoun');
             // this.scene.start('EmpressBedroom');
         });

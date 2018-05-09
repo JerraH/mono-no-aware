@@ -44,7 +44,7 @@ export default class InventoryScene extends Scene {
             y: visible ? HEIGHT - ITEM_SIZE - BORDER_SIZE * 2 : HEIGHT,
             onComplete() {
                 if (visible) {
-                    me.sound.add('select').play();
+                    me.sound.add('select').play({ volume: 0.5 });
                     me.everything.forEach(item => {
                         item.alpha = 1;
                     });
@@ -65,14 +65,14 @@ export default class InventoryScene extends Scene {
         switch (event.key) {
             case 'ArrowLeft':
                 if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowRight':
                 if (this.selectionIndex < store.getInventory().length-1) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
@@ -89,7 +89,7 @@ export default class InventoryScene extends Scene {
                     item.alpha = 0
                 });
                 this.updateVisibleTween(false);
-                this.sound.add('select').play();
+                this.sound.add('select').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 break;
             default:

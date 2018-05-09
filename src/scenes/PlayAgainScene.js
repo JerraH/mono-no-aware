@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import store from '../store';
 
 export default class PlayAgainScene extends Phaser.Scene {
     constructor(config) {
@@ -8,15 +9,15 @@ export default class PlayAgainScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.audio('intro', 'assets/audio/intro.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
     }
 
     create() {
-        let theme = this.sound.add('intro');
-        theme.play();
-
-
+        let music = store.getMusic();
+        if (music) {
+            music.stop();
+            store.setMusic();
+        }
 
         let title = this.add.text(0, 0, "You Won the Game!", { font: "40px Berkshire Swash" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
@@ -27,8 +28,7 @@ export default class PlayAgainScene extends Phaser.Scene {
 
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
-            theme.stop();
-            this.sound.add('select').play();
+            this.sound.add('select').play({ volume: 0.5 });
             this.scene.start('title');
         });
     }

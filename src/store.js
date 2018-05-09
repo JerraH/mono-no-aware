@@ -9,6 +9,7 @@ class Store {
         this.inventoryActive = false;
         this.cure1 = items.bow;
         this.cure2 = items.sake;
+        this.music = null;
     }
 
     // The player's chosen pronoun
@@ -65,6 +66,14 @@ class Store {
 
     getInventoryActive() {
         return this.inventoryActive;
+    }
+
+    setMusic(music = null) {
+        this.music = music;
+    }
+
+    getMusic() {
+        return this.music;
     }
 }
 

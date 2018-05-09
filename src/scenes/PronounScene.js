@@ -30,18 +30,18 @@ export default class PronounScene extends Scene {
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < 2) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                 }
                 break;
             case 'Enter':
-                this.sound.add('select').play();
+                this.sound.add('select').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 store.setPronoun(Constants.PRONOUNS[this.selectionIndex]);
                 this.scene.start('beloved');

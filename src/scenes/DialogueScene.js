@@ -65,14 +65,14 @@ export default class DialogueScene extends Scene {
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < store.getDialogue().responses.length-1) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
@@ -80,12 +80,12 @@ export default class DialogueScene extends Scene {
             case 'Escape':
                 // Escape works only if there are no responses
                 if (this.responses.length === 0) {
-                    this.sound.add('select').play();
+                    this.sound.add('select').play({ volume: 0.5 });
                     this.handleResponse();                        
                 }
                 break;
             case 'Enter':
-                this.sound.add('select').play();
+                this.sound.add('select').play({ volume: 0.5 });
                 this.handleResponse();
                 break;
             default:

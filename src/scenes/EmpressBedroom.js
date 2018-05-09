@@ -14,6 +14,7 @@ export default class EmpressBedroom extends GameScene {
     }
 
     preload() {
+        super.preload();
         this.load.image('protag', 'assets/images/protag.png')
         this.load.image('empress', 'assets/images/empress.png')
         this.load.image('akiko', 'assets/images/akiko.png')
