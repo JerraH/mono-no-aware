@@ -16,7 +16,9 @@ export default class GameScene extends Scene {
 
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.keys = this.input.keyboard.addKeys({enter: Phaser.Input.Keyboard.KeyCodes.ENTER});
+        this.keys = this.input.keyboard.addKeys({
+            inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
+        });
         this.stateChangeKeyReleased = false;
     }
 
@@ -88,7 +90,7 @@ export default class GameScene extends Scene {
             else if (this.cursors.down.isDown) {
                 velY = 120;
             }
-            if (this.keys.enter.isDown) {
+            if (this.keys.inventory.isDown) {
                 if (this.stateChangeKeyReleased) {
                     // this is a legitimate key press to open the inventory
                     store.setInventoryActive(true);
