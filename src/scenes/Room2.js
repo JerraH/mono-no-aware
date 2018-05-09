@@ -73,7 +73,8 @@ export default class Room2 extends GameScene {
         // }
         // if (this.protag.velocity) {
         //     func().then(setTimeout(() => {
-            this.scene.switch('EmpressBedroom')
+            this.physics.shutdown();
+            this.scene.start('EmpressBedroom')
             // }, 10))
         // }
         // console.log(this.protag)

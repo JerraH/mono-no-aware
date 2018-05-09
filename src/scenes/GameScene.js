@@ -4,7 +4,8 @@ import store from '../store';
 export default class GameScene extends Scene {
     constructor(config) {
         super(config);
-        this.frame = 0;
+        this.timers = [];
+        // this.frame = 0;
         this.frameMS = 0;
     }
 
@@ -30,13 +31,47 @@ export default class GameScene extends Scene {
     //     // do something only every 1/10 second
     // }
 
+    setTimeout(cb, ms) {
+        this.timers.push({
+            cb,
+            ms: this.frameMS + ms
+        })
+    }
+
+    setInterval(cb, ms) {
+        let timer = {
+            cb,
+            ms: this.frameMS + ms,
+            interval: ms
+        }
+        this.timers.push(timer)
+        return timer;
+    }
+
+    clearInterval(timer) {
+        delete timer.interval;
+    }
+
     update(time, delta) {
         this.frameMS += delta;
-        if (this.frameMS >= 100) {
-            this.frameMS -= 100;
-            this.frame++;
-            // this.updateFrame();
-        }
+
+        this.timers = this.timers.filter(timer => {
+            if (this.frameMS >= timer.ms) {
+                timer.cb();
+                if (timer.interval) {
+                    timer.ms += timer.interval;
+                } else {
+                    return false; // bye bye!
+                }
+            }
+            return true;
+        });
+
+        // if (this.frameMS >= 100) {
+        //     this.frameMS -= 100;
+        //     this.frame++;
+        //     this.updateFrame();
+        // }
 
         let velX = 0;
         let velY = 0;
@@ -60,6 +95,12 @@ export default class GameScene extends Scene {
                     // this is a legitimate key press to open the inventory
                     store.setInventoryActive(true);
                     this.scene.launch('inventory');
+                    // let interval = this.setInterval(() => {
+                    //     this.sound.add('tap').play();
+                    // }, 500);
+                    // this.setTimeout(() => {
+                    //     this.clearInterval(interval);
+                    // }, 3000);
                 }
             } else {
                 // this makes sure you release enter from another window before pressing it here
@@ -70,7 +111,7 @@ export default class GameScene extends Scene {
             this.stateChangeKeyReleased = false;
         }
 
-        if (this.protag) {
+        if (this.protag && this.protag.body) {
             this.protag.setVelocityX(velX);
             this.protag.setVelocityY(velY);
 

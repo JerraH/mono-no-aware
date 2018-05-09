@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import PreloadScene from './scenes/PreloadScene';
 import TitleScene from './scenes/TitleScene';
+import PlayAgainScene from './scenes/PlayAgainScene';
 import PronounScene from './scenes/PronounScene';
 import BelovedScene from './scenes/BelovedScene';
 import GameScene from './scenes/GameScene';
@@ -29,6 +30,7 @@ let config = {
 export let game = new Phaser.Game(config);
 game.scene.add('preload', PreloadScene);
 game.scene.add('title', TitleScene);
+game.scene.add('playagain', PlayAgainScene);
 game.scene.add('pronoun', PronounScene);
 game.scene.add('beloved', BelovedScene);
 game.scene.add('game', GameScene);

@@ -41,8 +41,8 @@ export default class Dialogue {
     // new Dialogue("Akiko", "Hi there")
     // new Dialogue({... parsed JSON goes here ...})
     constructor(objOrName, text) {
-        if (objOrName instanceof String) {
-            this.name = name;
+        if (typeof(objOrName) === 'string') {
+            this.name = objOrName;
             this.text = text;
             this.responses = [];
         } else {
