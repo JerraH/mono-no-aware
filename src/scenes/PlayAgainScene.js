@@ -19,17 +19,24 @@ export default class PlayAgainScene extends Phaser.Scene {
             store.setMusic();
         }
 
-        let title = this.add.text(0, 0, "You Won the Game!", { font: "40px Berkshire Swash" });
-        Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
+        let theme = this.sound.add('intro');
+        theme.play({ volume: 0.5 });
 
-        this.start = this.add.text(0, 0, "- Play Again -", { font: "40px Amatic SC" });
-        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 200, 200));
+        let bkg = this.add.image(0, 0, 'startscreen');
+        Phaser.Display.Align.In.Center(bkg, this.add.zone(400, 250, 0, 0));
+
+        let title = this.add.text(0, 0, "You Won the Game!", { font: "40px Berkshire Swash", color: "#000000" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 285, 0, 0));
+
+        this.start = this.add.text(0, 0, "~ Play Again ~ ", { font: "36px Kaushan Script", color: "#000000" });
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 345, 200, 200));
 
 
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
+            theme.stop();
             this.sound.add('select').play({ volume: 0.5 });
-            this.scene.start('title');
+            this.scene.start('pronoun');
         });
     }
 

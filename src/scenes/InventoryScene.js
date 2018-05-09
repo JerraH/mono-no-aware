@@ -17,6 +17,7 @@ export default class InventoryScene extends Scene {
 
     preload() {
         this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
@@ -44,7 +45,6 @@ export default class InventoryScene extends Scene {
             y: visible ? HEIGHT - ITEM_SIZE - BORDER_SIZE * 2 : HEIGHT,
             onComplete() {
                 if (visible) {
-                    me.sound.add('select').play({ volume: 0.5 });
                     me.everything.forEach(item => {
                         item.alpha = 1;
                     });
@@ -89,7 +89,7 @@ export default class InventoryScene extends Scene {
                     item.alpha = 0
                 });
                 this.updateVisibleTween(false);
-                this.sound.add('select').play({ volume: 0.5 });
+                this.sound.add('close').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 break;
             default:
@@ -138,6 +138,8 @@ export default class InventoryScene extends Scene {
         })
 
         this.input.keyboard.on('keydown', this.handleKey);
+
+        this.sound.add('select').play({ volume: 0.5 });
 
         this.updateVisibleTween(true);
     }

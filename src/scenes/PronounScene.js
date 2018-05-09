@@ -56,7 +56,7 @@ export default class PronounScene extends Scene {
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
 
         for (let i = 0; i < PRONOUNS.length; i++) {
-            let pronoun = this.add.text(0, 0, PRONOUNS[i], { font: "40px Amatic SC" });
+            let pronoun = this.add.text(0, 0, PRONOUNS[i] + '  ', { font: "36px Kaushan Script" });
             Phaser.Display.Align.In.Center(pronoun, this.add.zone(400, 270+i*60, 0, 0));
         }
 

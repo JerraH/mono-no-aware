@@ -56,7 +56,7 @@ export default class BelovedScene extends Scene {
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
 
         for (let i = 0; i < BELOVEDS.length; i++) {
-            let beloved = this.add.text(0, 0, BELOVEDS[i], { font: "40px Amatic SC" });
+            let beloved = this.add.text(0, 0, BELOVEDS[i] + ' ', { font: "36px Kaushan Script" });
             Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*60, 0, 0));
         }
 

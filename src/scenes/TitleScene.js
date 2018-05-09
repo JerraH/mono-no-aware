@@ -17,12 +17,11 @@ export default class TitleScene extends Phaser.Scene {
         let theme = this.sound.add('intro');
         theme.play({ volume: 0.5 });
 
+        let bkg = this.add.image(0, 0, 'startscreen');
+        Phaser.Display.Align.In.Center(bkg, this.add.zone(400, 250, 0, 0));
 
-        let title = this.add.image(0, 0, 'startscreen');
-        Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
-
-        this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC", color: '#000000' });
-        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 280, 200, 200));
+        this.start = this.add.text(0, 0, "~ START ~", { font: "36px Kaushan Script", color: '#000000' });
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 290, 200, 200));
 
 
         this.blink = 0;
