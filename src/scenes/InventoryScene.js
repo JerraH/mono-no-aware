@@ -13,6 +13,7 @@ export default class InventoryScene extends Scene {
     constructor(config) {
         super(config);
         this.handleKey = this.handleKey.bind(this);
+        this.everything = []
     }
 
     preload() {
@@ -114,8 +115,6 @@ export default class InventoryScene extends Scene {
         this.bkg.fillRect(0, 0, WIDTH, ITEM_SIZE + BORDER_SIZE * 2);
         this.bkg.x = 0;
         this.bkg.y = HEIGHT;
-
-        this.everything = [];
 
         for (let i = 0; i < inventory.length; i++) {
             console.log(inventory)

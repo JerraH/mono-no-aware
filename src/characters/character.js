@@ -37,7 +37,8 @@ export default class Character extends Phaser.GameObjects.Image{
 
 //these methods are shared between all characters!
 Character.prototype.enterConvo = function() {
-    if (this.dialogue) {
+    let dialogue;
+    if (this.dialogue  && !store.getDialogue()) {
         store.setDialogue(this.dialogue)
         this.scene.scene.launch('dialogue');
     }
@@ -74,21 +75,6 @@ Character.prototype.enterConvo = function() {
 
 // Character.prototype.endConversation = function () {
 
-
-//     this.body.checkCollision.none = false;
-//     console.log(this.scene.children)
-//     this.scene.children.list.forEach((child) => {
-//         if ( child.type == 'Text' || child.type == 'Graphics') {
-//             child.visible = false;
-//         }
-//     })
-//     this.scene.physics.resume();
-//     this.scene.inConversation = false;
-//     this.body.checkCollision.none = false;
-
-
-
-// }
 
 
 Character.prototype.updateHappiness = function (amount) {

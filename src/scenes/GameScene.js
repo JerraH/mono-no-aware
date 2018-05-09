@@ -1,4 +1,4 @@
-import {Scene} from 'phaser';
+import  Phaser, {Scene} from 'phaser';
 import store from '../store';
 
 export default class GameScene extends Scene {
@@ -21,6 +21,7 @@ export default class GameScene extends Scene {
             inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
         });
         this.stateChangeKeyReleased = false;
+        this.scene.launch('HUD')
     }
 
     setCameras() {
@@ -103,7 +104,7 @@ export default class GameScene extends Scene {
         let velY = 0;
 
         //if you're not in conversation mode, the keys control the protagonist
-        if (!store.getDialogue() && !store.getInventoryActive()) {
+        if (!store.getDialogueActive() && !store.getInventoryActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }
