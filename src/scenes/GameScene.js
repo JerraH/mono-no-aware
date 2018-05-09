@@ -18,9 +18,14 @@ export default class GameScene extends Scene {
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({
-            inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
-        });
-        this.stateChangeKeyReleased = false;
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            enter: Phaser.Input.Keyboard.KeyCodes.ENTER
+        });//master changed {enter: KeyCode} to {inventory: KeyCode}
+        //inventory now relies on space instead of enter
+        //and I couldn't get inventory and interaction
+        //to work with the change that master did aswell
+        this.stateChangeEnterKeyReleased = false;
+        this.stateChangeSpaceKeyReleased = false;
         this.scene.launch('HUD')
     }
 
@@ -104,7 +109,7 @@ export default class GameScene extends Scene {
         let velY = 0;
 
         //if you're not in conversation mode, the keys control the protagonist
-        if (!store.getDialogueActive() && !store.getInventoryActive()) {
+        if (!store.getDialogue() && !store.getInventoryActive() && !store.getInteractionActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }
@@ -117,8 +122,8 @@ export default class GameScene extends Scene {
             else if (this.cursors.down.isDown) {
                 velY = 120;
             }
-            if (this.keys.inventory.isDown) {
-                if (this.stateChangeKeyReleased) {
+            if (this.cursors.space.isDown) {//inventory was changed to space, and interact to enter
+                if (this.stateChangeSpaceKeyReleased) {
                     // this is a legitimate key press to open the inventory
                     store.setInventoryActive(true);
                     this.scene.launch('inventory');
@@ -131,11 +136,28 @@ export default class GameScene extends Scene {
                 }
             } else {
                 // this makes sure you release enter from another window before pressing it here
-                this.stateChangeKeyReleased = true;
+                this.stateChangeSpaceKeyReleased = true;
             }
+
+            if (this.keys.enter.isDown) {
+                const currentItem = this.items.filter(item => {
+                    return item.sign.visible;
+                });
+                if (this.stateChangeEnterKeyReleased && currentItem[0]) {
+                    // this is a legitimate key press to open interaction
+                    store.setInteractionActive(true);
+                    store.setCurrentItem(currentItem[0]);
+                    this.scene.launch('interaction');
+                }
+            } else {
+                // this makes sure you release enter from another window before pressing it here
+                this.stateChangeEnterKeyReleased = true;
+            }
+
         } else {
             // key must be lifted in between state changes
-            this.stateChangeKeyReleased = false;
+            this.stateChangeEnterKeyReleased = false;
+            this.stateChangeSpaceKeyReleased = false;
         }
 
         if (this.protag && this.protag.body) {

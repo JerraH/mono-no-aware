@@ -1,7 +1,5 @@
 import {Scene} from 'phaser';
 import store from '../store';
-import { WSAENOMORE } from 'constants';
-import Dialogue from '../Dialogue';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -13,7 +11,6 @@ export default class InventoryScene extends Scene {
     constructor(config) {
         super(config);
         this.handleKey = this.handleKey.bind(this);
-        this.everything = []
     }
 
     preload() {
@@ -43,15 +40,15 @@ export default class InventoryScene extends Scene {
             ease: 'Sine.easeInOut',
             duration: 300,
             y: visible ? HEIGHT - ITEM_SIZE - BORDER_SIZE * 2 : HEIGHT,
-            onComplete() {
+            onComplete() {//this has a different this context
                 if (visible) {
                     me.sound.add('select').play();
-                    me.everything.forEach(item => {
-                        item.alpha = 1;
-                    });
+                    me.selectOptions.forEach(option => {
+                        option.alpha = 1;
+                    })
                 } else {
-                    me.scene.stop();
-                    store.setInventoryActive(false);
+                    me.scene.stop();//this is where the exit is!
+                    store.setInteractionActive(false);
                     // me.handleResponse();
                 }
             }
@@ -59,37 +56,34 @@ export default class InventoryScene extends Scene {
     }
 
     handleKey(event) {
-        if (event.repeat || store.getDialogue()) {
+        if (event.repeat) {
             return;
         }
 
         switch (event.key) {
             case 'ArrowLeft':
-                if (this.selectionIndex > 0) {
+                if (this.selectionIndex > 0) {//stops it from looping leftward
                     this.sound.add('tap').play();
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowRight':
-                if (this.selectionIndex < store.getInventory().length-1) {
+                if (this.selectionIndex < this.selectOptions.length - 2) { //stops it from looping
                     this.sound.add('tap').play();
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
                 break;
             case 'Enter':
-                // look at item
-                let item = store.getInventory()[this.selectionIndex];
-                store.setDialogue(new Dialogue(item.name, item.description));
-                this.scene.launch('dialogue');
-                break;
-            case 'Escape':
-                // exit inventory
-                this.everything.forEach(item => {
-                    item.alpha = 0
-                });//at the moment you can only leave with enter, I want to figure out how to change this
-                this.updateVisibleTween(false);
+                this.selectOptions.forEach(option => {
+                    option.alpha = 0;
+                })
+                //Now that the scene and selection is working, all that's left is
+                //checking the selectionIndex and running specific functions for the option you
+                //pressed enter on, for example, this.updateVisibleTween should only run on the
+                //leave option (and option and escape key option or something too)
+                this.updateVisibleTween(false);//scene.stop() exit happens in this function
                 this.sound.add('select').play();
                 this.input.keyboard.off('keydown', this.handleKey)
                 break;
@@ -106,36 +100,42 @@ export default class InventoryScene extends Scene {
     create() {
         this.selectionIndex = 0;
 
-        let inventory = store.getInventory();
+        this.currentItem = store.getCurrentItem();
 
-        this.bkg = this.add.graphics(WIDTH, ITEM_SIZE + BORDER_SIZE * 2);
-        this.bkg.lineStyle(2, 0xffffff, 1);
+        this.everything = [];
+
+        this.bkg = this.add.graphics(WIDTH, ITEM_SIZE + BORDER_SIZE * 2);//background load requires
+        this.bkg.lineStyle(2, 0xffffff, 1);//background tween to be responsive I believe
         this.bkg.fillStyle(0, 1);
         this.bkg.strokeRect(0, 0, WIDTH, ITEM_SIZE + BORDER_SIZE * 2);
         this.bkg.fillRect(0, 0, WIDTH, ITEM_SIZE + BORDER_SIZE * 2);
         this.bkg.x = 0;
         this.bkg.y = HEIGHT;
 
-        for (let i = 0; i < inventory.length; i++) {
-            let item = this.add.text(0, 0, inventory[i].name.replace(' ', '\n'), { font: "16px Berkshire Swash" });
-            this.everything.push(item);
-            Phaser.Display.Align.In.Center(item, this.add.zone(
+        this.selectOptions = []; //this.add.text() draws the actual letters
+        this.selectOptions[0] = this.add.text(0, 0, 'Take'.replace(' ', '\n'), { font: "16px Berkshire Swash" });
+        this.selectOptions[1] = this.add.text(0, 0, 'Look'.replace(' ', '\n'), { font: "16px Berkshire Swash" });
+        this.selectOptions[2] = this.add.text(0, 0, 'Leave'.replace(' ', '\n'), { font: "16px Berkshire Swash" });
+        
+        for (let i = 0; i < this.selectOptions.length; i++) {
+            let selectOption = this.selectOptions[i];
+
+            Phaser.Display.Align.In.Center(selectOption, this.add.zone(//Aligns the letters
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,
                 HEIGHT - BORDER_SIZE - ITEM_SIZE / 2, 0, 0));
         }
 
-        this.selection = this.add.graphics();
+        this.selection = this.add.graphics();//selection is for the yellow selector tween I believe
         this.selection.lineStyle(2, 0xffffff, 1);
         this.selection.strokeRect(0, 0, SELECTION_SIZE, SELECTION_SIZE);
         this.selection.x = this.getSelectionX();
         this.selection.y = HEIGHT - ITEM_SIZE - BORDER_SIZE - (SELECTION_SIZE - ITEM_SIZE) / 2;
-        this.everything.push(this.selection);
-        
-        this.everything.forEach(item => {
-            item.alpha = 0;
+        this.selectOptions.push(this.selection);
+
+        this.selectOptions.forEach(option => {
+            option.alpha = 0;
         })
 
-        console.log(this.everything)
         this.input.keyboard.on('keydown', this.handleKey);
 
         this.updateVisibleTween(true);

@@ -42,10 +42,11 @@ export default class EmpressBedroom extends GameScene {
         this.emp.body.immovable = true;
     }
 
-    // createItems() {
-    //     this.fluffyToy = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
-    //     this.fluffyToy.create();
-    // }
+    createItems() {
+        this.items = [];
+        this.items[0] = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
+        this.items[0].create(); //set name here
+    }
 
     changeRooms() {
         // console.log(currScene)
@@ -90,7 +91,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.createBg();
         this.createProtag();
-        // this.createItems();
+        this.createItems(); //atleast tell people when you're going to comment out their entire code.
 
         console.log(this.world)
 
