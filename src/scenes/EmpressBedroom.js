@@ -46,8 +46,9 @@ export default class EmpressBedroom extends GameScene {
     }
 
     createItems() {
-        this.fluffyToy = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
-        this.fluffyToy.create();
+        this.items = [];
+        this.items[0] = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
+        this.items[0].create(); //set name here
     }
 
     changeRooms() {

@@ -9,6 +9,7 @@ export default class Item extends Phaser.GameObjects.Image {
       config.scene.physics.world.enable(this);
       this.type = "item";
       this.body.immovable = true;
+      this.name = this.texture.key;
       this.sign = new Sign({
         scene: this.scene,
         x: this.x,
