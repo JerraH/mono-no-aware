@@ -18,7 +18,7 @@ export default class Dialogue {
     //     }]
     // }
 
-    parseFromObject(obj) {
+    parseFromObject(obj, character) {
         this.name = obj.name;
         this.text = obj.textFrom;
         this.responses = [];
@@ -27,10 +27,15 @@ export default class Dialogue {
                 let data = {
                     response: response.textTo
                 }
+                if (response.madeHappy && character) {
+                    data.cb = () => {
+                        character.updateHappiness(response.madeHappy)
+                    }
+                }
                 if (response.next) {           
                     let params = Object.assign({}, response.next);
                     params.name = obj.name;
-                    data.child = new Dialogue(params);
+                    data.child = new Dialogue(params, character);
                 }
                 return data;
             })
@@ -39,14 +44,14 @@ export default class Dialogue {
 
     // Examples:
     // new Dialogue("Akiko", "Hi there")
-    // new Dialogue({... parsed JSON goes here ...})
-    constructor(objOrName, text) {
-        if (typeof(objOrName) === 'string') {
-            this.name = objOrName;
-            this.text = text;
+    // new Dialogue({... parsed JSON goes here ...}, Character)
+    constructor(param1, param2) {
+        if (typeof(param1) === 'string') {
+            this.name = param1;
+            this.text = param2;
             this.responses = [];
         } else {
-            this.parseFromObject(objOrName);
+            this.parseFromObject(param1, param2);
         }
     }
 

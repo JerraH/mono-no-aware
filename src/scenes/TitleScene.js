@@ -8,6 +8,7 @@ export default class TitleScene extends Phaser.Scene {
     }
 
     preload() {
+        this.load.image('startscreen', 'assets/startscreen.png');
         this.load.audio('intro', 'assets/audio/intro.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
     }
@@ -17,12 +18,11 @@ export default class TitleScene extends Phaser.Scene {
         theme.play();
 
 
-
-        let title = this.add.text(0, 0, "Mono No Aware", { font: "40px Berkshire Swash" });
+        let title = this.add.image(0, 0, 'startscreen');
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 250, 0, 0));
 
-        this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC" });
-        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 310, 200, 200));
+        this.start = this.add.text(0, 0, "- START -", { font: "40px Amatic SC", color: '#000000' });
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 280, 200, 200));
 
 
         this.blink = 0;
