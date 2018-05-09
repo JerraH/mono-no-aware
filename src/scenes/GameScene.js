@@ -5,6 +5,7 @@ export default class GameScene extends Scene {
     constructor(config) {
         super(config);
         this.timers = [];
+        this.updatableTimers = [];
         // this.frame = 0;
         this.frameMS = 0;
     }
@@ -35,7 +36,7 @@ export default class GameScene extends Scene {
         this.timers.push({
             cb,
             ms: this.frameMS + ms
-        })
+        });
     }
 
     setInterval(cb, ms) {
@@ -46,6 +47,21 @@ export default class GameScene extends Scene {
         }
         this.timers.push(timer)
         return timer;
+    }
+
+    setUpdatingTimeout(cb, ms, purpose) {
+        const updatableTimer = {
+            cb,
+            ms: this.frameMS + ms,
+            purpose: purpose
+        }
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if(purpose === timer.purpose) {
+                return false;
+            }
+            return true;
+        });
+        this.updatableTimers.push(updatableTimer);
     }
 
     clearInterval(timer) {
@@ -66,6 +82,16 @@ export default class GameScene extends Scene {
             }
             return true;
         });
+
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if (this.frameMS >= timer.ms) {
+                timer.cb();
+                if(this.frameMS + 3000 >= timer.ms) {
+                    return false;
+                }
+            }
+            return true;
+        })
 
         // if (this.frameMS >= 100) {
         //     this.frameMS -= 100;
