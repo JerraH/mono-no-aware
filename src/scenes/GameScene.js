@@ -18,9 +18,12 @@ export default class GameScene extends Scene {
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({
-            inventory: Phaser.Input.Keyboard.KeyCodes.SPACE,
-            interaction: Phaser.Input.Keyboard.KeyCodes.ENTER
-        });
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            enter: Phaser.Input.Keyboard.KeyCodes.ENTER
+        });//master changed {enter: KeyCode} to {inventory: KeyCode}
+        //inventory now relies on space instead of enter
+        //and I couldn't get inventory and interaction
+        //to work with the change that master did aswell
         this.stateChangeEnterKeyReleased = false;
         this.stateChangeSpaceKeyReleased = false;
         this.scene.launch('HUD')
