@@ -1,4 +1,4 @@
-import {Scene} from 'phaser';
+import  Phaser, {Scene} from 'phaser';
 import store from '../store';
 
 export default class GameScene extends Scene {
@@ -18,11 +18,12 @@ export default class GameScene extends Scene {
     create() {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({
-            enter: Phaser.Input.Keyboard.KeyCodes.ENTER,
-            space: Phaser.Input.Keyboard.KeyCodes.SPACE
+            inventory: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            interaction: Phaser.Input.Keyboard.KeyCodes.ENTER
         });
         this.stateChangeEnterKeyReleased = false;
         this.stateChangeSpaceKeyReleased = false;
+        this.scene.launch('HUD')
     }
 
     setCameras() {

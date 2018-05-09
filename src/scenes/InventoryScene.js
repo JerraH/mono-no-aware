@@ -1,5 +1,7 @@
 import {Scene} from 'phaser';
 import store from '../store';
+import { WSAENOMORE } from 'constants';
+import Dialogue from '../Dialogue';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -11,6 +13,7 @@ export default class InventoryScene extends Scene {
     constructor(config) {
         super(config);
         this.handleKey = this.handleKey.bind(this);
+        this.everything = []
     }
 
     preload() {
@@ -56,7 +59,7 @@ export default class InventoryScene extends Scene {
     }
 
     handleKey(event) {
-        if (event.repeat) {
+        if (event.repeat || store.getDialogue()) {
             return;
         }
 
@@ -76,6 +79,13 @@ export default class InventoryScene extends Scene {
                 }
                 break;
             case 'Enter':
+                // look at item
+                let item = store.getInventory()[this.selectionIndex];
+                store.setDialogue(new Dialogue(item.name, item.description));
+                this.scene.launch('dialogue');
+                break;
+            case 'Escape':
+                // exit inventory
                 this.everything.forEach(item => {
                     item.alpha = 0
                 });//at the moment you can only leave with enter, I want to figure out how to change this
@@ -105,8 +115,6 @@ export default class InventoryScene extends Scene {
         this.bkg.fillRect(0, 0, WIDTH, ITEM_SIZE + BORDER_SIZE * 2);
         this.bkg.x = 0;
         this.bkg.y = HEIGHT;
-
-        this.everything = [];
 
         for (let i = 0; i < inventory.length; i++) {
             let item = this.add.text(0, 0, inventory[i].name.replace(' ', '\n'), { font: "16px Berkshire Swash" });

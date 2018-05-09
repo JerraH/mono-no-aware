@@ -23,7 +23,6 @@ const utilityFunctions = {
         this.selection = this.add.graphics(200, 54);
         this.selection.lineStyle(2, 0xfffff, 1);
         this.selection.strokeRect(0, 0, 200, 54);
-        this.selection.x = 300;
         this.selection.depth = 2000;
         this.selection.blink = 0;
 

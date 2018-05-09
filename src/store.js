@@ -11,6 +11,7 @@ class Store {
         this.currentItem = {};
         this.cure1 = items.bow;
         this.cure2 = items.sake;
+        this.inConversation = false;
     }
 
     // The player's chosen pronoun
@@ -83,6 +84,16 @@ class Store {
 
     getCurrentItem() {
         return this.currentItem;
+    }
+
+    getDialogueActive() {
+        return this.inConversation;
+    }
+    setDialogueInactive() {
+        this.inConversation = false;
+    }
+    setDialogueActive() {
+        this.inConversation = true;
     }
 
 

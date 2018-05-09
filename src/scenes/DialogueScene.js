@@ -77,6 +77,13 @@ export default class DialogueScene extends Scene {
                     this.updateSelectionTween();
                 }
                 break;
+            case 'Escape':
+                // Escape works only if there are no responses
+                if (this.responses.length === 0) {
+                    this.sound.add('select').play();
+                    this.handleResponse();                        
+                }
+                break;
             case 'Enter':
                 this.sound.add('select').play();
                 this.handleResponse();
