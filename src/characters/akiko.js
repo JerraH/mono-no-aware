@@ -35,7 +35,8 @@ export default class Akiko extends Character {
     this.dialogue = new Dialogue(AKIKO_DIALOGUE, this);
 
     this.state = {
-      happinessMeter: 50
+      happinessMeter: 50,
+      inebriationLevel: 0
       // inConversation: false
     }
 

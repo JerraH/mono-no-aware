@@ -15,6 +15,8 @@ class Store {
         this.inConversation = false;
     }
 
+
+
     // The player's chosen pronoun
 
     setPronoun(pronoun) {
@@ -106,8 +108,12 @@ class Store {
     setDialogueActive() {
         this.inConversation = true;
     }
-
-
+    setTime(time) {
+        this.timeLeft = time
+    }
+    getTime() {
+        return this.timeLeft;
+    }
 }
 
 let store = new Store();
