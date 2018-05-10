@@ -208,12 +208,15 @@ export default class DialogueScene extends Scene {
         }
         maxWidth += 20;
     
-        this.selection.clear();
-        if (this.responses.length) {
-            this.selection.lineStyle(2, 0xffffff, 1);
-            this.selection.strokeRect(0, 0, maxWidth, 54);
-            this.selection.x = (WIDTH - maxWidth) / 2;
-            this.selection.y = this.getSelectionY();
+        for (let i = 0; i < 2; i++) {
+            let selection = this.selection[i];
+            selection.clear();
+            if (this.responses.length) {
+                selection.lineStyle(3.5, (i == 0) ? 0x00ffff : 0xffcf00, 1);
+                selection.strokeRect(0, 0, maxWidth, 54);
+                selection.x = (WIDTH - maxWidth) / 2;
+                selection.y = this.getSelectionY();
+            }
         }
     }
 
@@ -226,6 +229,10 @@ export default class DialogueScene extends Scene {
         this.words = [];
         this.responsesText = [];
         this.title = null;
+        this.selection = [];
+        for (let i = 0; i < 2; i++) {
+            this.selection.push(this.add.graphics(200, 54));
+        }
 
         this.render();
 
@@ -239,5 +246,6 @@ export default class DialogueScene extends Scene {
     update(time, delta) {
         this.blink += delta;
         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
+        this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
    }
 }
