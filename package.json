@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "fontfaceobserver": "^2.0.13",
-    "phaser": "^3.6.0"
+    "phaser": "^3.6.0",
+    "redux": "^4.0.0"
   }
 }
