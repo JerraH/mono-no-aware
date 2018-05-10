@@ -25,17 +25,16 @@ export default class Emp extends Character {
         this.name = 'Eminence'
       }
       this.dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
-      this.dialogue.addResponse('I\'m ready!',
-          this.saveEmpress());
-      this.dialogue.addResponse("I need more time.");
+      this.dialogue.addResponse({text: "I'm ready!", child: this.saveEmpress()});
+      this.dialogue.addResponse({text: "I need more time."});
     }
     saveEmpress() {
         let inventory = store.getInventory();
         if (inventory.includes(store.cure1 && store.cure2)) {
             return new Dialogue("Attendant", "You cured " + this.pronoun2 + "!")
-            .addResponse("Yay!", () => {
+            .addResponse({text: "Yay!", cb: () => {
                 this.scene.scene.start('playagain')
-            })
+            }})
         } else if (inventory.includes(store.cure1 || store.cure2)) {
             return new Dialogue("Attendant", "Oh no!  Whatever you did didn't seem to work.....")
         } else {console.log("the empress is asleep")}

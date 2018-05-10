@@ -37,7 +37,10 @@ export default class Dialogue {
                     }
                 }
 
-                obj.addResponse(choice.name, child, cb);
+                obj.addResponse({
+                    text: choice.name, 
+                    child, 
+                    cb});
             })
         }
 
@@ -83,13 +86,8 @@ export default class Dialogue {
         }
     }
 
-    addResponse(response, child, cb) {
-        this.responses.push({
-            response,
-            child,
-            cb
-        })
-
+    addResponse(data) {
+        this.responses.push(data);
         return this;
     }
 }
