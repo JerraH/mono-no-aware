@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import store from '../store';
 
 let width = 800
 let height = 600
@@ -27,23 +28,25 @@ export default class HUD extends Phaser.Scene {
 
         this.timerContainer.add(this.timerWheel).setDepth(2000)
         this.timerContainer.add(timerHouse).setDepth(2000)
-        this.text = this.add.text(-timerHouse.width / 2, -timerHouse.height / 2);
+        this.text = this.add.text(0, 0);
         this.timerContainer.add(this.text).setDepth(2000)
 
         let onEvent = console.log("FUCK YEAH")
         this.tweens.add({
             targets: this.timerWheel,
             ease: 'Power1',
-            duration: 600000,
+            duration: 86400000,
             repeat: 2,
             angle: 360
         });
 
 
+    }
 
-        this.timer = this.time.addEvent({delay: 1200000, callback: onEvent, callbackScope: this});
+    update () {
+        super.update();
         this.timeLeft = function() {
-            const ms = this.timer.delay - this.timer.getProgress();
+            const ms = this.timer.delay - this.timer.getOverallProgress();
             this.inDays = ms * 144;
             const secs = (this.inDays / 1000)
 
@@ -55,21 +58,16 @@ export default class HUD extends Phaser.Scene {
             const days = Math.floor(hours / 24)
             const finHours = hours % 24
             return days + " days and " + finHours + 'hours left'
+
         }
 
 
 
 
-    }
-
-    update () {
-
-        this.timerContainer.scene.text.setText(this.timeLeft());
-
-        setInterval(1000, () => {
-            const angle = (360 / 600000) * this.timer.getOverallProgress();
-            this.timerWheel.angle = angle
-
+        setInterval(10000, () => {
+            store.setTime(this.timeLeft())
+            this.setText(store.getTime())
+            console.log(store.getTime())
         })
 
 

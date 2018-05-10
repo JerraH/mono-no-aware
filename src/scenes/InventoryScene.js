@@ -18,6 +18,7 @@ export default class InventoryScene extends Scene {
 
     preload() {
         this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
@@ -45,7 +46,6 @@ export default class InventoryScene extends Scene {
             y: visible ? HEIGHT - ITEM_SIZE - BORDER_SIZE * 2 : HEIGHT,
             onComplete() {
                 if (visible) {
-                    me.sound.add('select').play();
                     me.everything.forEach(item => {
                         item.alpha = 1;
                     });
@@ -66,14 +66,14 @@ export default class InventoryScene extends Scene {
         switch (event.key) {
             case 'ArrowLeft':
                 if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowRight':
                 if (this.selectionIndex < store.getInventory().length-1) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
@@ -90,7 +90,7 @@ export default class InventoryScene extends Scene {
                     item.alpha = 0
                 });//at the moment you can only leave with enter, I want to figure out how to change this
                 this.updateVisibleTween(false);
-                this.sound.add('select').play();
+                this.sound.add('close').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 break;
             default:
@@ -137,6 +137,8 @@ export default class InventoryScene extends Scene {
 
         console.log(this.everything)
         this.input.keyboard.on('keydown', this.handleKey);
+
+        this.sound.add('select').play({ volume: 0.5 });
 
         this.updateVisibleTween(true);
     }

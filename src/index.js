@@ -12,8 +12,9 @@ import Garden from './scenes/Garden'
 import store from './store';
 import Room2 from './scenes/Room2';
 import InventoryScene from './scenes/InventoryScene';
+import HUD from './scenes/hud'
+import DialogueCutscene from './scenes/DialogueCutscene';
 import InteractionScene from './scenes/InteractionScene';
-import HUD from './scenes/hud';
 
 let config = {
     type: Phaser.AUTO,
@@ -43,6 +44,7 @@ game.scene.add('interaction', InteractionScene)
 game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.add('HUD', HUD)
+game.scene.add('cutscene', DialogueCutscene)
 game.scene.start('preload');
 
 

@@ -12,7 +12,8 @@ export default class EmpressBedroom extends GameScene {
     }
 
     preload() {
-        this.globalPreload.call(this);
+        //this.globalPreload.call(this); don't delete my beautiful function!
+        super.preload();
         this.load.image('protag', 'assets/images/protag.png')
         this.load.image('empress', 'assets/images/Empress.png')
         this.load.image('akiko', 'assets/images/akiko.png')

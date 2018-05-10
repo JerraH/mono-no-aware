@@ -13,16 +13,22 @@ export default class GameScene extends Scene {
     }
 
     preload() {
-        this.load.audio('select', 'assets/audio/select.m4a')
-        this.load.audio('tap', 'assets/audio/tap.m4a')
+        this.load.audio('theme', 'assets/audio/theme.m4a')
+        this.load.image('sake', 'assets/images/Sake.png');
+        this.load.image('triangle', 'assets/greenTriangle.png');
     }
 
-    globalPreload() {//can be run inside of every scene's preload, use .call(this)
-            this.load.image('sake', 'assets/catToy.png');
-            this.load.image('triangle', 'assets/greenTriangle.png');
-    }
+    // globalPreload() {//can be run inside of every scene's preload, use .call(this)
+    //         this.load.image('sake', 'assets/catToy.png');
+    //         this.load.image('triangle', 'assets/greenTriangle.png');
+    // }
 
     create() {
+        if (!store.getMusic()) {
+            let theme = this.sound.add('theme');
+           theme.play({ loop: true, volume: 0.5 });
+           store.setMusic(theme);
+        }
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({
             space: Phaser.Input.Keyboard.KeyCodes.SPACE,
@@ -148,7 +154,7 @@ export default class GameScene extends Scene {
                     store.setInventoryActive(true);
                     this.scene.launch('inventory');
                     // let interval = this.setInterval(() => {
-                    //     this.sound.add('tap').play();
+                    //     this.sound.add('tap').play({ volume: 0.5 });
                     // }, 500);
                     // this.setTimeout(() => {
                     //     this.clearInterval(interval);

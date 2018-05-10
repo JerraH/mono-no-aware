@@ -12,8 +12,11 @@ class Store {
         this.currentItem = {};
         this.cure1 = items.bow;
         this.cure2 = items.sake;
+        this.music = null;
         this.inConversation = false;
     }
+
+
 
     // The player's chosen pronoun
 
@@ -51,8 +54,10 @@ class Store {
     getDialogueActive() {
         return this.inConversation;
     }
+
     setDialogueInactive() {
         this.inConversation = false;
+    
     }
     setDialogueActive() {
         this.inConversation = true;
@@ -83,6 +88,14 @@ class Store {
         return this.inventoryActive;
     }
 
+    setMusic(music = null) {
+        this.music = music;
+    }
+
+    getMusic() {
+        return this.music;
+    }
+
     setInteractionActive(active) {
         this.inventoryActive = active;
     }
@@ -109,7 +122,13 @@ class Store {
         return this.currentItem;
     }
 
-
+    //time
+    setTime(time) {
+        this.timeLeft = time
+    }
+    getTime() {
+        return this.timeLeft;
+    }
 }
 
 let store = new Store();
