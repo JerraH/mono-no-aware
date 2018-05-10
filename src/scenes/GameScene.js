@@ -1,10 +1,11 @@
-import {Scene} from 'phaser';
+import  Phaser, {Scene} from 'phaser';
 import store from '../store';
 
 export default class GameScene extends Scene {
     constructor(config) {
         super(config);
         this.timers = [];
+        this.updatableTimers = [];
         // this.frame = 0;
         this.frameMS = 0;
     }
@@ -21,9 +22,15 @@ export default class GameScene extends Scene {
         }
         this.cursors = this.input.keyboard.createCursorKeys();
         this.keys = this.input.keyboard.addKeys({
-            inventory: Phaser.Input.Keyboard.KeyCodes.ENTER
-        });
-        this.stateChangeKeyReleased = false;
+            space: Phaser.Input.Keyboard.KeyCodes.SPACE,
+            enter: Phaser.Input.Keyboard.KeyCodes.ENTER
+        });//master changed {enter: KeyCode} to {inventory: KeyCode}
+        //inventory now relies on space instead of enter
+        //and I couldn't get inventory and interaction
+        //to work with the change that master did aswell
+        this.stateChangeEnterKeyReleased = false;
+        this.stateChangeSpaceKeyReleased = false;
+        this.scene.launch('HUD')
     }
 
     setCameras() {
@@ -39,7 +46,7 @@ export default class GameScene extends Scene {
         this.timers.push({
             cb,
             ms: this.frameMS + ms
-        })
+        });
     }
 
     setInterval(cb, ms) {
@@ -50,6 +57,21 @@ export default class GameScene extends Scene {
         }
         this.timers.push(timer)
         return timer;
+    }
+
+    setUpdatingTimeout(cb, ms, purpose) {
+        const updatableTimer = {
+            cb,
+            ms: this.frameMS + ms,
+            purpose: purpose
+        }
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if(purpose === timer.purpose) {
+                return false;
+            }
+            return true;
+        });
+        this.updatableTimers.push(updatableTimer);
     }
 
     clearInterval(timer) {
@@ -71,6 +93,16 @@ export default class GameScene extends Scene {
             return true;
         });
 
+        this.updatableTimers = this.updatableTimers.filter(timer => {
+            if (this.frameMS >= timer.ms) {
+                timer.cb();
+                if(this.frameMS + 3000 >= timer.ms) {
+                    return false;
+                }
+            }
+            return true;
+        })
+
         // if (this.frameMS >= 100) {
         //     this.frameMS -= 100;
         //     this.frame++;
@@ -81,7 +113,7 @@ export default class GameScene extends Scene {
         let velY = 0;
 
         //if you're not in conversation mode, the keys control the protagonist
-        if (!store.getDialogue() && !store.getInventoryActive()) {
+        if (!store.getDialogue() && !store.getInventoryActive() && !store.getInteractionActive()) {
             if (this.cursors.left.isDown) {
                 velX = -120;
             }
@@ -94,8 +126,8 @@ export default class GameScene extends Scene {
             else if (this.cursors.down.isDown) {
                 velY = 120;
             }
-            if (this.keys.inventory.isDown) {
-                if (this.stateChangeKeyReleased) {
+            if (this.cursors.space.isDown) {//inventory was changed to space, and interact to enter
+                if (this.stateChangeSpaceKeyReleased) {
                     // this is a legitimate key press to open the inventory
                     store.setInventoryActive(true);
                     this.scene.launch('inventory');
@@ -108,11 +140,28 @@ export default class GameScene extends Scene {
                 }
             } else {
                 // this makes sure you release enter from another window before pressing it here
-                this.stateChangeKeyReleased = true;
+                this.stateChangeSpaceKeyReleased = true;
             }
+
+            if (this.keys.enter.isDown) {
+                const currentItem = this.items.filter(item => {
+                    return item.sign.visible;
+                });
+                if (this.stateChangeEnterKeyReleased && currentItem[0]) {
+                    // this is a legitimate key press to open interaction
+                    store.setInteractionActive(true);
+                    store.setCurrentItem(currentItem[0]);
+                    this.scene.launch('interaction');
+                }
+            } else {
+                // this makes sure you release enter from another window before pressing it here
+                this.stateChangeEnterKeyReleased = true;
+            }
+
         } else {
             // key must be lifted in between state changes
-            this.stateChangeKeyReleased = false;
+            this.stateChangeEnterKeyReleased = false;
+            this.stateChangeSpaceKeyReleased = false;
         }
 
         if (this.protag && this.protag.body) {

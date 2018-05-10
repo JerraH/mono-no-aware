@@ -24,11 +24,10 @@ export default class Emp extends Character {
         this.pronoun3 = 'theirs'
         this.name = 'Eminence'
       }
-      let dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
-      dialogue.addResponse('I\'m ready!',
+      this.dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
+      this.dialogue.addResponse('I\'m ready!',
           this.saveEmpress());
-      dialogue.addResponse("I need more time.");
-      this.dialogue = dialogue;
+      this.dialogue.addResponse("I need more time.");
     }
     saveEmpress() {
         let inventory = store.getInventory();

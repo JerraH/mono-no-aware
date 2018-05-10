@@ -1,25 +1,25 @@
 
 import {default as GameScene} from './GameScene.js';
-import Phaser, {Body} from 'phaser'
 import { default as Akiko } from '../characters/akiko'
-import Protag from '../characters/protag';
-import utilityFunctions from '../utilityFunctions';
-import store from '../store'
 import Empress from '../characters/Emp'
+import Item from '../Item'
 
 export default class EmpressBedroom extends GameScene {
-    constructor(props) {
-        super(props)
+    constructor(config) {
+        super(config)
         this.changeRooms = this.changeRooms.bind(this)
+
     }
 
     preload() {
         super.preload();
         this.load.image('protag', 'assets/images/protag.png')
-        this.load.image('empress', 'assets/images/empress.png')
+        this.load.image('empress', 'assets/images/Empress.png')
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/roomredo.jpg')
         this.load.image('walls', 'assets/images/walls.png')
+        this.load.image('toy', 'assets/catToy.png')
+        this.load.image('triangle', 'assets/greenTriangle.png');
     }
     createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
@@ -41,6 +41,12 @@ export default class EmpressBedroom extends GameScene {
         this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress'});
         this.emp.angle = 28;
         this.emp.body.immovable = true;
+    }
+
+    createItems() {
+        this.items = [];
+        this.items[0] = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
+        this.items[0].create(); //set name here
     }
 
     changeRooms() {
@@ -69,23 +75,24 @@ export default class EmpressBedroom extends GameScene {
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
     }
 
-    // saveEmpress() {
-    //     let inventory = store.getInventory();
-    //     if (inventory.includes(store.cure1 && store.cure2)) {
-    //         this.scene.launch('dialogue')
-    //     } else if (inventory.includes(store.cure1 || store.cure2)) {
-    //         console.log('You do not have all the things!')
-    //     } else {console.log("the empress is asleep")}
-    // }
-
     create() {
         super.create()
+        this.input.on('drag', function (pointer, dragX, dragY) {
+
+            this.x = dragX;
+            this.y = dragY;
+
+        });
+
         //create static groups
         this.background = this.physics.add.staticGroup();
         this.NPCs = this.physics.add.staticGroup()
+        this.cursors = this.input.keyboard.createCursorKeys();
+
 
         this.createBg();
         this.createProtag();
+        this.createItems(); //atleast tell people when you're going to comment out their entire code.
 
         console.log(this.world)
 
@@ -99,8 +106,19 @@ export default class EmpressBedroom extends GameScene {
             y: 350
         })
 
+
+
         this.createEmpress();
         console.log(this.emp.body)
+
+        // this.koto = new Item({
+        //     scene: this,
+        //     texture: 'koto',
+        //     x: 500,
+        //     y: 300,
+        //     scaleX: .5,
+        //     scaleY: .5
+        // }).setInteractive()
 
 
        //Camera setup
