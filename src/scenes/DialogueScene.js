@@ -24,6 +24,11 @@ export default class DialogueScene extends Scene {
     }
 
     handleResponse(selected) {
+        if (this.selectionTween) {
+            this.selectionTween.stop();
+            this.selectionTween = null;
+        }
+
         let response = null;
         if (selected) {
             response = this.responses[this.selectionIndex];
@@ -35,6 +40,11 @@ export default class DialogueScene extends Scene {
         // set dialogue to child, if one exists, otherwise reset it
         store.setDialogue(response && response.child);
 
+        if (response && response.cb) {
+            // run callback, if any
+            response.cb();
+        }
+
         if (response && response.child) {
             // re-render convo with child text
             this.render();
@@ -42,11 +52,6 @@ export default class DialogueScene extends Scene {
             // no child, so exit dialogue
             this.input.keyboard.off('keydown', this.handleKey)
             this.scene.stop();
-        }
-
-        if (response && response.cb) {
-            // run callback, if any
-            response.cb();
         }
     }
 
