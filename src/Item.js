@@ -62,13 +62,13 @@ export default class Item extends Phaser.GameObjects.Image {
       }
 
   });
-      // this.scene.physics.add.overlap(/* since we tied the player to the scene? */ this.scene.protag,
-      //   this.zone,
-      //   () => {
-      //       this.setSign(225);
-      //   },
-      //   null,
-      //   this.scene)
+      this.scene.physics.add.overlap(/* since we tied the player to the scene? */ this.scene.protag,
+        this.zone,
+        () => {
+            this.setSign(225);
+        },
+        null,
+        this.scene)
     }
 
     setSign(time) {
