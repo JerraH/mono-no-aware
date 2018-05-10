@@ -16,7 +16,6 @@ export default class HUD extends Phaser.Scene {
     }
     create() {
         this.timerContainer = this.add.container(730, 100)
-        console.log(this.timerContainer)
         this.timerWheel = this.add.sprite(10, -10, 'timerwheel')
         let timerHouse = this.add.image(10, 0, 'timerhouse')
 
@@ -50,17 +49,14 @@ export default class HUD extends Phaser.Scene {
             const ms = this.timer.delay - this.timer.getOverallProgress();
             this.inDays = ms * 144;
             const secs = (this.inDays / 1000)
-            console.log(secs)
+
             // 1200000 === 172800000
             const totalMinutes = secs / 60;
             const min = totalMinutes % 60;
             const hours = Math.floor(totalMinutes / 60)
-            console.log('hours', hours)
 
             const days = Math.floor(hours / 24)
-            console.log(days)
             const finHours = hours % 24
-            console.log(finHours)
             return days + " days and " + finHours + 'hours left'
 
         }

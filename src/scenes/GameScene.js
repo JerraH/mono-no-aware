@@ -1,5 +1,7 @@
-import  Phaser, {Scene} from 'phaser';
+import Phaser, {Scene} from 'phaser';
 import store from '../store';
+import items from '../itemList';
+import Item from '../Item';
 
 export default class GameScene extends Scene {
     constructor(config) {
@@ -12,7 +14,14 @@ export default class GameScene extends Scene {
 
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
+        this.load.image('sake', 'assets/images/Sake.png');
+        this.load.image('triangle', 'assets/greenTriangle.png');
     }
+
+    // globalPreload() {//can be run inside of every scene's preload, use .call(this)
+    //         this.load.image('sake', 'assets/catToy.png');
+    //         this.load.image('triangle', 'assets/greenTriangle.png');
+    // }
 
     create() {
         if (!store.getMusic()) {
@@ -31,6 +40,19 @@ export default class GameScene extends Scene {
         this.stateChangeEnterKeyReleased = false;
         this.stateChangeSpaceKeyReleased = false;
         this.scene.launch('HUD')
+        store.setAllItems(items);
+        this.gameItems = [];
+        console.log(store.getAllItems());
+    }
+
+    createItems(sceneContext, requestedItems) {
+        const sceneItems = [];
+        requestedItems.forEach((item) => {
+            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: item.name});
+            newItem.create(store.getAllItems()[item.name]);
+            sceneItems.push(newItem)
+        });
+        return sceneItems;
     }
 
     setCameras() {
@@ -144,15 +166,15 @@ export default class GameScene extends Scene {
             }
 
             if (this.keys.enter.isDown) {
-                const currentItem = this.items.filter(item => {
+                const currentItem = this.gameItems.filter(item => {
                     return item.sign.visible;
                 });
-                if (this.stateChangeEnterKeyReleased && currentItem[0]) {
+                if (this.stateChangeEnterKeyReleased && currentItem[0]) {//it's currently an array
                     // this is a legitimate key press to open interaction
                     store.setInteractionActive(true);
-                    store.setCurrentItem(currentItem[0]);
+                    store.setCurrentItem(currentItem[0]);//It's better that items don't overlap zones
                     this.scene.launch('interaction');
-                }
+                }                                   
             } else {
                 // this makes sure you release enter from another window before pressing it here
                 this.stateChangeEnterKeyReleased = true;
