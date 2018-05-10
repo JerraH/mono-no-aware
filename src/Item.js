@@ -81,5 +81,4 @@ export default class Item extends Phaser.GameObjects.Image {
     update(time, delta) {
 
     }
-
   }

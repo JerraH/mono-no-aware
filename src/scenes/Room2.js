@@ -11,6 +11,7 @@ export default class Room2 extends GameScene {
     }
 
     preload() {
+        super.preload();
         this.load.image('protag', 'assets/images/protagforroom2.png');
         this.load.image('plainbg', 'assets/images/plainbg.png');
         this.load.image('background', 'assets/images/room2.png');

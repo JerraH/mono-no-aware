@@ -9,7 +9,8 @@ export default class PreloadScene extends Scene {
         let fonts = [
             // Must update these fonts in style.css
             'Berkshire Swash',
-            'Amatic SC'
+            'Amatic SC',
+            'Kaushan Script'
         ];
         Promise.all(
             fonts.map(font => new FontFaceObserver(font).load())

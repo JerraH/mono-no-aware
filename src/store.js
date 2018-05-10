@@ -7,8 +7,11 @@ class Store {
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
         this.inventory = [items.bow, items.calligraphyBrush, items.sake];
         this.inventoryActive = false;
+        this.interactionActive = false;
+        this.currentItem = {};
         this.cure1 = items.bow;
         this.cure2 = items.sake;
+        this.music = null;
         this.inConversation = false;
     }
 
@@ -69,11 +72,38 @@ class Store {
     getInventoryActive() {
         return this.inventoryActive;
     }
+
+    setMusic(music = null) {
+        this.music = music;
+    }
+
+    getMusic() {
+        return this.music;
+    }
+
+    setInteractionActive(active) {
+        this.inventoryActive = active;
+    }
+
+    getInteractionActive() {
+        return this.inventoryActive;
+    }
+
+    setCurrentItem(item) {
+        this.currentItem = item;
+    }
+
+    getCurrentItem() {
+        return this.currentItem;
+    }
+
     getDialogueActive() {
         return this.inConversation;
     }
+
     setDialogueInactive() {
         this.inConversation = false;
+    
     }
     setDialogueActive() {
         this.inConversation = true;

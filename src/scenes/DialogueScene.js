@@ -17,14 +17,19 @@ export default class DialogueScene extends Scene {
     }
 
     preload() {
+        this.load.audio('chat', 'assets/audio/chat.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
-    handleResponse() {
+    handleResponse(selected) {
         let response = null;
-        if (this.responses.length > this.selectionIndex) {
+        if (selected) {
             response = this.responses[this.selectionIndex];
+            this.sound.add('select').play({ volume: 0.5 });
+        } else {
+            this.sound.add('close').play({ volume: 0.5 });
         }
 
         // set dialogue to child, if one exists, otherwise reset it
@@ -65,28 +70,25 @@ export default class DialogueScene extends Scene {
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < store.getDialogue().responses.length-1) {
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
                 break;
             case 'Escape':
-                // Escape works only if there are no responses
                 if (this.responses.length === 0) {
-                    this.sound.add('select').play();
-                    this.handleResponse();                        
+                    this.handleResponse(false);
                 }
                 break;
             case 'Enter':
-                this.sound.add('select').play();
-                this.handleResponse();
+                this.handleResponse(this.responses.length > 0);
                 break;
             default:
                 break;
@@ -213,6 +215,8 @@ export default class DialogueScene extends Scene {
         this.render();
 
         this.blink = 0;
+
+        this.sound.add('chat').play({ volume: 0.1 });
 
         this.input.keyboard.on('keydown', this.handleKey);
     }
