@@ -25,19 +25,13 @@ export default class DialogueScene extends Scene {
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
-    handleResponse(selected) {
+    handleResponse() {
         if (this.selectionTween) {
             this.selectionTween.stop();
             this.selectionTween = null;
         }
 
-        let response = null;
-        if (selected) {
-            response = this.responses[this.selectionIndex];
-            this.sound.add('select').play({ volume: 0.5 });
-        } else {
-            this.sound.add('close').play({ volume: 0.5 });
-        }
+        let response = this.responses.length && this.responses[this.selectionIndex];
 
         // set dialogue to child, if one exists, otherwise reset it
         store.setDialogue(response && response.child);
@@ -49,9 +43,11 @@ export default class DialogueScene extends Scene {
 
         if (response && response.child) {
             // re-render convo with child text
+            this.sound.add('select').play({ volume: 0.5 });
             this.render();
         } else {
             // no child, so exit dialogue
+            this.sound.add('close').play({ volume: 0.5 });
             this.input.keyboard.off('keydown', this.handleKey)
             this.scene.stop();
         }
@@ -91,11 +87,11 @@ export default class DialogueScene extends Scene {
                 break;
             case 'Escape':
                 if (this.responses.length === 0) {
-                    this.handleResponse(false);
+                    this.handleResponse();
                 }
                 break;
             case 'Enter':
-                this.handleResponse(this.responses.length > 0);
+                this.handleResponse();
                 break;
             default:
                 break;
