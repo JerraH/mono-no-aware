@@ -12,14 +12,13 @@ export default class EmpressBedroom extends GameScene {
     }
 
     preload() {
+        //this.globalPreload.call(this); don't delete my beautiful function!
         super.preload();
         this.load.image('protag', 'assets/images/protag.png')
         this.load.image('empress', 'assets/images/Empress.png')
         this.load.image('akiko', 'assets/images/akiko.png')
         this.load.image('bedroom', 'assets/images/roomredo.jpg')
         this.load.image('walls', 'assets/images/walls.png')
-        this.load.image('toy', 'assets/catToy.png')
-        this.load.image('triangle', 'assets/greenTriangle.png');
     }
     createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
@@ -41,12 +40,6 @@ export default class EmpressBedroom extends GameScene {
         this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress'});
         this.emp.angle = 28;
         this.emp.body.immovable = true;
-    }
-
-    createItems() {
-        this.items = [];
-        this.items[0] = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
-        this.items[0].create(); //set name here
     }
 
     changeRooms() {
@@ -89,10 +82,22 @@ export default class EmpressBedroom extends GameScene {
         this.NPCs = this.physics.add.staticGroup()
         this.cursors = this.input.keyboard.createCursorKeys();
 
-
         this.createBg();
+
         this.createProtag();
-        this.createItems(); //atleast tell people when you're going to comment out their entire code.
+
+        //Create Scene Items and store them in the allItems base, 
+        //which is utilized when you press the enter key
+
+        const sceneItems = this.createItems(this, [{
+            name : 'sake',
+            x: 600,
+            y: 500
+        }]);
+
+        sceneItems.forEach((sceneItem) => {
+            this.gameItems.push(sceneItem);
+        })
 
         console.log(this.world)
 
