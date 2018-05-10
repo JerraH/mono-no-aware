@@ -58,7 +58,7 @@ export default class BelovedScene extends Scene {
         let bkg = this.add.image(0, 0, 'menubg');
         Phaser.Display.Align.In.Center(bkg, this.add.zone(400, 250, 0, 0));
 
-        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Berkshire Swash", color: "#000000" });
+        let title = this.add.text(0, 0, "Save the", { font: "40px Berkshire Swash", color: "#000000" });
         Phaser.Display.Align.In.Center(title, this.add.zone(400, 170, 0, 0));
 
         for (let i = 0; i < BELOVEDS.length; i++) {
