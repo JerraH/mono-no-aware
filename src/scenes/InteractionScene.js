@@ -1,5 +1,6 @@
 import {Scene} from 'phaser';
 import store from '../store';
+import Dialogue from '../Dialogue';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -55,8 +56,36 @@ export default class InventoryScene extends Scene {
         });
     }
 
+    handleSelectedOption(option) {
+        switch (option) {
+            case 'Take':
+                store.addToInventory(this.currentItem)
+                this.currentItem.visible = false;
+                this.selectOptions.forEach(option => {
+                    option.alpha = 0;
+                });
+                this.sound.add('select').play();
+                this.input.keyboard.off('keydown', this.handleKey)
+                this.updateVisibleTween(false);//scene.stop() exit happens in this function
+                break;
+            case 'Look':
+                // look at item
+                store.setDialogue(new Dialogue(this.currentItem.name, this.currentItem.description));
+                this.scene.launch('dialogue');
+                break;
+            case 'Leave':
+                this.selectOptions.forEach(option => {
+                    option.alpha = 0;
+                });
+                this.sound.add('select').play();
+                this.input.keyboard.off('keydown', this.handleKey)
+                this.updateVisibleTween(false);//scene.stop() exit happens in this function
+                break;
+        }
+    }
+
     handleKey(event) {
-        if (event.repeat) {
+        if (event.repeat || store.getDialogue()) {
             return;
         }
 
@@ -76,17 +105,16 @@ export default class InventoryScene extends Scene {
                 }
                 break;
             case 'Enter':
-                this.selectOptions.forEach(option => {
-                    option.alpha = 0;
-                })
-                //Now that the scene and selection is working, all that's left is
-                //checking the selectionIndex and running specific functions for the option you
-                //pressed enter on, for example, this.updateVisibleTween should only run on the
-                //leave option (and option and escape key option or something too)
-                this.updateVisibleTween(false);//scene.stop() exit happens in this function
-                this.sound.add('select').play();
-                this.input.keyboard.off('keydown', this.handleKey)
+            this.handleSelectedOption(this.selectOptions[this.selectionIndex].text);
                 break;
+            case 'Escape':
+            this.selectOptions.forEach(option => {
+                option.alpha = 0;
+            })
+            this.sound.add('select').play();
+            this.input.keyboard.off('keydown', this.handleKey)
+            this.updateVisibleTween(false);//scene.stop() exit happens in this function
+            break;
             default:
                 break;
         }

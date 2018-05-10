@@ -9,7 +9,9 @@ export default class Item extends Phaser.GameObjects.Image {
       config.scene.physics.world.enable(this);
       this.type = "item";
       this.body.immovable = true;
-      this.name = this.texture.key;
+      this.name = '';
+      this.description = '';
+      this.id = null;
       this.sign = new Sign({
         scene: this.scene,
         x: this.x,
@@ -26,13 +28,23 @@ export default class Item extends Phaser.GameObjects.Image {
       //origin isn't the same as items origin. Item is centered, zone's origin is top left corner.
     }  
 
-    create() {
+    create({name, description, id}) {
+      this.name = name;
+      this.description = description;
+      this.id = id;
+
       this.scene.physics.add.overlap(/* since we tied the player to the scene? */ this.scene.protag,
         this.zone,
         () => {
             this.setSign(225);
         },
-        null, 
+        () => {
+          if(this.visible) {//if item was picked up, you can't interact with it's zone any more
+            return true;//Item is set to invisible on pick up (happens in InteractionScene.js)
+          } else {
+            return false;
+          }
+        }, 
         this.scene)
     }
 
