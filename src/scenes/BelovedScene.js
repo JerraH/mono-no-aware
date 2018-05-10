@@ -18,6 +18,7 @@ export default class BelovedScene extends Scene {
     }
 
     preload() {
+        this.load.image('menubg', 'assets/menubg.png');
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
@@ -32,12 +33,14 @@ export default class BelovedScene extends Scene {
                 if (this.selectionIndex > 0) {
                     this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
+                    this.updateSelectionTween();
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < 2) {
                     this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
+                    this.updateSelectionTween();
                 }
                 break;
             case 'Enter':
@@ -52,26 +55,51 @@ export default class BelovedScene extends Scene {
     }
 
     create() {
-        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Berkshire Swash" });
-        Phaser.Display.Align.In.Center(title, this.add.zone(400, 210, 0, 0));
+        let bkg = this.add.image(0, 0, 'menubg');
+        Phaser.Display.Align.In.Center(bkg, this.add.zone(400, 250, 0, 0));
+
+        let title = this.add.text(0, 0, "Choose Your Beloved", { font: "40px Berkshire Swash", color: "#000000" });
+        Phaser.Display.Align.In.Center(title, this.add.zone(400, 170, 0, 0));
 
         for (let i = 0; i < BELOVEDS.length; i++) {
-            let beloved = this.add.text(0, 0, BELOVEDS[i] + ' ', { font: "36px Kaushan Script" });
-            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 270+i*60, 0, 0));
+            let beloved = this.add.text(0, 0, BELOVEDS[i] + ' ', { font: "36px Kaushan Script", color: "#000000" });
+            Phaser.Display.Align.In.Center(beloved, this.add.zone(400, 240+i*60, 0, 0));
         }
 
-        this.selection = this.add.graphics(200, 54);
-        this.selection.lineStyle(2, 0xffffff, 1);
-        this.selection.strokeRect(0, 0, 200, 54);
-        this.selection.x = 300;
+        this.selection = [];
+        for (let i = 0; i < 2; i++) {
+            let selection = this.add.graphics(200, 54);
+            this.selection.push(selection);
+            selection.lineStyle(3.5, i * 0xffcf00, 1);
+            selection.strokeRect(0, 0, 200, 54);
+            selection.x = 300;
+            selection.y = this.getSelectionY();
+        }
+
         this.blink = 0;
 
         this.input.keyboard.on('keydown', this.handleKey);
     }
 
+    updateSelectionTween() {
+        if (this.selectionTween) {
+            this.selectionTween.stop();
+        }
+        this.selectionTween = this.tweens.add({
+            targets: this.selection,
+            ease: 'Sine.easeInOut',
+            duration: 300,
+            y: this.getSelectionY()
+        });
+    }
+
+    getSelectionY() {
+        return 213 + this.selectionIndex * 60;
+    }
+
     update(time, delta) {
-        this.selection.y = 243 + this.selectionIndex * 60;
+        this.selection.y = 213 + this.selectionIndex * 60;
         this.blink += delta;
-        this.selection.alpha = [1,0.5][Math.floor(this.blink / 500) % 2];
+        this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
     }
 }
