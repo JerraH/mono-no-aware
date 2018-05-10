@@ -1,5 +1,6 @@
 //also please pass it a constructor object with a callback, an exitfunc property, a scene, and your options
 import Phaser from 'phaser'
+import store from './store'
 
 const utilityFunctions = {
     handleKeyVertical: function (callback, exitFunc, options) {
@@ -29,6 +30,15 @@ const utilityFunctions = {
 
         this.selection.y = 243;
 
+    },
+    setInterval: function(cb, ms) {
+        let timer = {
+            cb,
+            ms: this.frameMS + ms,
+            interval: ms
+        }
+        this.timers.push(timer)
+        return timer;
     }
 }
 

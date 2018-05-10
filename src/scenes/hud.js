@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import store from '../store';
+import utilityFunctions from '../utilityFunctions'
 
 let width = 800
 let height = 600
@@ -7,72 +8,99 @@ let height = 600
 export default class HUD extends Phaser.Scene {
     constructor(config) {
         super(config)
+        this.timers = []
+        this.setInterval = utilityFunctions.setInterval.bind(this);
+
 
     }
-    preload() {
-        this.load.image('timerwheel', 'assets/images/skytimer.png')
-        this.load.image('timerhouse', 'assets/images/timerhouse.png')
 
+    preload() {
+        this.load.image('timerwheel', 'assets/images/hud/skytimer.png')
+        this.load.image('timerhouse', 'assets/images/hud/timerhouse.png')
+
+
+    }
+    triggerEndGame() {
+        return;
     }
     create() {
+        //make the container and add the graphics
         this.timerContainer = this.add.container(730, 100)
         console.log(this.timerContainer)
+
+        //load the sprites
         this.timerWheel = this.add.sprite(10, -10, 'timerwheel')
         let timerHouse = this.add.image(10, 0, 'timerhouse')
 
+        //make the hud border
         this.hudselector = this.add.graphics();
         this.hudselector.lineStyle(4, 0x4f3434, 1);
         this.hudselector.fillStyle(0xf3e3cb)
-
         this.hudselector.fillRect(this.timerContainer.x + 10 - timerHouse.width / 2, this.timerContainer.y - timerHouse.height - 15, timerHouse.width, this.timerContainer.y + (timerHouse.height / 2))
         this.hudselector.strokeRect(this.timerContainer.x + 10 - timerHouse.width / 2, this.timerContainer.y - timerHouse.height - 15, timerHouse.width, this.timerContainer.y + timerHouse.height / 2);
 
-        this.timerContainer.add(this.timerWheel).setDepth(2000)
-        this.timerContainer.add(timerHouse).setDepth(2000)
-        this.text = this.add.text(0, 0);
-        this.timerContainer.add(this.text).setDepth(2000)
+        //add timer
+        this.timer = this.time.delayedCall(1200000, this.triggerEndGame, [], this)
+        this.timer.ignoreDestroy = true;
 
-        let onEvent = console.log("FUCK YEAH")
+
+        //add everything to the container
+        this.timerContainer.add(this.timerWheel).setDepth(2000)
+        this.timerContainer.ignoreDestroy = true;
+        this.timerWheel.ignoreDestroy = true;
+        this.timerContainer.add(timerHouse).setDepth(2000)
+        this.text = this.add.text(-40, -90,  '2 days 0 hours', { font: "16px Kaushan Script", color: 0xffffff });
+        this.timerContainer.add(this.text).setDepth(3010)
+
+
         this.tweens.add({
             targets: this.timerWheel,
             ease: 'Power1',
-            duration: 86400000,
+            duration: 600000,
             repeat: 2,
             angle: 360
         });
 
+        console.log(this.timerWheel)
+        this.timeLeft = function() {
+
+            let ms = this.timer.delay - this.timer.getOverallProgress();
+            console.log("overall progress is", this.timer.getOverallProgress)
+            this.inDays = ms * 144;
+            let secs = (this.inDays / 1000)
+            console.log(secs)
+            // 1200000 === 172800000
+            let totalMinutes = secs / 60;
+            let min = totalMinutes % 60;
+            let hours = Math.floor(totalMinutes / 60)
+            console.log('hours', hours)
+
+            this.days = Math.floor(hours / 24)
+            console.log(this.days)
+            this.finhours = hours % 24
+            console.log(this.finhours)
+            return this.days + " days " + this.finhours + " hours"
+        }
+        this.setCountdown = function() {this.text.setText(this.timeLeft()).bind(this)}
+
+
+
 
     }
 
-    update () {
-        super.update();
-        this.timeLeft = function() {
-            const ms = this.timer.delay - this.timer.getOverallProgress();
-            this.inDays = ms * 144;
-            const secs = (this.inDays / 1000)
-            console.log(secs)
-            // 1200000 === 172800000
-            const totalMinutes = secs / 60;
-            const min = totalMinutes % 60;
-            const hours = Math.floor(totalMinutes / 60)
-            console.log('hours', hours)
+    update (time) {
+        this.timedEvent = this.time.addEvent({ delay: 500, callback: this.setCountdown(), callbackScope: this, loop: true });
 
-            const days = Math.floor(hours / 24)
-            console.log(days)
-            const finHours = hours % 24
-            console.log(finHours)
-            return days + " days and " + finHours + 'hours left'
+        if (time % 1000 === 0) {
 
+            console.log(this.text)
         }
 
 
 
 
-        setInterval(10000, () => {
-            store.setTime(this.timeLeft())
-            this.setText(store.getTime())
-            console.log(store.getTime())
-        })
+
+
 
 
 

@@ -13,11 +13,11 @@ export default class EmpressBedroom extends GameScene {
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/protag.png')
-        this.load.image('empress', 'assets/images/Empress.png')
-        this.load.image('akiko', 'assets/images/akiko.png')
-        this.load.image('bedroom', 'assets/images/roomredo.jpg')
-        this.load.image('walls', 'assets/images/walls.png')
+        this.load.image('protag', 'assets/images/characters/protag.png')
+        this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
+        this.load.image('akiko', 'assets/images/characters/akiko.png')
+        this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
+        this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
     }
@@ -38,7 +38,7 @@ export default class EmpressBedroom extends GameScene {
         this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
     }
     createEmpress() {
-        this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress'});
+        this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress', scale: 0.75});
         this.emp.angle = 28;
         this.emp.body.immovable = true;
     }
@@ -50,17 +50,8 @@ export default class EmpressBedroom extends GameScene {
     }
 
     changeRooms() {
-        // console.log(currScene)
-        // async function func() {
-        //     currScene.input.enabled = false;
-        //     await currScene.physics.pause()
-        // }
-        //this is a hack to allow the room to load before trying to move the protag, which was happening in the wrong order and throwing an error.  I know it's an anti-pattern, but I tried just using async/await and it didn't seem to help, so...
-        // func().then(setTimeout(() => {
         this.physics.shutdown();
         this.scene.start('room2')
-        // }, 10))
-        // .then(this.scene.start('room2'))
 
     }
 

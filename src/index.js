@@ -11,6 +11,7 @@ import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
 import store from './store';
 import Room2 from './scenes/Room2';
+import Room3 from './scenes/Room3';
 import InventoryScene from './scenes/InventoryScene';
 import HUD from './scenes/hud'
 import DialogueCutscene from './scenes/DialogueCutscene';
@@ -24,7 +25,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            debug: false
+            debug: true
         }
     }
 };
@@ -45,6 +46,7 @@ game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.add('HUD', HUD)
 game.scene.add('cutscene', DialogueCutscene)
+game.scene.add('Room3', Room3)
 game.scene.start('preload');
 
 

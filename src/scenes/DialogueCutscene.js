@@ -7,20 +7,23 @@ class DialogueCutscene extends Phaser.Scene {
         //     super(config.dialogueId);
         //     this.dialogueId = config.dialogueId
         //     let convo = store.getDialogue(this.dialogueId)
+
         //     this.state = {
         //         convo
         //     }
 
         // }
         preload() {
-            this.load.image(this.convoRecipient.key, this.convoRecipient.img)
+            this.load.image(this.config.convo.actor.key, this.actor.img)
         }
         create() {
             let convo = this.state.convo;
-            this.convoRecipient = convo.character
-            this.scene.add.image(this.convoRecipient.key)
+            this.actor = convo.actor
+            this.scene.add.image(50, 300, this.actor.key)
+            this.add.container(600, 300)
 
         }
+
     }
 
 

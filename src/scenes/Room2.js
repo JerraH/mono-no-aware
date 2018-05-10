@@ -7,27 +7,28 @@ import Phaser from 'phaser';
 export default class Room2 extends GameScene {
     constructor(config) {
         super(config);
-        this.changeRooms = this.changeRooms.bind(this);
+        this.changeRoomsEmp = this.changeRoomsEmp.bind(this);
+        this.changeRooms3 = this.changeRooms3.bind(this);
     }
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/protagforroom2.png');
-        this.load.image('plainbg', 'assets/images/plainbg.png');
-        this.load.image('background', 'assets/images/room2.png');
-        this.load.image('backwall', 'assets/images/backwall.png');
-        this.load.image('column1', 'assets/images/column1.png');
-        this.load.image('column2', 'assets/images/column2.png');
-        this.load.image('screenDoors', 'assets/images/screendoors.png');
-        this.load.image('slidingDoor', 'assets/images/slidingdoor.png');
-        this.load.image('hangingScreen', 'assets/images/hangingscreen.png');
-        this.load.image('backwall', 'assets/images/backwall.png')
-        this.load.image('smoke-top-level', 'assets/images/smoke-top-level.png');
-        this.load.image('smoke1', 'assets/images/smoke1.png');
-        this.load.image('smoke2', 'assets/images/smoke2.png');
-        this.load.image('smoke4', 'assets/images/smoke4.png');
-        this.load.image('smoke3', 'assets/images/smoke3.png');
-        this.load.image('smoke5', 'assets/images/smoke5.png');
+        this.load.image('protag', 'assets/images/characters/protagforroom2.png');
+        this.load.image('plainbg', 'assets/images/scenes/room2/plainbg.png');
+        this.load.image('background', 'assets/images/scenes/room2/room2.png');
+        this.load.image('backwall', 'assets/images/scenes/room2/backwall.png');
+        this.load.image('column1', 'assets/images/scenes/room2/column1.png');
+        this.load.image('column2', 'assets/images/scenes/room2/column2.png');
+        this.load.image('screenDoors', 'assets/images/scenes/room2/screendoors.png');
+        this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
+        this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreen.png');
+        this.load.image('backwall', 'assets/images/scenes/room2/backwall.png')
+        this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
+        this.load.image('smoke1', 'assets/images/scenes/room2/smoke1.png');
+        this.load.image('smoke2', 'assets/images/scenes/room2/smoke2.png');
+        this.load.image('smoke4', 'assets/images/scenes/room2/smoke4.png');
+        this.load.image('smoke3', 'assets/images/scenes/room2/smoke3.png');
+        this.load.image('smoke5', 'assets/images/scenes/room2/smoke5.png');
     }
     createObjects() {
         this.plainbg = this.background.create(900, 120, 'plainbg')
@@ -67,9 +68,13 @@ export default class Room2 extends GameScene {
         this.physics.world.bounds.height = this.groundLayer.height
     }
 
-    changeRooms() {
+    changeRoomsEmp() {
             this.physics.shutdown();
             this.scene.start('EmpressBedroom')
+    }
+    changeRooms3() {
+        this.physics.shutdown();
+        this.scene.start('Room3')
     }
 
     create() {
@@ -84,7 +89,7 @@ export default class Room2 extends GameScene {
         this.createObjects()
 
         //declare protag
-        this.protag = this.physics.add.sprite(700, 500, 'protag');
+        this.protag = this.physics.add.sprite(1050, 400, 'protag');
         this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
         this.protag.body.height = 40
@@ -95,11 +100,11 @@ export default class Room2 extends GameScene {
         };
 
         this.backwall.body.checkCollision.none = true;
-        this.slidingDoor.depth = this.screenDoors.depth + 10
-        this.backwall.depth = this.slidingDoor.depth + 10;
-        this.column2.depth = this.screenDoors.depth - 20
-        console.log("screendoors", this.screenDoors)
-        console.log("slidingdoor")
+        // this.slidingDoor.depth = this.screenDoors.depth + 10
+        // this.backwall.depth = this.slidingDoor.depth + 10;
+        // this.column2.depth = this.screenDoors.depth - 20
+        // console.log("screendoors", this.screenDoors)
+        // console.log("slidingdoor")
 
 
         //add colliders
@@ -111,6 +116,9 @@ export default class Room2 extends GameScene {
             }
         })
 
+        this.backwall.setDepth = this.slidingDoor.depth - 10;
+        this.column2.depth = this.screenDoors.depth + 20
+
         //Camera setup
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
@@ -118,7 +126,10 @@ export default class Room2 extends GameScene {
         this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.immovable = true;
-        // console.log(this.room2Door)
+        this.room3Door = this.add.zone(150, 50, 300, 100).setName('room3Door').setInteractive();
+        this.physics.world.enable(this.room3Door)
+        this.room3Door.body.immovable = true;
+
         // let checkMotion = () => {
         //     if (this.cursors.right.isDown) {
         //         return true
@@ -133,7 +144,8 @@ export default class Room2 extends GameScene {
        //Camera setup
        this.setCameras();
 
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRoomsEmp)
+        this.physics.add.overlap(this.protag, this.room3Door, this.changeRooms3)
         // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
 
 

@@ -6,8 +6,8 @@ export default class GameScene extends Scene {
         super(config);
         this.timers = [];
         this.updatableTimers = [];
-        // this.frame = 0;
         this.frameMS = 0;
+
     }
 
     preload() {
@@ -15,6 +15,11 @@ export default class GameScene extends Scene {
     }
 
     create() {
+        //create static groups
+        this.background = this.physics.add.staticGroup();
+        this.behinders = this.physics.add.staticGroup();
+        this.smoke = this.physics.add.group();
+
         if (!store.getMusic()) {
             let theme = this.sound.add('theme');
            theme.play({ loop: true, volume: 0.5 });
@@ -30,7 +35,7 @@ export default class GameScene extends Scene {
         //to work with the change that master did aswell
         this.stateChangeEnterKeyReleased = false;
         this.stateChangeSpaceKeyReleased = false;
-        this.scene.launch('HUD')
+
     }
 
     setCameras() {
