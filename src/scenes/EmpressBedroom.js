@@ -27,7 +27,7 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
-        this.load.image('sake', 'assets/item/sake.png')
+        this.load.image('sake', 'assets/images/item/Sake.png')
     }
 
     createBg() {
