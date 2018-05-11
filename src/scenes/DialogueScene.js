@@ -20,7 +20,7 @@ export default class DialogueScene extends Scene {
 
     preload() {
         this.load.audio('chat', 'assets/audio/chat.m4a')
-        this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('chatresponse', 'assets/audio/chatresponse.m4a')
         this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
@@ -43,7 +43,7 @@ export default class DialogueScene extends Scene {
 
         if (response && response.child) {
             // re-render convo with child text
-            this.sound.add('select').play({ volume: 0.5 });
+            this.sound.add('chatresponse').play({ volume: 0.5 });
             this.render();
         } else {
             // no child, so exit dialogue

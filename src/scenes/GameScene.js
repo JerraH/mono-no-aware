@@ -3,17 +3,21 @@ import store from '../store';
 import items from '../itemList';
 import Item from '../Item';
 
+const WIND_DELAY = 3000;
+
 export default class GameScene extends Scene {
     constructor(config) {
         super(config);
         this.timers = [];
         this.updatableTimers = [];
         this.frameMS = 0;
-
+        this.readyForWind = true;
+        this.nextWindMS = 0;
     }
 
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
+        this.load.audio('wind', 'assets/audio/wind.m4a')
         this.load.image('sake', 'assets/images/Sake.png');
         this.load.image('triangle', 'assets/greenTriangle.png');
     }
@@ -191,6 +195,16 @@ export default class GameScene extends Scene {
         }
 
         if (this.protag && this.protag.body) {
+            if (velX !== 0 || velY !== 0) {
+                if (this.readyForWind && this.frameMS >= this.nextWindMS) {
+                    this.sound.add('wind').play({volume: 0.1});
+                    this.nextWindMS = this.frameMS + WIND_DELAY;
+                }
+                this.readyForWind = false;
+            } else {
+                this.readyForWind = true;
+            }
+
             this.protag.setVelocityX(velX);
             this.protag.setVelocityY(velY);
 
