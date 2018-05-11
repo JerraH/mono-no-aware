@@ -33,7 +33,7 @@ export default class TitleScene extends Phaser.Scene {
         this.input.keyboard.once('keydown', (event) => {
             theme.stop();
             this.sound.add('select').play({ volume: 0.5 });
-            this.scene.start('pronoun');
+            this.scene.start('cutscene');
             // this.scene.start('EmpressBedroom');
         });
     }

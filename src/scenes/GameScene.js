@@ -61,7 +61,7 @@ export default class GameScene extends Scene {
 
     setCameras() {
         this.cameras.main.startFollow(this.protag)
-        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
+        this.cameras.main.setBounds(0, 0, this.groundLayer.width+50, this.groundLayer.height + 50)
     }
 
     // updateFrame() {

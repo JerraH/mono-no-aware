@@ -1,16 +1,34 @@
 import {Scene} from 'phaser';
 import store from '../store';
 
-const WIDTH = 800;
-const HEIGHT = 600;
-const TEXT_WIDTH = 600;
-const BORDER_SIZE = 25;
-const BOX_WIDTH = TEXT_WIDTH + BORDER_SIZE * 2;
-const MAX_HEIGHT = 500;
-const SPACE_PX = 15;
-const TITLE_HEIGHT = 50;
-const LINE_HEIGHT = 40;
-const SELECTION_HEIGHT = 54;
+    let WIDTH = 800;
+    let HEIGHT = 600;
+    let TEXT_WIDTH = 600;
+    let BORDER_SIZE = 25;
+    let BOX_WIDTH = TEXT_WIDTH + BORDER_SIZE * 2;
+    let MAX_HEIGHT = 500;
+    let SPACE_PX = 15;
+    let TITLE_HEIGHT = 50;
+    let LINE_HEIGHT = 40;
+    let SELECTION_HEIGHT = 54;
+
+
+if (store.textboxConstants) {
+    WIDTH = store.textboxConstants.WIDTH
+    HEIGHT = store.textboxConstants.HEIGHT;
+    TEXT_WIDTH = store.textboxConstants.TEXT_WIDTH;
+    BORDER_SIZE = store.textboxConstants.BORDER_SIZE;
+    BOX_WIDTH = store.textboxConstants.BOX_WIDTH;
+    MAX_HEIGHT = store.textboxConstants.MAX_HEIGHT;
+    SPACE_PX = store.textboxConstants.SPACE_PX;
+    TITLE_HEIGHT = store.textboxConstants.TITLE_HEIGHT;
+    LINE_HEIGHT = store.textboxConstants.LINE_HEIGHT;
+    SELECTION_HEIGHT = store.textboxConstants.SELECTION_HEIGHT;
+}
+
+
+
+
 
 export default class DialogueScene extends Scene {
     constructor(config) {
@@ -139,8 +157,8 @@ export default class DialogueScene extends Scene {
     }
 
     getSelectionY() {
-        return this.contentY + 
-            this.contentHeight - 
+        return this.contentY +
+            this.contentHeight -
             BORDER_SIZE -
             (this.responses.length - this.selectionIndex) * SELECTION_HEIGHT;
     }
@@ -155,7 +173,7 @@ export default class DialogueScene extends Scene {
         this.wordWidth = 0;
         this.wordHeight = 0;
         this.justifyText(dialogue.text.trim(), TEXT_WIDTH);
-        this.contentHeight = this.wordHeight * 0.5 + 
+        this.contentHeight = this.wordHeight * 0.5 +
             SELECTION_HEIGHT * this.responses.length +
             BORDER_SIZE * 2 +
             TITLE_HEIGHT;
@@ -183,7 +201,7 @@ export default class DialogueScene extends Scene {
             word.y = this.contentY + BORDER_SIZE + TITLE_HEIGHT + word.y * wordScaleY;
             word.scaleY = wordScaleY;
         })
-        
+
         if (this.title) {
             this.title.destroy();
         }
@@ -197,13 +215,13 @@ export default class DialogueScene extends Scene {
         for (let i = 0; i < this.responses.length; i++) {
             let response = this.add.text(0, 0, this.responses[i].text, { font: "40px Amatic SC" });
             this.responsesText.push(response);
-            Phaser.Display.Align.In.Center(response, this.add.zone(WIDTH / 2, 
+            Phaser.Display.Align.In.Center(response, this.add.zone(WIDTH / 2,
                 this.contentY + this.contentHeight - BORDER_SIZE - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
                 0, 0));
             maxWidth = Math.max(maxWidth, response.width);
         }
         maxWidth += 20;
-    
+
         for (let i = 0; i < 2; i++) {
             let selection = this.selection[i];
             selection.clear();

@@ -140,6 +140,9 @@ class Store {
     getTime() {
         return this.timeLeft;
     }
+    setTextboxConstants(obj) {
+        this.textboxConstants = obj
+    }
 }
 
 let store = new Store();
