@@ -1,22 +1,51 @@
 export default class Dialogue {
-    // Parsed JSON Example:
-    // let SO_COOL = {
-    //     name: 'Akiko',
-    //     textFrom: 'Can I help you with something?',
-    //     responses: [{
-    //         textTo: 'Yes, you definitely can!',
-    //         next: {
-    //             textFrom: 'I like your optimism',
-    //             responses: [{
-    //                 textTo: 'Cool.'
-    //             }, {
-    //                 textTo: 'Whatever.'
-    //             }]
-    //         }
-    //     }, {
-    //         textTo: 'Naw, boo'
-    //     }]
-    // }
+    parseFromTalkIt(arr, character) {
+        // parse guids
+        let guids = {};
+        arr.forEach(entry => {
+            guids[entry.id] = entry;
+        })
+
+        // connect graph
+        let root = arr.find(entry => entry.type === 'Node');
+        this.name = root.actor;
+        this.text = root.name;
+        this.responses = [];
+
+        const parseChoices = (obj, choices) => {
+            choices.forEach(guid => {
+                let choice = guids[guid];
+                let cb;
+                let child;
+
+                let next = guids[choice.next];
+                let variables = {};
+                while (next && next.type === 'Set') {
+                    variables[next.variable] = next.value;
+                    next = guids[next.next];
+                }
+                if (Object.keys(variables).length) {
+                    cb = () => {
+                        character.updateVariables(variables);
+                    }
+                }
+
+                if (next && next.type === 'Text') {
+                    child = new Dialogue(next.actor, next.name);
+                    if (next.choices) {
+                        parseChoices(child, next.choices);
+                    }
+                }
+
+                obj.addResponse({
+                    text: choice.name, 
+                    child, 
+                    cb});
+            })
+        }
+
+        parseChoices(this, root.choices);
+    }
 
     parseFromObject(obj, character) {
         this.name = obj.name;
@@ -27,9 +56,9 @@ export default class Dialogue {
                 let data = {
                     response: response.textTo
                 }
-                if (response.madeHappy && character) {
+                if (response.variables && character) {
                     data.cb = () => {
-                        character.updateHappiness(response.madeHappy)
+                        character.updateVariables(response.variables)
                     }
                 }
                 if (response.next) {           
@@ -50,29 +79,15 @@ export default class Dialogue {
             this.name = param1;
             this.text = param2;
             this.responses = [];
+        } else if (Array.isArray(param1)) {
+            this.parseFromTalkIt(param1, param2);
         } else {
             this.parseFromObject(param1, param2);
         }
     }
 
-    // Examples:
-    // addResopnse("OK great", doSomething);
-    // addResopnse("OK great", doSomething, child);
-    // addResopnse("OK great", child);
-
-    addResponse(response, cb /* optional */, child /* optional */) {
-        // cb is optional parameter
-        if (!(cb instanceof Function)) {
-            child = cb;
-            cb = undefined;
-        }
-
-        this.responses.push({
-            response,
-            cb,
-            child
-        })
-
+    addResponse(data) {
+        this.responses.push(data);
         return this;
     }
 }

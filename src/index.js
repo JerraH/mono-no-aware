@@ -9,7 +9,6 @@ import EndingScene from './scenes/EndingScene';
 import EmpressBedroom from './scenes/EmpressBedroom'
 import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
-import store from './store';
 import Room2 from './scenes/Room2';
 import Room3 from './scenes/Room3';
 import InventoryScene from './scenes/InventoryScene';

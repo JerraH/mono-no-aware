@@ -2,11 +2,7 @@ import Phaser from 'phaser';
 import store from '../store';
 
 export default class PlayAgainScene extends Phaser.Scene {
-    constructor(config) {
-        super(config)
 
-
-    }
 
     preload() {
         this.load.image('menubg', 'assets/menubg.png');

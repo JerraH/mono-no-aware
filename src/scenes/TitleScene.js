@@ -1,11 +1,6 @@
 import Phaser from 'phaser';
 
 export default class TitleScene extends Phaser.Scene {
-    constructor(config) {
-        super(config)
-
-
-    }
 
     preload() {
         this.load.image('startscreen', 'assets/startscreen.png')
@@ -22,7 +17,17 @@ export default class TitleScene extends Phaser.Scene {
         Phaser.Display.Align.In.Center(bkg, this.add.zone(400, 250, 0, 0));
 
         this.start = this.add.image(0, 0, 'starttext');
-        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 290, 200, 200));
+        Phaser.Display.Align.In.Center(this.start, this.add.zone(400, 280, 200, 200));
+
+        this.selection = [];
+        for (let i = 0; i < 2; i++) {
+            let selection = this.add.graphics(200, 54);
+            this.selection.push(selection);
+            selection.lineStyle(3.5, i * 0xffcf00, 1);
+            selection.strokeRect(0, 0, 200, 54);
+            selection.x = 300;
+            selection.y = 253;
+        }
 
         this.blink = 0;
         this.input.keyboard.once('keydown', (event) => {
@@ -35,6 +40,6 @@ export default class TitleScene extends Phaser.Scene {
 
     update(time, delta) {
         this.blink += delta;
-        this.start.alpha = [1,1,1,0][Math.floor(this.blink / 200) % 4];
+        this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
     }
 }

@@ -4,7 +4,9 @@ class Store {
     constructor() {
         this.pronoun = '';
         this.beloved = '';
-        this.inventory = [items.bow, items.calligraphyBrush, items.sake];
+        this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
+        this.inventory = [items.bow, items.calligraphyBrush];
+        this.allItems = {};
         this.inventoryActive = false;
         this.interactionActive = false;
         this.currentItem = {};
@@ -48,6 +50,20 @@ class Store {
         return this.dialogue;
     }
 
+    //dialogue scene
+
+    getDialogueActive() {
+        return this.inConversation;
+    }
+
+    setDialogueInactive() {
+        this.inConversation = false;
+
+    }
+    setDialogueActive() {
+        this.inConversation = true;
+    }
+
     // The player's inventory
 
     addToInventory(item) {
@@ -87,6 +103,16 @@ class Store {
 
     getInteractionActive() {
         return this.inventoryActive;
+    }
+
+    //Items
+
+    setAllItems(items) {
+        this.allItems = items;
+    }
+
+    getAllItems() {
+        return this.allItems;
     }
 
     setCurrentItem(item) {

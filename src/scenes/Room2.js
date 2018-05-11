@@ -1,7 +1,6 @@
 import {
     default as GameScene
 } from './GameScene';
-import Phaser from 'phaser';
 
 
 export default class Room2 extends GameScene {
@@ -69,8 +68,8 @@ export default class Room2 extends GameScene {
     }
 
     changeRoomsEmp() {
-            this.physics.shutdown();
-            this.scene.start('EmpressBedroom')
+        this.physics.shutdown();
+        this.scene.start('EmpressBedroom')
     }
     changeRooms3() {
         this.physics.shutdown();
@@ -111,8 +110,8 @@ export default class Room2 extends GameScene {
         this.behinders.children.iterate((child) => {
             if (this.key !== 'backwall') {
                 this.physics.add.collider(this.protag, child)
-            child.body.height = 40;
-            child.body.y = child.y + (child.height/2) - 40
+                child.body.height = 40;
+                child.body.y = child.y + (child.height / 2) - 40
             }
         })
 
@@ -130,19 +129,9 @@ export default class Room2 extends GameScene {
         this.physics.world.enable(this.room3Door)
         this.room3Door.body.immovable = true;
 
-        // let checkMotion = () => {
-        //     if (this.cursors.right.isDown) {
-        //         return true
-        //     } else {
-        //         return false;
-        //     }
-        // }
 
-
-        // .then(this.scene.start('room2'))
-
-       //Camera setup
-       this.setCameras();
+        //Camera setup
+        this.setCameras();
 
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRoomsEmp)
         this.physics.add.overlap(this.protag, this.room3Door, this.changeRooms3)

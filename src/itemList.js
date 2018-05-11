@@ -1,4 +1,3 @@
-
 const bow = {name: 'Bow and Arrow' , description: 'This is a great looking bow and arrow.', id: ''};
 const koto = {name: 'Koto' , id: '', description: 'A beautiful stringed musical instrument of the finest make.  A single, gentle touch it and it begins to play softly; startled, you pull back your hand.'};
 const fan = {name: 'Folding Fan' , description: 'Sure to impress!', id: ''};

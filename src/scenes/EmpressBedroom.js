@@ -1,17 +1,24 @@
-
-import {default as GameScene} from './GameScene.js';
-import { default as Akiko } from '../characters/akiko'
+import {
+    default as GameScene
+} from './GameScene.js';
+import {
+    default as Akiko
+} from '../characters/akiko'
 import Empress from '../characters/Emp'
 import Item from '../Item'
+import Phaser from 'phaser'
 
 export default class EmpressBedroom extends GameScene {
+
     constructor(config) {
         super(config)
         this.changeRooms = this.changeRooms.bind(this)
 
+
     }
 
     preload() {
+        //this.globalPreload.call(this); don't delete my beautiful function!
         super.preload();
         this.load.image('protag', 'assets/images/characters/protag.png')
         this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
@@ -20,7 +27,9 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
+        this.load.image('sake', 'assets/item/sake.png')
     }
+
     createBg() {
         this.groundLayer = this.background.create(500, 300, 'bedroom')
         //create background and set the world bounds equal to the size of the background
@@ -34,25 +43,61 @@ export default class EmpressBedroom extends GameScene {
         //set's the protag's hit box
         this.protag.body.height = 30
         this.protag.body.width = 120
-        this.protag.body.offset = {x: 30, y: 150};
-        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
+        this.protag.body.offset = {
+            x: 30,
+            y: 150
+        };
+        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
     }
     createEmpress() {
-        this.emp = new Empress({scene: this, x: 750, y: 340, key: 'empress', scale: 0.75});
+        this.emp = new Empress({
+            scene: this,
+            x: 850,
+            y: 370,
+            key: 'empress'
+        });
         this.emp.angle = 28;
+        this.emp.body.angle = 28;
         this.emp.body.immovable = true;
-    }
+        this.emp.body._bounds = null
+        console.log(this.emp)
 
-    createItems() {
-        this.items = [];
-        this.items[0] = new Item({scene: this, x: 600, y:500 , texture: 'toy'});
-        this.items[0].create(); //set name here
     }
 
     changeRooms() {
         this.physics.shutdown();
         this.scene.start('room2')
 
+    }
+    createPolygon() {
+
+        let polygon = new Phaser.Geom.Polygon([
+            580, 155,
+            650, 120,
+            700, 200,
+            800, 270,
+        ]);
+        console.log(polygon)
+
+        var graphics = this.add.graphics({
+            x: 100,
+            y: 200
+        });
+
+        graphics.lineStyle(2, 0x00aa00);
+
+        graphics.beginPath();
+
+        graphics.moveTo(polygon.points[0].x, polygon.points[0].y);
+
+        for (var i = 1; i < polygon.points.length; i++) {
+            graphics.lineTo(polygon.points[i].x, polygon.points[i].y);
+        }
+
+        graphics.closePath();
+        graphics.strokePath();
+
+        return polygon
     }
 
     createRoomChangeZone() {
@@ -80,12 +125,26 @@ export default class EmpressBedroom extends GameScene {
         this.NPCs = this.physics.add.staticGroup()
         this.cursors = this.input.keyboard.createCursorKeys();
 
-
         this.createBg();
-        this.createProtag();
-        this.createItems(); //atleast tell people when you're going to comment out their entire code.
 
-        console.log(this.world)
+        this.createProtag();
+
+        //Create Scene Items and store them in the allItems base,
+        //which is utilized when you press the enter key
+
+        const sceneItems = this.createItems(this, [{
+            name: 'sake',
+            x: 600,
+            y: 500
+        }]);
+
+        sceneItems.forEach((sceneItem) => {
+            this.gameItems.push(sceneItem);
+        })
+
+        this.polygon = this.createPolygon()
+        this.physics.world.enable(this.polygon)
+        console.log(this.polygon)
 
         this.createRoomChangeZone()
 
@@ -99,8 +158,8 @@ export default class EmpressBedroom extends GameScene {
 
 
 
+
         this.createEmpress();
-        console.log(this.emp.body)
 
         // this.koto = new Item({
         //     scene: this,
@@ -112,12 +171,14 @@ export default class EmpressBedroom extends GameScene {
         // }).setInteractive()
 
 
-       //Camera setup
-       this.setCameras();
+        //Camera setup
+        this.setCameras();
 
-       //depth sorting
-       if (this.protag.velocity !== 0) {
-        this.akiko.depth = this.akiko.y + this.akiko.height / 2;
+        this.physics.add.collider(this.polygon, this.protag, this.emp.enterConvo)
+
+        //depth sorting
+        if (this.protag.velocity !== 0) {
+            this.akiko.depth = this.akiko.y + this.akiko.height / 2;
         }
     }
 

@@ -18,21 +18,21 @@ export default class Room3 extends GameScene {
         this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
         this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
         this.load.image('hangingScreen', 'assets/images/scenes/room3/hangingScreen.png');
-        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1')
+        this.load.image('smoke1', 'assets/images/scenes/room3/smoke2')
 
     }
     createObjects() {
         this.groundLayer = this.background.create(600, 340, 'background')
 
         //smoke
-        this.smoke1 = this.background.create(100, 200, 'smoke1')
+        this.smoke1 = this.smoke.create(100, 200, 'smoke1')
         console.log(this.smoke1)
 
         //things you can go behind
-        this.screen3 = this.behinders.create(700, 150, 'screen3')
-        this.screen2 = this.behinders.create(920, 150, 'screen2')
+        this.screen2 = this.behinders.create(520, 250, 'screen2')
 
-        this.screen1 = this.behinders.create(520, 150, 'screen1')
+        this.screen1 = this.behinders.create(520, 300, 'screen1')
+        this.screen3 = this.behinders.create(520, 200, 'screen3')
 
 
 
@@ -40,8 +40,7 @@ export default class Room3 extends GameScene {
         // this.column1.body.y = 250;
 
 
-        this.hangingScreen = this.behinders.create(600, 470, 'hangingScreen')
-        this.smokeTopLevel = this.smoke.create(600, 350, 'smoke-top-level')
+        this.hangingScreen = this.behinders.create(700, 470, 'hangingScreen')
 
         //set world bounds
 
@@ -50,8 +49,8 @@ export default class Room3 extends GameScene {
     }
 
     changeRooms() {
-            this.physics.shutdown();
-            this.scene.start('EmpressBedroom')
+        this.physics.shutdown();
+        this.scene.start('Room2')
     }
 
     create() {
@@ -63,7 +62,7 @@ export default class Room3 extends GameScene {
         this.createObjects()
 
         //declare protag
-        this.protag = this.physics.add.sprite(700, 500, 'protag');
+        this.protag = this.physics.add.sprite(1000, 500, 'protag');
         this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
         this.protag.body.height = 40
@@ -73,21 +72,13 @@ export default class Room3 extends GameScene {
             y: 245
         };
 
-        this.backwall.body.checkCollision.none = true;
-        this.slidingDoor.depth = this.screenDoors.depth + 10
-        this.backwall.depth = this.slidingDoor.depth + 10;
-        this.column2.depth = this.screenDoors.depth - 20
-        console.log("screendoors", this.screenDoors)
-        console.log("slidingdoor")
 
 
         //add colliders
         this.behinders.children.iterate((child) => {
-            if (this.key !== 'backwall') {
-                this.physics.add.collider(this.protag, child)
+            this.physics.add.collider(this.protag, child)
             child.body.height = 40;
-            child.body.y = child.y + (child.height/2) - 40
-            }
+            child.body.y = child.y + (child.height / 2) - 40
         })
 
         //Camera setup
@@ -106,8 +97,8 @@ export default class Room3 extends GameScene {
         //     }
         // }
 
-       //Camera setup
-       this.setCameras();
+        //Camera setup
+        this.setCameras();
 
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
         // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))

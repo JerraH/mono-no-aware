@@ -4,12 +4,15 @@ import utilityFunctions from '../utilityFunctions'
 
 let width = 800
 let height = 600
-
+let setTimer = function () {
+    this.text.setText(this.timeLeft())
+}
 export default class HUD extends Phaser.Scene {
     constructor(config) {
         super(config)
         this.timers = []
-        this.setInterval = utilityFunctions.setInterval.bind(this);
+        this.setTimer = setTimer.bind(this)
+
 
 
     }
@@ -49,7 +52,10 @@ export default class HUD extends Phaser.Scene {
         this.timerContainer.ignoreDestroy = true;
         this.timerWheel.ignoreDestroy = true;
         this.timerContainer.add(timerHouse).setDepth(2000)
-        this.text = this.add.text(-40, -90,  '2 days 0 hours', { font: "16px Kaushan Script", color: 0xffffff });
+        this.text = this.add.text(-40, -90, '2 days 0 hours', {
+            font: "16px Kaushan Script",
+            color: 0xffffff
+        });
         this.timerContainer.add(this.text).setDepth(3010)
 
 
@@ -62,54 +68,42 @@ export default class HUD extends Phaser.Scene {
         });
 
         console.log(this.timerWheel)
-        this.timeLeft = function() {
 
-            let ms = this.timer.delay - this.timer.getOverallProgress();
-            console.log("overall progress is", this.timer.getOverallProgress)
-            this.inDays = ms * 144;
-            let secs = (this.inDays / 1000)
-            console.log(secs)
-            // 1200000 === 172800000
-            let totalMinutes = secs / 60;
-            let min = totalMinutes % 60;
-            let hours = Math.floor(totalMinutes / 60)
-            console.log('hours', hours)
 
-            this.days = Math.floor(hours / 24)
-            console.log(this.days)
-            this.finhours = hours % 24
-            console.log(this.finhours)
-            return this.days + " days " + this.finhours + " hours"
-        }
-        this.setCountdown = function() {this.text.setText(this.timeLeft()).bind(this)}
+
+
 
 
 
 
     }
+    timeLeft() {
 
-    update (time) {
-        this.timedEvent = this.time.addEvent({ delay: 500, callback: this.setCountdown(), callbackScope: this, loop: true });
+        let ms = this.timer.delay - this.timer.getOverallProgress();
+        this.inDays = ms * 144;
+        let secs = (this.inDays / 1000)
+        // 1200000 === 172800000
+        let totalMinutes = secs / 60;
+        let min = totalMinutes % 60;
+        let hours = Math.floor(totalMinutes / 60)
 
-        if (time % 1000 === 0) {
-
-            console.log(this.text)
-        }
-
-
-
-
-
-
-
-
+        this.days = Math.floor(hours / 24)
+        this.finhours = hours % 24
+        return this.days + " days " + this.finhours + " hours"
+    }
 
 
-        // let p1 = Phaser.Math.RotateAroundDistance({ x: this.x, y: this.y }, this.x, this.y, Phaser.Math.DegToRad(angle - 5));
 
+    update() {
+        // let setCountdown = () => {this.text.setText(this.timeLeft())
+        // }
+        this.time.addEvent({
+            delay: 10000,
+            callback: this.setTimer(),
+            callbackScope: this,
+            loop: true
+        });
+    }
 
 
 }
-
-}
-

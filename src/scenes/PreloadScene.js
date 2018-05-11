@@ -1,8 +1,5 @@
-import {Scene} from 'phaser';
+import { Scene } from 'phaser';
 import FontFaceObserver from 'fontfaceobserver';
-
-import store from '../store';
-import Dialogue from '../Dialogue';
 
 export default class PreloadScene extends Scene {
     preload() {
@@ -13,11 +10,11 @@ export default class PreloadScene extends Scene {
             'Kaushan Script'
         ];
         Promise.all(
-            fonts.map(font => new FontFaceObserver(font).load())
-        )
-        .then(() => {
-            this.complete = true;
-        });
+                fonts.map(font => new FontFaceObserver(font).load())
+            )
+            .then(() => {
+                this.complete = true;
+            });
 
     }
 
