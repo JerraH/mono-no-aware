@@ -13,18 +13,7 @@ import store from '../store';
     let SELECTION_HEIGHT = 54;
 
 
-if (store.textboxConstants) {
-    WIDTH = store.textboxConstants.WIDTH
-    HEIGHT = store.textboxConstants.HEIGHT;
-    TEXT_WIDTH = store.textboxConstants.TEXT_WIDTH;
-    BORDER_SIZE = store.textboxConstants.BORDER_SIZE;
-    BOX_WIDTH = store.textboxConstants.BOX_WIDTH;
-    MAX_HEIGHT = store.textboxConstants.MAX_HEIGHT;
-    SPACE_PX = store.textboxConstants.SPACE_PX;
-    TITLE_HEIGHT = store.textboxConstants.TITLE_HEIGHT;
-    LINE_HEIGHT = store.textboxConstants.LINE_HEIGHT;
-    SELECTION_HEIGHT = store.textboxConstants.SELECTION_HEIGHT;
-}
+
 
 
 
@@ -34,7 +23,22 @@ export default class DialogueScene extends Scene {
     constructor(config) {
         super(config);
         this.handleKey = this.handleKey.bind(this);
+        this.textboxConstants = store.getTextboxConstants()
+        if (this.textboxConstants) {
+            WIDTH = store.textboxConstants.WIDTH
+            HEIGHT = store.textboxConstants.HEIGHT;
+            TEXT_WIDTH = store.textboxConstants.TEXT_WIDTH;
+            BORDER_SIZE = store.textboxConstants.BORDER_SIZE;
+            BOX_WIDTH = store.textboxConstants.BOX_WIDTH;
+            MAX_HEIGHT = store.textboxConstants.MAX_HEIGHT;
+            SPACE_PX = store.textboxConstants.SPACE_PX;
+            TITLE_HEIGHT = store.textboxConstants.TITLE_HEIGHT;
+            LINE_HEIGHT = store.textboxConstants.LINE_HEIGHT;
+            SELECTION_HEIGHT = store.textboxConstants.SELECTION_HEIGHT;
+        }
     }
+
+
 
     preload() {
         this.load.audio('chat', 'assets/audio/chat.m4a')
@@ -127,7 +131,17 @@ export default class DialogueScene extends Scene {
             y += LINE_HEIGHT;
 
             let splitText = paragraph.split(/\s/).filter(word => word.length);
-            let words = splitText.map(word => this.add.text(0, 0, word, { font: "40px Amatic SC", scaleY: 0.5 }));
+            let words = splitText.map(word => {
+                if (this.type !== 'cutscene') {
+                    return this.add.text(0, 0, word, { font: "40px Amatic SC", scaleY: 0.5 })
+                }
+                else if (this.type === 'cutscene') {
+                    return this.add.text(0, 0, word, { font: '25px Cabin', scaleY: 2, scaleX: 0.5})
+                }
+            }
+
+        );
+
             this.words = this.words.concat(words);
             let curWord = 0;
             while (curWord < words.length) {
