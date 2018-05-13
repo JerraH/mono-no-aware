@@ -12,13 +12,14 @@ export default class Room3 extends GameScene {
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/scenes/room3/protagforroom2.png');
+        this.load.image('protag', 'assets/images/characters/protagforroom3.png');
         this.load.image('background', 'assets/images/scenes/room3/background.png');
         this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
         this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
         this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
         this.load.image('hangingScreen', 'assets/images/scenes/room3/hangingScreen.png');
-        this.load.image('smoke1', 'assets/images/scenes/room3/smoke2')
+        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1')
+        this.load.image('smoke2', 'assets/images/scenes/room3/smoke2')
 
     }
     createObjects() {

@@ -19,13 +19,14 @@
   },
   "homepage": "https://github.com/photonstorm/phaser3-project-template#readme",
   "devDependencies": {
-    "webpack-dev-server": "^2.11.0",
-    "webpack": "^3.4.1",
-    "raw-loader": "^0.5.1"
+    "raw-loader": "^0.5.1",
+    "webpack": "^4.8.1",
+    "webpack-dev-server": "^2.11.0"
   },
   "dependencies": {
     "fontfaceobserver": "^2.0.13",
     "phaser": "^3.6.0",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "wordpos": "^1.1.6"
   }
 }

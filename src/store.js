@@ -1,9 +1,10 @@
 import items from './itemList'
+import Constants from './constants'
 
 class Store {
     constructor() {
         this.pronoun = '';
-        this.beloved = '';
+        this.beloved = {title: '', pronouns: []};
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
         this.inventory = [items.bow, items.calligraphyBrush];
         this.allItems = {};
@@ -20,7 +21,6 @@ class Store {
 
 
     // The player's chosen pronoun
-
     setPronoun(pronoun) {
         this.pronoun = pronoun;
     }
@@ -32,7 +32,25 @@ class Store {
     // The player's chosen beloved
 
     setBeloved(beloved) {
-        this.beloved = beloved;
+        if (beloved === Constants.PRONOUN_SHE) {
+            this.beloved.pronouns.push('she')
+            this.beloved.pronouns.push('her')
+            this.beloved.pronouns.push('hers')
+            this.beloved.pronouns.push('herself')
+            this.beloved.title = 'Empress'
+        } else if (beloved === Constants.PRONOUN_HE) {
+            this.beloved.pronouns.push('he')
+            this.beloved.pronouns.push('him')
+            this.beloved.pronouns.push('his')
+            this.beloved.pronouns.push('himself')
+            this.beloved.title = 'Emperor'
+        } else {
+            this.beloved.pronouns.push('they')
+            this.beloved.pronouns.push('them');
+            this.beloved.pronouns.push('theirs')
+            this.beloved.pronouns.push('themselves')
+            this.beloved.title = 'Eminence'
+        }
     }
 
     getBeloved() {
@@ -139,6 +157,12 @@ class Store {
     }
     getTime() {
         return this.timeLeft;
+    }
+    setTextboxConstants(obj) {
+        this.textboxConstants = obj
+    }
+    getTextboxConstants() {
+        return this.textboxConstants
     }
 }
 
