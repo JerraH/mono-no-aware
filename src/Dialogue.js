@@ -12,6 +12,7 @@ export default class Dialogue {
         let search5 = /\bherself/gi
         let tenser1 = /(they) (does)/gi
         let tenser2 = /(does) (they)/gi
+        let tenser3 = /(?=they)(\s\S+)/gi
         let beloved = store.getBeloved();
         let title = beloved.title
         console.log(beloved.pronouns)
@@ -26,19 +27,18 @@ export default class Dialogue {
             for (let property in entry) {
                 if (entry[property] && entry[property] !== '' && typeof entry[property] === 'string')
                  {
-                    console.log("my property is", entry[property])
                     entry[property] = entry[property].replace(search1, pro1);
                     entry[property] = entry[property].replace(search2, pro2);
                     entry[property] = entry[property].replace(search3, pro3);
                     entry[property] = entry[property].replace(search4, title);
                     entry[property] = entry[property].replace(search5, pro4)
-                    console.log("my property is", entry[property])
                     if (pro1 === 'they') {
                         entry[property] = entry[property].replace(tenser1, 'they do');
-                        entry[property] = entry[property].replace(tenser2, 'Do they');
+                        // entry[property] = entry[property].replace(tenser2, 'Do they');
                         entry[property] = entry[property].replace(search3, pro3);
                         entry[property] = entry[property].replace(search4, title);
                         entry[property] = entry[property].replace(search5, pro4)
+                        entry[property] = entry[property].replace(tenser3, 'AAAAA')
                     }
                 }
 
