@@ -101,7 +101,7 @@ export default class DialogueScene extends Scene {
                 }
                 break;
             case 'ArrowDown':
-                if (this.selectionIndex < store.getDialogue().responses.length-1) {
+                if (this.selectionIndex < this.responses.length-1) {
                     this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();

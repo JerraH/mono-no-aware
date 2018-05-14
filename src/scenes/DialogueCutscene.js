@@ -240,7 +240,7 @@ class DialogueCutscene extends Phaser.Scene {
         this.responsesText.forEach(response => response.destroy());
         this.responsesText.length = 0;
         for (let i = 0; i < this.responses.length; i++) {
-            console.log(this.responses[i])
+            // console.log(this.responses[i])
             let response = this.add.text(0, 0, this.responses[i].text, style);
             this.responsesText.push(response);
             Phaser.Display.Align.In.Center(response, this.dialogueContainer);
@@ -250,20 +250,16 @@ class DialogueCutscene extends Phaser.Scene {
         maxWidth += 20;
 
 
-        for (let i = 0; i < this.responses.length; i++) {
+        for (let i = 0; i < 2; i++) {
             let selection = this.selection[i];
-            if (selection) {
-                selection.clear();
-                if (this.responses.length) {
-                    selection.lineStyle(3.5, (i === 0) ? 0x00ffff : 0xffcf00, 1);
-                    selection.strokeRect(0, 0, 298, 44);
-                    selection.x = 450;
-                    selection.y = this.getSelectionY();
-                    selection.setDepth(3000)
-                }
+            selection.clear();
+            if (this.responses.length) {
+                selection.lineStyle(3.5, (i === 0) ? 0 : 0xffcf00, 1);
+                selection.strokeRect(0, 0, 298, 44);
+                selection.x = 450;
+                selection.y = this.getSelectionY();
+                selection.setDepth(3000)
             }
-
-
         }
     }
     handleResponse() {
@@ -272,7 +268,7 @@ class DialogueCutscene extends Phaser.Scene {
             this.selectionTween = null;
         }
 
-        let response = this.dialogue.responses.length && this.dialogue.responses[this.selectionIndex];
+        let response = this.responses.length && this.responses[this.selectionIndex];
 
         // set dialogue to child, if one exists, otherwise reset it
         store.setDialogue(response && response.child);
@@ -315,7 +311,7 @@ class DialogueCutscene extends Phaser.Scene {
                 }
                 break;
             case 'ArrowDown':
-                if (this.selectionIndex < store.getDialogue().responses.length - 1) {
+                if (this.selectionIndex < this.responses.length-1) {
                     this.selectionIndex++;
                     this.soundAndAnim()
                 }
@@ -388,7 +384,6 @@ class DialogueCutscene extends Phaser.Scene {
 
         this.renderCutscene(this.dialogueContainer);
 
-
         this.blink = 0;
 
         this.sound.add('chat').play({
@@ -402,6 +397,11 @@ class DialogueCutscene extends Phaser.Scene {
         // this.dialogueWindow = this.scene.launch('dialogue', general)
 
 
+        update(time, delta) {
+            this.blink += delta;
+            // this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
+            this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
+       }    
     }
 
 }
