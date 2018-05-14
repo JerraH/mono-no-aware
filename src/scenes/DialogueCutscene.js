@@ -393,18 +393,7 @@ class DialogueCutscene extends Phaser.Scene {
         this.input.keyboard.on('keydown', this.handleKey);
         // this.words.style = { font: "20px Cabin"}
 
-
         // this.dialogueWindow = this.scene.launch('dialogue', general)
-
-
-<<<<<<< HEAD
-    //     update(time, delta) {
-    //         this.blink += delta;
-    //         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
-    //         this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
-    //    }
-=======
->>>>>>> 1729c16c4efee9338aae05cf768de93bfa1f1943
     }
     
     update(time, delta) {
