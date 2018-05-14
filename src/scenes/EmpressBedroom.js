@@ -125,18 +125,14 @@ export default class EmpressBedroom extends GameScene {
 
         this.createProtag();
 
-        //Create Scene Items and store them in the allItems base,
-        //which is utilized when you press the enter key
+        //This function creates Scene Items and stores them in this.allItems,
+        //which is then utilized by game scene when you press the enter key on any Item
 
         const sceneItems = this.createItems(this, [{
             id: 'sake',
             x: 600,
             y: 500
         }]);
-
-        sceneItems.forEach((sceneItem) => {
-            this.gameItems.push(sceneItem);
-        })
 
         this.polygon = this.createPolygon()
         this.physics.world.enable(this.polygon)
