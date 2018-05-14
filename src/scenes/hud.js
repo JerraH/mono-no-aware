@@ -29,7 +29,7 @@ export default class HUD extends Phaser.Scene {
     create() {
         //make the container and add the graphics
         this.timerContainer = this.add.container(730, 100)
-        console.log(this.timerContainer)
+        // console.log(this.timerContainer)
 
         //load the sprites
         this.timerWheel = this.add.sprite(10, -10, 'timerwheel')
@@ -67,7 +67,7 @@ export default class HUD extends Phaser.Scene {
             angle: 360
         });
 
-        console.log(this.timerWheel)
+        // console.log(this.timerWheel)
 
 
 

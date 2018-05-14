@@ -18,7 +18,7 @@ export default class Character extends Phaser.GameObjects.Image {
             Arrogance: 50,
             Humility: 50
         }
-        console.log(this.body)
+        // console.log(this.body)
 
         //bindings]
         // this.startConversation = this.startConversation.bind(this)

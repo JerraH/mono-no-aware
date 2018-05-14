@@ -18,8 +18,16 @@ export default class GameScene extends Scene {
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
         this.load.audio('wind', 'assets/audio/wind.m4a')
-        this.load.image('sake', 'assets/images/Sake.png');
+        // this.load.image('sake', 'assets/images/Sake.png');
         this.load.image('triangle', 'assets/greenTriangle.png');
+
+        Object.keys(items).forEach(id => {
+            let item = items[id];
+            if (item.image) {
+                // console.log("loaded ", 'item-' + id);
+                this.load.image('item-' + id, 'assets/images/item/' + item.image);
+            }
+        })
     }
 
     // globalPreload() {//can be run inside of every scene's preload, use .call(this)
@@ -50,14 +58,15 @@ export default class GameScene extends Scene {
         this.stateChangeSpaceKeyReleased = false;
         store.setAllItems(items);
         this.gameItems = [];
-        console.log(store.getAllItems());
+        // console.log(store.getAllItems());
     }
 
     createItems(sceneContext, requestedItems) {
         const sceneItems = [];
         requestedItems.forEach((item) => {
-            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: item.name});
-            newItem.create(store.getAllItems()[item.name]);
+            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: 'item-' + item.id});
+            console.log('creating', store.getAllItems(), item, item.id);
+            newItem.create(store.getAllItems()[item.id]);
             sceneItems.push(newItem)
         });
         return sceneItems;

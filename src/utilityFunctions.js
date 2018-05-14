@@ -4,7 +4,7 @@ import store from './store'
 
 const utilityFunctions = {
     handleKeyVertical: function (callback, exitFunc, options) {
-        console.log('the this inside my handlekeyvertical is', this)
+        // console.log('the this inside my handlekeyvertical is', this)
         this.selectionIndex = 0;
         this.load.audio('select', 'assets/audio/select.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')

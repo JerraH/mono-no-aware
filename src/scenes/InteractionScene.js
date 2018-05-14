@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
 import store from '../store';
 import Dialogue from '../Dialogue';
+import items from '../itemList';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -61,7 +62,7 @@ export default class InventoryScene extends Scene {
     handleSelectedOption(option) {
         switch (option) {
             case 'Take':
-                store.addToInventory(this.currentItem)
+                store.addToInventory(items[this.currentItem.id])
                 this.currentItem.visible = false;
                 this.selectOptions.forEach(option => {
                     option.alpha = 0;
