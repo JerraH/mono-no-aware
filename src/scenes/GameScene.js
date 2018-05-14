@@ -56,6 +56,11 @@ export default class GameScene extends Scene {
             newItem.create(store.getAllItems()[item.name]);
             sceneItems.push(newItem)
         });
+
+        sceneItems.forEach((sceneItem) => {
+            this.gameItems.push(sceneItem);
+        })
+        
         return sceneItems;
     }
 
