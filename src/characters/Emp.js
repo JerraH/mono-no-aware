@@ -8,6 +8,7 @@ export default class Emp extends Character {
         super(config)
         this.scene = config.scene;
         let pronouns = store.getBeloved()
+        this.angle = 28;
         this.key = 'empress'
         if (pronouns === Constants.PRONOUN_SHE) {
             this.pronoun1 = 'she'
@@ -38,7 +39,7 @@ export default class Emp extends Character {
     }
     saveEmpress() {
         let inventory = store.getInventory();
-        if (inventory.includes(store.cure1 && store.cure2)) {
+        if (inventory.includes(store.cure1) && inventory.includes(store.cure2)) {
             return new Dialogue("Attendant", "You cured " + this.pronoun2 + "!")
                 .addResponse({
                     text: "Yay!",
@@ -46,7 +47,7 @@ export default class Emp extends Character {
                         this.scene.scene.start('playagain')
                     }
                 })
-        } else if (inventory.includes(store.cure1 || store.cure2)) {
+        } else if (inventory.includes(store.cure1) || inventory.includes(store.cure2)) {
             return new Dialogue("Attendant", "Oh no!  Whatever you did didn't seem to work.....")
         // } else {
         //     console.log("the empress is asleep")
@@ -55,13 +56,13 @@ export default class Emp extends Character {
 
 
 
-    create() {
-        this.emp = this.scene.physics.add.image(750, 340, 'empress');
-        this.emp.angle = 28;
-        this.emp.body.immovable = true;
+    // create() {
+        // this.emp = this.scene.add.image(750, 340, 'empress');
+        // this.emp.angle = 28;
+        // this.emp.body.immovable = true;
         // this.scene.scene.launch('dialogue');
 
-    }
+    // }
 
 
 }

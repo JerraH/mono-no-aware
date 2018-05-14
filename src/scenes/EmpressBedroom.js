@@ -55,10 +55,11 @@ export default class EmpressBedroom extends GameScene {
             y: 370,
             key: 'empress'
         });
-        this.emp.angle = 28;
-        this.emp.body.angle = 28;
-        this.emp.body.immovable = true;
-
+        // this.emp.angle = 28;
+        // this.emp.body.angle = 28;
+        // this.emp.body.immovable = true;
+        // this.emp.body._bounds = null
+        // console.log(this.emp)
 
     }
 
