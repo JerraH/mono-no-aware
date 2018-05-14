@@ -24,6 +24,7 @@ export default class Dialogue {
         let pro4 = beloved.pronouns[3]
         // parse guids
         let guids = {};
+        console.log(arr)
         arr.forEach(entry => {
             guids[entry.id] = entry;
             for (let property in entry) {

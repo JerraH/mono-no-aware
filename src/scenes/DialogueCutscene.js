@@ -397,11 +397,11 @@ class DialogueCutscene extends Phaser.Scene {
         // this.dialogueWindow = this.scene.launch('dialogue', general)
 
 
-        update(time, delta) {
-            this.blink += delta;
-            // this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
-            this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
-       }    
+    //     update(time, delta) {
+    //         this.blink += delta;
+    //         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
+    //         this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
+    //    }
     }
 
 }
