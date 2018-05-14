@@ -1,5 +1,5 @@
-import store from './store'
-
+import store from './store';
+var nlp = require('compromise')
 
 
 export default class Dialogue {
@@ -12,7 +12,9 @@ export default class Dialogue {
         let search5 = /\bherself/gi
         let tenser1 = /(they) (does)/gi
         let tenser2 = /(does) (they)/gi
-        let tenser3 = /(?=they)(\s\S+)/gi
+        let tenser3 = /\S+(?=\sthey)/gi
+        let wordAndAfter = /(them)\s(\S+)/gi
+        let wordAfter = /(they\s)\S+/gi
         let beloved = store.getBeloved();
         let title = beloved.title
         console.log(beloved.pronouns)
@@ -27,18 +29,34 @@ export default class Dialogue {
             for (let property in entry) {
                 if (entry[property] && entry[property] !== '' && typeof entry[property] === 'string')
                  {
+
                     entry[property] = entry[property].replace(search1, pro1);
                     entry[property] = entry[property].replace(search2, pro2);
                     entry[property] = entry[property].replace(search3, pro3);
                     entry[property] = entry[property].replace(search4, title);
                     entry[property] = entry[property].replace(search5, pro4)
                     if (pro1 === 'they') {
+
                         entry[property] = entry[property].replace(tenser1, 'they do');
-                        // entry[property] = entry[property].replace(tenser2, 'Do they');
+                        entry[property] = entry[property].replace(tenser2, 'Do they');
                         entry[property] = entry[property].replace(search3, pro3);
                         entry[property] = entry[property].replace(search4, title);
-                        entry[property] = entry[property].replace(search5, pro4)
-                        entry[property] = entry[property].replace(tenser3, 'AAAAA')
+                        entry[property] = entry[property].replace(search5, pro4);
+                        entry[property] = entry[property].replace(wordAndAfter, (result) => {
+                            let myResult = nlp(result)
+                            if (myResult.nouns() !== []) {
+                                result = result.replace('them', 'their')
+                            }
+                            return result;
+                        })
+//                         entry[property] = entry[property].replace(wordAfter, (result) => {
+//                             if (nlp(result).verbs() !== []) {
+//                                 result = nlp(result).verbs().toPlural()
+// .text()
+//                             }
+//                             return result
+//                         })
+
                     }
                 }
 
@@ -120,7 +138,7 @@ export default class Dialogue {
     // new Dialogue("Akiko", "Hi there")
     // new Dialogue({... parsed JSON goes here ...}, Character)
     constructor(param1, param2) {
-        if (typeof(param1) === 'string') {
+        if (typeof (param1) === 'string') {
             this.name = param1;
             this.text = param2;
 

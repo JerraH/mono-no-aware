@@ -5,7 +5,6 @@ import {
     default as Akiko
 } from '../characters/akiko'
 import Empress from '../characters/Emp'
-import Item from '../Item'
 import Phaser from 'phaser'
 
 export default class EmpressBedroom extends GameScene {
@@ -155,8 +154,6 @@ export default class EmpressBedroom extends GameScene {
             x: 350,
             y: 350
         })
-
-
 
 
         this.createEmpress();
