@@ -34,7 +34,8 @@ export default class Emp extends Character {
         this.dialogue.addResponse({
             text: "I need more time."
         });
-        this.body.checkCollision.none = true;
+        this.body.angle = 28;
+        // this.body.checkCollision.none = true;
 
     }
     saveEmpress() {
