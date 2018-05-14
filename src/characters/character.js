@@ -18,14 +18,14 @@ export default class Character extends Phaser.GameObjects.Image {
             Arrogance: 50,
             Humility: 50
         }
-        console.log(this.body)
+        // console.log(this.body)
 
         //bindings]
         // this.startConversation = this.startConversation.bind(this)
         // this.endConversation = this.endConversation.bind(this);
         this.enterConvo = this.enterConvo.bind(this);
         // this.startScene = this.startScene.bind(this)
-        if (this.key !== 'empress') {
+        if (this.scene.type !== 'cutscene') {
             this.scene.physics.add.collider(this, this.protag, this.enterConvo);
 
         }

@@ -5,7 +5,6 @@ import {
     default as Akiko
 } from '../characters/akiko'
 import Empress from '../characters/Emp'
-import Item from '../Item'
 import Phaser from 'phaser'
 
 export default class EmpressBedroom extends GameScene {
@@ -27,7 +26,7 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
-        this.load.image('sake', 'assets/images/item/Sake.png')
+        // this.load.image('sake', 'assets/images/item/Sake.png')
     }
 
     createBg() {
@@ -60,7 +59,7 @@ export default class EmpressBedroom extends GameScene {
         this.emp.body.angle = 28;
         this.emp.body.immovable = true;
         this.emp.body._bounds = null
-        console.log(this.emp)
+        // console.log(this.emp)
 
     }
 
@@ -77,7 +76,7 @@ export default class EmpressBedroom extends GameScene {
             700, 200,
             800, 270,
         ]);
-        console.log(polygon)
+        // console.log(polygon)
 
         var graphics = this.add.graphics({
             x: 100,
@@ -133,14 +132,14 @@ export default class EmpressBedroom extends GameScene {
         //which is then utilized by game scene when you press the enter key on any Item
 
         const sceneItems = this.createItems(this, [{
-            name: 'sake',
+            id: 'sake',
             x: 600,
             y: 500
         }]);
 
         this.polygon = this.createPolygon()
         this.physics.world.enable(this.polygon)
-        console.log(this.polygon)
+        // console.log(this.polygon)
 
         this.createRoomChangeZone()
 
@@ -151,8 +150,6 @@ export default class EmpressBedroom extends GameScene {
             x: 350,
             y: 350
         })
-
-
 
 
         this.createEmpress();

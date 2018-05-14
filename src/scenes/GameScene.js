@@ -3,19 +3,31 @@ import store from '../store';
 import items from '../itemList';
 import Item from '../Item';
 
+const WIND_DELAY = 3000;
+
 export default class GameScene extends Scene {
     constructor(config) {
         super(config);
         this.timers = [];
         this.updatableTimers = [];
         this.frameMS = 0;
-
+        this.readyForWind = true;
+        this.nextWindMS = 0;
     }
 
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
-        this.load.image('sake', 'assets/images/Sake.png');
+        this.load.audio('wind', 'assets/audio/wind.m4a')
+        // this.load.image('sake', 'assets/images/Sake.png');
         this.load.image('triangle', 'assets/greenTriangle.png');
+
+        Object.keys(items).forEach(id => {
+            let item = items[id];
+            if (item.image) {
+                // console.log("loaded ", 'item-' + id);
+                this.load.image('item-' + id, 'assets/images/item/' + item.image);
+            }
+        })
     }
 
     // globalPreload() {//can be run inside of every scene's preload, use .call(this)
@@ -46,14 +58,15 @@ export default class GameScene extends Scene {
         this.stateChangeSpaceKeyReleased = false;
         store.setAllItems(items);
         this.gameItems = [];
-        console.log(store.getAllItems());
+        // console.log(store.getAllItems());
     }
 
     createItems(sceneContext, requestedItems) {
         const sceneItems = [];
         requestedItems.forEach((item) => {
-            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: item.name});
-            newItem.create(store.getAllItems()[item.name]);
+            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: 'item-' + item.id});
+            console.log('creating', store.getAllItems(), item, item.id);
+            newItem.create(store.getAllItems()[item.id]);
             sceneItems.push(newItem)
         });
 
@@ -66,7 +79,7 @@ export default class GameScene extends Scene {
 
     setCameras() {
         this.cameras.main.startFollow(this.protag)
-        this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
+        this.cameras.main.setBounds(0, 0, this.groundLayer.width+50, this.groundLayer.height + 50)
     }
 
     // updateFrame() {
@@ -196,6 +209,16 @@ export default class GameScene extends Scene {
         }
 
         if (this.protag && this.protag.body) {
+            if (velX !== 0 || velY !== 0) {
+                if (this.readyForWind && this.frameMS >= this.nextWindMS) {
+                    this.sound.add('wind').play({volume: 0.1});
+                    this.nextWindMS = this.frameMS + WIND_DELAY;
+                }
+                this.readyForWind = false;
+            } else {
+                this.readyForWind = true;
+            }
+
             this.protag.setVelocityX(velX);
             this.protag.setVelocityY(velY);
 

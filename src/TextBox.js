@@ -15,7 +15,7 @@ export default class TextBox {
         let graphics = this.scene.add.graphics({ lineStyle: { width: 2, color: 0xaa0000 }, fillStyle: { color: 0x0000aa } });
         graphics.fillRectShape(this);
 
-        console.log(this.body);
+        // console.log(this.body);
 
 
     }

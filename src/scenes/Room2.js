@@ -36,15 +36,15 @@ export default class Room2 extends GameScene {
 
         //smoke
         this.smoke1 = this.background.create(100, 200, 'smoke1')
-        console.log(this.smoke1)
+        // console.log(this.smoke1)
         this.smoke2 = this.background.create(440, 280, 'smoke2')
-        console.log(this.smoke2)
+        // console.log(this.smoke2)
         this.smoke3 = this.smoke.create(75, 50, 'smoke3')
-        console.log(this.smoke3)
+        // console.log(this.smoke3)
         this.smoke4 = this.smoke.create(190, 190, 'smoke4')
-        this.smoke4 = this.smoke.create(170, 120, 'smoke5')
+        this.smoke5 = this.smoke.create(170, 120, 'smoke5')
 
-        console.log(this.backwall)
+        // console.log(this.backwall)
         //things you can go behind
         this.slidingDoor = this.behinders.create(700, 150, 'slidingDoor')
         this.screenDoors = this.behinders.create(920, 150, 'screenDoors')

@@ -1,6 +1,7 @@
 import {Scene} from 'phaser';
 import store from '../store';
 import Dialogue from '../Dialogue';
+import items from '../itemList';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -15,7 +16,9 @@ export default class InventoryScene extends Scene {
     }
 
     preload() {
+        this.load.audio('take', 'assets/audio/take.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
+        this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
     }
 
@@ -43,7 +46,7 @@ export default class InventoryScene extends Scene {
             y: visible ? HEIGHT - ITEM_SIZE - BORDER_SIZE * 2 : HEIGHT,
             onComplete() {//this has a different this context
                 if (visible) {
-                    me.sound.add('select').play();
+                    me.sound.add('select').play({ volume: 0.5 });
                     me.selectOptions.forEach(option => {
                         option.alpha = 1;
                     })
@@ -59,12 +62,12 @@ export default class InventoryScene extends Scene {
     handleSelectedOption(option) {
         switch (option) {
             case 'Take':
-                store.addToInventory(this.currentItem)
+                store.addToInventory(items[this.currentItem.id])
                 this.currentItem.visible = false;
                 this.selectOptions.forEach(option => {
                     option.alpha = 0;
                 });
-                this.sound.add('select').play();
+                this.sound.add('take').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 this.updateVisibleTween(false);//scene.stop() exit happens in this function
                 break;
@@ -77,7 +80,7 @@ export default class InventoryScene extends Scene {
                 this.selectOptions.forEach(option => {
                     option.alpha = 0;
                 });
-                this.sound.add('select').play();
+                this.sound.add('close').play({ volume: 0.5 });
                 this.input.keyboard.off('keydown', this.handleKey)
                 this.updateVisibleTween(false);//scene.stop() exit happens in this function
                 break;
@@ -92,29 +95,29 @@ export default class InventoryScene extends Scene {
         switch (event.key) {
             case 'ArrowLeft':
                 if (this.selectionIndex > 0) {//stops it from looping leftward
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex--;
                     this.updateSelectionTween();
                 }
                 break;
             case 'ArrowRight':
                 if (this.selectionIndex < this.selectOptions.length - 2) { //stops it from looping
-                    this.sound.add('tap').play();
+                    this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
                 }
                 break;
             case 'Enter':
-            this.handleSelectedOption(this.selectOptions[this.selectionIndex].text);
+                this.handleSelectedOption(this.selectOptions[this.selectionIndex].text);
                 break;
             case 'Escape':
-            this.selectOptions.forEach(option => {
-                option.alpha = 0;
-            })
-            this.sound.add('select').play();
-            this.input.keyboard.off('keydown', this.handleKey)
-            this.updateVisibleTween(false);//scene.stop() exit happens in this function
-            break;
+                this.selectOptions.forEach(option => {
+                    option.alpha = 0;
+                })
+                this.sound.add('close').play({ volume: 0.5 });
+                this.input.keyboard.off('keydown', this.handleKey)
+                this.updateVisibleTween(false);//scene.stop() exit happens in this function
+                break;
             default:
                 break;
         }
