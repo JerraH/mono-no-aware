@@ -33,6 +33,8 @@ export default class PlayAgainScene extends Phaser.Scene {
         this.input.keyboard.once('keydown', (event) => {
             theme.stop();
             this.sound.add('select').play({ volume: 0.5 });
+
+            store.reset();
             this.scene.start('pronoun');
         });
     }
