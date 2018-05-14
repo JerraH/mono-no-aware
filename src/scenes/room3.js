@@ -27,7 +27,7 @@ export default class Room3 extends GameScene {
 
         //smoke
         this.smoke1 = this.smoke.create(100, 200, 'smoke1')
-        console.log(this.smoke1)
+        // console.log(this.smoke1)
 
         //things you can go behind
         this.screen2 = this.behinders.create(520, 250, 'screen2')

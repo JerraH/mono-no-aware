@@ -11,7 +11,7 @@ export default class Protag extends Phaser.GameObjects.Sprite{
         config.scene.add.existing(this);
         config.scene.physics.world.enable(this)
         this.body.immovable = true;
-        console.log(this.body)
+        // console.log(this.body)
     }
     create(){
         this.body.height = 20
