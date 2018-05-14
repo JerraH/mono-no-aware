@@ -65,7 +65,7 @@ export default class GameScene extends Scene {
         const sceneItems = [];
         requestedItems.forEach((item) => {
             const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: 'item-' + item.id});
-            console.log('creating', store.getAllItems(), item, item.id);
+            // console.log('creating', store.getAllItems(), item, item.id);
             newItem.create(store.getAllItems()[item.id]);
             sceneItems.push(newItem)
         });

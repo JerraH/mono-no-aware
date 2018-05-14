@@ -71,30 +71,27 @@ export default class EmpressBedroom extends GameScene {
     createPolygon() {
 
         let polygon = new Phaser.Geom.Polygon([
-            580, 155,
-            650, 120,
-            700, 200,
-            800, 270,
+            680, 355,
+            750, 320,
+            800, 400,
+            900, 470,
         ]);
         // console.log(polygon)
 
-        var graphics = this.add.graphics({
-            x: 100,
-            y: 200
-        });
+        // var graphics = this.add.graphics();
 
-        graphics.lineStyle(2, 0x00aa00);
+        // graphics.lineStyle(2, 0x00aa00);
 
-        graphics.beginPath();
+        // graphics.beginPath();
 
-        graphics.moveTo(polygon.points[0].x, polygon.points[0].y);
+        // graphics.moveTo(polygon.points[0].x, polygon.points[0].y);
 
-        for (var i = 1; i < polygon.points.length; i++) {
-            graphics.lineTo(polygon.points[i].x, polygon.points[i].y);
-        }
+        // for (var i = 1; i < polygon.points.length; i++) {
+        //     graphics.lineTo(polygon.points[i].x, polygon.points[i].y);
+        // }
 
-        graphics.closePath();
-        graphics.strokePath();
+        // graphics.closePath();
+        // graphics.strokePath();
 
         return polygon
     }
