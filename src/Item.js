@@ -12,25 +12,28 @@ export default class Item extends Phaser.GameObjects.Image {
       this.name = '';
       this.description = '';
       this.id = null;
+    }
+
+    create({name, description, id, scale}) {
+      this.name = name;
+      this.description = description;
+      this.id = id;
+      this.scaleX = this.scaleY = scale;
+
       this.sign = new Sign({
         scene: this.scene,
         x: this.x,
         y: this.y - (this.body.sourceHeight/2),
         texture: 'triangle'
       });
+      this.sign.setDepth(3000);
       this.zone = new Zone({
         scene: this.scene,
-        x: this.x - (this.body.sourceWidth * .75),
-        y: this.y - (this.body.sourceHeight * .75),
-        width: this.body.sourceWidth * 1.5,
-        height: this.body.sourceHeight * 1.5
+        x: this.x - (this.body.sourceWidth * scale * .75),
+        y: this.y - (this.body.sourceHeight * scale * .75),
+        width: this.body.sourceWidth * scale * 1.5,
+        height: this.body.sourceHeight * scale * 1.5
       });//origin isn't the same as items origin. Item is centered, zone's origin is top left corner.
-    }
-
-    create({name, description, id}) {
-      this.name = name;
-      this.description = description;
-      this.id = id;
 
       this.scene.physics.add.overlap(/* since we tied the player to the scene? */ this.scene.protag,
         this.zone,

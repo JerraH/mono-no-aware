@@ -3,7 +3,7 @@ const itemsArr = [
     { id: 'koto', name: 'Koto', description: 'A beautiful stringed musical instrument of the finest make.  A single, gentle touch it and it begins to play softly; startled, you pull back your hand.', image: 'koto.png' },
     { id: 'fan', name: 'Folding Fan', description: 'Sure to impress!' },
     { id: 'lamp', name: 'Paper Lantern', description: 'Delicate but comes in handy.' },
-    { id: 'sake', name: 'Jug of Sake', description: 'Glug glug glug!', image: 'Sake.png' },
+    { id: 'sake', name: 'Jug of Sake', description: 'Glug glug glug!', image: 'Sake.png', scale: 0.5 },
     { id: 'calligraphyBrush', name: 'Calligraphy Brush', description: 'A stroke of genius.' },
     { id: 'inari', name: 'inari tofu roll', description: 'Delicious!' }
 ];
