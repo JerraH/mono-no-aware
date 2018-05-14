@@ -17,7 +17,7 @@ export default class Dialogue {
         let wordAfter = /(they\s)\S+/gi
         let beloved = store.getBeloved();
         let title = beloved.title
-        console.log(beloved.pronouns)
+        // console.log(beloved.pronouns)
         let pro1 = beloved.pronouns[0]
         let pro2 = beloved.pronouns[1]
         let pro3 = beloved.pronouns[2]
@@ -72,14 +72,14 @@ export default class Dialogue {
         this.responses = [];
 
         //replace all the beloved's pronouns with the correct ones
-        console.log(root)
+        // console.log(root)
 
         const parseChoices = (obj, choices) => {
             choices.forEach(guid => {
                 let choice = guids[guid];
                 let cb;
                 let child;
-                console.log(choice)
+                // console.log(choice)
 
                 let next = guids[choice.next];
                 let variables = {};

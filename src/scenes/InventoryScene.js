@@ -2,6 +2,7 @@ import {Scene} from 'phaser';
 import store from '../store';
 import { WSAENOMORE } from 'constants';
 import Dialogue from '../Dialogue';
+import items from '../itemList';
 
 const WIDTH = 800;
 const HEIGHT = 600;
@@ -117,7 +118,16 @@ export default class InventoryScene extends Scene {
         this.bkg.y = HEIGHT;
 
         for (let i = 0; i < inventory.length; i++) {
-            let item = this.add.text(0, 0, inventory[i].name.replace(' ', '\n'), { font: "16px Berkshire Swash" });
+            let item;
+            // console.log("ADDED ITEM", inventory[i])
+            if (inventory[i].image) {
+                item = this.add.image(0, 0, 'item-' + inventory[i].id);
+                item.scaleX = item.scaleY = Math.min(
+                    ITEM_SIZE / item.width,
+                    ITEM_SIZE / item.height);
+            } else {
+                item = this.add.text(0, 0, inventory[i].name.replace(' ', '\n'), { font: "16px Berkshire Swash" });
+            }
             this.everything.push(item);
             Phaser.Display.Align.In.Center(item, this.add.zone(
                 BORDER_SIZE + (ITEM_SIZE + BORDER_SIZE) * i + ITEM_SIZE / 2,
@@ -135,7 +145,7 @@ export default class InventoryScene extends Scene {
             item.alpha = 0;
         })
 
-        console.log(this.everything)
+        // console.log(this.everything)
         this.input.keyboard.on('keydown', this.handleKey);
 
         this.sound.add('select').play({ volume: 0.5 });

@@ -48,8 +48,8 @@ export default class Emp extends Character {
                 })
         } else if (inventory.includes(store.cure1 || store.cure2)) {
             return new Dialogue("Attendant", "Oh no!  Whatever you did didn't seem to work.....")
-        } else {
-            console.log("the empress is asleep")
+        // } else {
+        //     console.log("the empress is asleep")
         }
     }
 

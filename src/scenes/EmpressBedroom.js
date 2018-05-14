@@ -26,7 +26,7 @@ export default class EmpressBedroom extends GameScene {
         this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
         this.load.image('toy', 'assets/catToy.png')
         this.load.image('triangle', 'assets/greenTriangle.png');
-        this.load.image('sake', 'assets/images/item/Sake.png')
+        // this.load.image('sake', 'assets/images/item/Sake.png')
     }
 
     createBg() {
@@ -59,7 +59,7 @@ export default class EmpressBedroom extends GameScene {
         this.emp.body.angle = 28;
         this.emp.body.immovable = true;
         this.emp.body._bounds = null
-        console.log(this.emp)
+        // console.log(this.emp)
 
     }
 
@@ -76,7 +76,7 @@ export default class EmpressBedroom extends GameScene {
             700, 200,
             800, 270,
         ]);
-        console.log(polygon)
+        // console.log(polygon)
 
         var graphics = this.add.graphics({
             x: 100,
@@ -132,7 +132,7 @@ export default class EmpressBedroom extends GameScene {
         //which is utilized when you press the enter key
 
         const sceneItems = this.createItems(this, [{
-            name: 'sake',
+            id: 'sake',
             x: 600,
             y: 500
         }]);
@@ -143,7 +143,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.polygon = this.createPolygon()
         this.physics.world.enable(this.polygon)
-        console.log(this.polygon)
+        // console.log(this.polygon)
 
         this.createRoomChangeZone()
 
