@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import store from '../store';
-import Dialogue from '../Dialogue'
-import General from '../characters/general'
+import Dialogue from '../Dialogue';
+import General from '../characters/general';
 
 
 let style = {
@@ -349,12 +349,12 @@ class DialogueCutscene extends Phaser.Scene {
         this.load.audio('close', 'assets/audio/close.m4a')
         this.load.audio('tap', 'assets/audio/tap.m4a')
         this.load.image('general', 'assets/images/characters/general.png')
-        this.load.image('background', 'assets/images/introbg.png')
+        this.load.image('introbackground', 'assets/images/introbg.png')
         this.load.image('dialoguebg', 'assets/images/intro-dialogue-bg.png')
     }
     create() {
 
-        this.add.image(250, 300, 'background')
+        this.add.image(250, 300, 'introbackground')
         let dialoguebg = this.add.image(0, 300, 'dialoguebg')
         let general = new General({
             scene: this,
@@ -393,14 +393,17 @@ class DialogueCutscene extends Phaser.Scene {
         this.input.keyboard.on('keydown', this.handleKey);
         // this.words.style = { font: "20px Cabin"}
 
+
         // this.dialogueWindow = this.scene.launch('dialogue', general)
-    }
-    
-    update(time, delta) {
-        this.blink += delta;
-        // this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
-        this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
-    }
+
+
+
+    //     update(time, delta) {
+    //         this.blink += delta;
+    //         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
+    //         this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
+       }
+
 }
 
 

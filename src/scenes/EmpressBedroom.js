@@ -58,8 +58,7 @@ export default class EmpressBedroom extends GameScene {
         this.emp.angle = 28;
         this.emp.body.angle = 28;
         this.emp.body.immovable = true;
-        this.emp.body._bounds = null
-        // console.log(this.emp)
+
 
     }
 
@@ -164,7 +163,7 @@ export default class EmpressBedroom extends GameScene {
         //Camera setup
         this.setCameras();
 
-        this.physics.add.collider(this.polygon, this.protag, this.emp.enterConvo)
+        this.physics.add.collider(this.emp, this.protag, this.emp.enterConvo)
 
         //depth sorting
         if (this.protag.velocity !== 0) {

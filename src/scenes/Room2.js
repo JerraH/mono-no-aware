@@ -8,20 +8,19 @@ export default class Room2 extends GameScene {
         super(config);
         this.changeRoomsEmp = this.changeRoomsEmp.bind(this);
         this.changeRooms3 = this.changeRooms3.bind(this);
+        this.createObjects = this.createObjects.bind(this)
+
     }
 
     preload() {
         super.preload();
         this.load.image('protag', 'assets/images/characters/protagforroom2.png');
-        this.load.image('plainbg', 'assets/images/scenes/room2/plainbg.png');
         this.load.image('background', 'assets/images/scenes/room2/room2.png');
-        this.load.image('backwall', 'assets/images/scenes/room2/backwall.png');
         this.load.image('column1', 'assets/images/scenes/room2/column1.png');
         this.load.image('column2', 'assets/images/scenes/room2/column2.png');
         this.load.image('screenDoors', 'assets/images/scenes/room2/screendoors.png');
         this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
         this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreen.png');
-        this.load.image('backwall', 'assets/images/scenes/room2/backwall.png')
         this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
         this.load.image('smoke1', 'assets/images/scenes/room2/smoke1.png');
         this.load.image('smoke2', 'assets/images/scenes/room2/smoke2.png');
@@ -30,8 +29,11 @@ export default class Room2 extends GameScene {
         this.load.image('smoke5', 'assets/images/scenes/room2/smoke5.png');
     }
     createObjects() {
-        this.plainbg = this.background.create(900, 120, 'plainbg')
-        this.backwall = this.behinders.create(600, 150, 'backwall')
+             this.background = this.physics.add.staticGroup();
+        this.behinders = this.physics.add.staticGroup();
+        this.smoke = this.physics.add.group();
+
+
         this.groundLayer = this.background.create(600, 340, 'background')
 
         //smoke
@@ -44,7 +46,6 @@ export default class Room2 extends GameScene {
         this.smoke4 = this.smoke.create(190, 190, 'smoke4')
         this.smoke5 = this.smoke.create(170, 120, 'smoke5')
 
-        // console.log(this.backwall)
         //things you can go behind
         this.slidingDoor = this.behinders.create(700, 150, 'slidingDoor')
         this.screenDoors = this.behinders.create(920, 150, 'screenDoors')
@@ -68,21 +69,37 @@ export default class Room2 extends GameScene {
     }
 
     changeRoomsEmp() {
-        this.physics.shutdown();
-        this.scene.start('EmpressBedroom')
+        let checkMotion = () => {
+            if (this.cursors.right.isDown) {
+                return true
+            } else {
+                return false;
+            }
+        }
+        if (checkMotion()) {
+            this.physics.shutdown();
+            this.scene.start('EmpressBedroom')
+        }
     }
     changeRooms3() {
-        this.physics.shutdown();
-        this.scene.start('Room3')
+        let checkMotion = () => {
+            if (this.cursors.left.isDown) {
+                return true
+            } else {
+                return false;
+            }
+        }
+        if (checkMotion()) {
+            this.physics.shutdown();
+            this.scene.start('Room3')
+        }
     }
 
     create() {
         super.create();
 
         //create static groups
-        this.background = this.physics.add.staticGroup();
-        this.behinders = this.physics.add.staticGroup();
-        this.smoke = this.physics.add.group();
+
 
         //creating background objects
         this.createObjects()
@@ -97,10 +114,7 @@ export default class Room2 extends GameScene {
             x: 30,
             y: 245
         };
-
-        this.backwall.body.checkCollision.none = true;
         // this.slidingDoor.depth = this.screenDoors.depth + 10
-        // this.backwall.depth = this.slidingDoor.depth + 10;
         // this.column2.depth = this.screenDoors.depth - 20
         // console.log("screendoors", this.screenDoors)
         // console.log("slidingdoor")
@@ -108,14 +122,11 @@ export default class Room2 extends GameScene {
 
         //add colliders
         this.behinders.children.iterate((child) => {
-            if (this.key !== 'backwall') {
                 this.physics.add.collider(this.protag, child)
                 child.body.height = 40;
                 child.body.y = child.y + (child.height / 2) - 40
-            }
         })
 
-        this.backwall.setDepth = this.slidingDoor.depth - 10;
         this.column2.depth = this.screenDoors.depth + 20
 
         //Camera setup
