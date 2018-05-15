@@ -6,6 +6,7 @@ import {
 export default class Room3 extends GameScene {
     constructor(config) {
         super(config);
+        this.changeRoom1 = this.changeRoom1.bind(this);
         this.changeRoom3 = this.changeRoom3.bind(this);
         this.timers = []
         this.roomId = 4;
@@ -16,6 +17,12 @@ export default class Room3 extends GameScene {
     }
     createObjects() {
         this.groundLayer = this.background.create(600, 340, 'background4')
+        this.bookshelf = this.behinders.create(275, 290, 'bookshelf')
+        this.bookshelf.body.height = 563;
+        this.bookshelf.body.width = 209;
+        //I think that the original behinders code might be stopping me from doing this
+        //Will check this tomorrow
+        this.bookshelf.body.offset = {x: 0, y: 0}
 
         //smoke
 
@@ -39,7 +46,7 @@ export default class Room3 extends GameScene {
 
     changeRoom1() {
         this.physics.shutdown();
-        this.scene.start('Room1')
+        this.scene.start('EmpressBedroom')
     }
 
     create() {
@@ -50,7 +57,7 @@ export default class Room3 extends GameScene {
         //creating background objects
         this.createObjects()
 
-        this.createProtag(this.roomId)///this function has been moved to Gamescene
+        this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
 
 
 
@@ -65,7 +72,7 @@ export default class Room3 extends GameScene {
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
-        this.door4to3 = this.add.zone(1100, 0, 50, 650).setName('door4to3').setInteractive();
+        this.door4to3 = this.add.zone(1150, 0, 50, 650).setName('door4to3').setInteractive();
         this.physics.world.enable(this.door4to3)
         this.door4to3.body.immovable = true;
 

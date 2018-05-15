@@ -56,7 +56,7 @@ export default class Room3 extends GameScene {
         this.createObjects()
 
         //declare protag
-        this.createProtag(this.roomId)///this function has been moved to Gamescene
+        this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
 
         this.twins = new Twins({
             scene: this,

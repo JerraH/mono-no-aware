@@ -92,7 +92,13 @@ export default class Room2 extends GameScene {
         //creating background objects
         this.createObjects()
 
-        this.createProtag(this.roomId)///this function has been moved to Gamescene
+        this.createProtag(this.roomId, {
+            image: 'protagRoom2', 
+            height: 40, 
+            width: 140, 
+            offsetX: 30, 
+            offsetY: 245
+        })//custom options object! :D
 
         // this.slidingDoor.depth = this.screenDoors.depth + 10
         // this.column2.depth = this.screenDoors.depth - 20
