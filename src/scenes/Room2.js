@@ -105,21 +105,8 @@ export default class Room2 extends GameScene {
         //creating background objects
         this.createObjects()
 
-<<<<<<< HEAD
         this.createProtag(this.roomId)///this function has been moved to Gamescene
-
-=======
-        //declare protag
-        this.protag = this.physics.add.sprite(1050, 400, 'protag');
-        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        //set's the protag's hit box
-        this.protag.body.height = 40
-        this.protag.body.width = 140
-        this.protag.body.offset = {
-            x: 30,
-            y: 160
-        };
->>>>>>> master
+        
         // this.slidingDoor.depth = this.screenDoors.depth + 10
         // this.column2.depth = this.screenDoors.depth - 20
         // console.log("screendoors", this.screenDoors)
