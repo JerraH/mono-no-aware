@@ -1,5 +1,6 @@
 import store from './store';
 import utilityFunctions from './utilityFunctions'
+import items from './itemList'
 var nlp = require('compromise')
 
 export default class Dialogue {
@@ -16,7 +17,12 @@ export default class Dialogue {
                     Object.keys(variables).forEach(variableName => {
                         let {character, variable} = utilityFunctions.parseVariableName(variableName);
                         // console.log("UPDATE", character, variable, variables[variableName]);
-                        store.updateCharacterStat(character, variable, variables[variableName]);
+                        let value = variables[variableName];
+                        if (variable === 'item') {
+                            store.updateCharacterStat(character, variable, value);
+                        } else {
+                            store.addToInventory(items[value]);
+                        }
                     })
                 }
             }
@@ -33,10 +39,19 @@ export default class Dialogue {
                 childFn: () => {
                     let chosen = '_default';
                     Object.keys(node.branches).forEach(branch => {
-                        // evaluate branch
-                        let value = store.getCharacterStat(character, variable);
-                        if (utilityFunctions.testExpression(branch, value)) {
-                            chosen = branch;
+                        if (branch !== '_default') {
+                            // evaluate branch
+                            let matching = false;
+                            if (variable === 'item') {
+                                matching = store.searchInventory(branch)
+                            } else {
+                                matching = utilityFunctions.testExpression(branch, 
+                                    store.getCharacterStat(character, variable))
+                                // console.log("test " + branch + " for " + character + "'s", variable + ": " + matching);
+                            }
+                            if (matching) {
+                                chosen = branch;
+                            }
                         }
                     })
                     return new Dialogue().parseNode(guids, guids[node.branches[chosen]]);

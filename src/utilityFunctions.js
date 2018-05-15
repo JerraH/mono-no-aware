@@ -19,9 +19,11 @@ const utilityFunctions = {
             '>=': (a, b) => a >= b,
             '>': (a, b) => a > b
         }
-        if (split[0] === 'x') {
+        if (split.length === 2) { // < 10
+            return OPERATOR_FN[split[0]](value, parseInt(split[1]));
+        } else if (split[0] === 'x') { // x < 10
             return OPERATOR_FN[split[1]](value, parseInt(split[2]));
-        } else if (split[2] === 'x') {
+        } else if (split[2] === 'x') { // 5 < x < 10
             return OPERATOR_FN[split[1]](parseInt(split[0]), value) &&
                 OPERATOR_FN[split[3]](value, parseInt(split[4]));
         }

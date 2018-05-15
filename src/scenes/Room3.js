@@ -8,23 +8,14 @@ import Twins from '../characters/twins'
 export default class Room3 extends GameScene {
     constructor(config) {
         super(config);
-        this.changeRooms = this.changeRooms.bind(this);
+        this.changeRoom2 = this.changeRoom2.bind(this);
+        this.changeRoom4 = this.changeRoom4.bind(this);
         this.timers = []
         this.roomId = 3;
     }
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/characters/protagforroom3.png');
-        this.load.image('background3', 'assets/images/scenes/room3/background3.png');
-        this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
-        this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
-        this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
-        this.load.image('hangingScreen3', 'assets/images/scenes/room3/hangingScreenroom3.png');
-        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1.png')
-        this.load.image('smoke2', 'assets/images/scenes/room3/smoke2.png')
-        this.load.image('twins', 'assets/images/characters/twinsSmall.png ')
-
     }
     createObjects() {
         this.groundLayer = this.background.create(450, 300, 'background3')
@@ -50,9 +41,14 @@ export default class Room3 extends GameScene {
         this.physics.world.bounds.height = this.groundLayer.height
     }
 
-    changeRooms() {
+    changeRoom2() {
         this.physics.shutdown();
         this.scene.start('Room2')
+    }
+
+    changeRoom4() {
+        this.physics.shutdown();
+        this.scene.start('Room4')
     }
 
     create() {
@@ -62,7 +58,7 @@ export default class Room3 extends GameScene {
         this.createObjects()
 
         //declare protag
-        this.createProtag(this.roomId)///this function has been moved to Gamescene
+        this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
 
         this.twins = new Twins({
             scene: this,
@@ -88,15 +84,28 @@ export default class Room3 extends GameScene {
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
-        this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
+        this.room2Door = this.add.zone(800, 0, 50, 800).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.immovable = true;
 
+        this.room4Door = this.add.zone(0, 390, 100, 250).setName('room4Door').setInteractive();
+        this.physics.world.enable(this.room4Door)
+        this.room2Door.body.immovable = true;
+
+        // console.log(this.room2Door)
+        // let checkMotion = () => {
+        //     if (this.cursors.right.isDown) {
+        //         return true
+        //     } else {
+        //         return false;
+        //     }
+        // }
+
         //Camera setup
         this.setCameras();
-
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
-
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRoom2)
+        this.physics.add.overlap(this.protag, this.room4Door, this.changeRoom4)
+        // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
 
 
     }
