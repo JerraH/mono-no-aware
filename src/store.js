@@ -181,6 +181,7 @@ class Store {
         // sanitize the inputs
         name = name.toLowerCase();
         variable = variable.toLowerCase();
+        value = value.toLowerCase();
 
         let stats = this.characterStats[name] || {};
         switch (variable) {
@@ -190,11 +191,13 @@ class Store {
             case 'happinees':
                 // PERCENTAGES: 0 .. 100
                 stats[variable] = Math.min(Math.max(0, (stats[variable] || 0) + parseInt(value)), 100);
+                // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
                 break;
             case 'item':
                 // add an item to your character stat
                 stats[variable] = stats[variable] || {};
                 stats[variable][value] = (stats[variable][value] || 0) + 1;
+                // console.log("GAVE AN ITEM called", value, "TO", name, "(you now have ", stats[variable][value], ")");
             default:
                 break;
         }

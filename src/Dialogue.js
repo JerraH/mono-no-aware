@@ -3,7 +3,82 @@ import utilityFunctions from './utilityFunctions'
 var nlp = require('compromise')
 
 export default class Dialogue {
+    parseNode(guids, node) {
+        const parseVariables = function(next) {
+            let variables = {};
+            let cb;
+            while (next && next.type === 'Set') {
+                variables[next.variable] = next.value;
+                next = guids[next.next];
+            }
+            if (Object.keys(variables).length) {
+                cb = () => {
+                    Object.keys(variables).forEach(variableName => {
+                        let {character, variable} = utilityFunctions.parseVariableName(variableName);
+                        // console.log("UPDATE", character, variable, variables[variableName]);
+                        store.updateCharacterStat(character, variable, variables[variableName]);
+                    })
+                }
+            }
+            return {
+                next,
+                cb
+            }
+        }
 
+        const parseBranch = function(node) {
+            let variableName = node.variable;
+            let {character, variable} = utilityFunctions.parseVariableName(variableName);
+            return {
+                childFn: () => {
+                    let chosen = '_default';
+                    Object.keys(node.branches).forEach(branch => {
+                        // evaluate branch
+                        let value = store.getCharacterStat(character, variable);
+                        if (utilityFunctions.testExpression(branch, value)) {
+                            chosen = branch;
+                        }
+                    })
+                    return new Dialogue().parseNode(guids, guids[node.branches[chosen]]);
+                }
+            }
+        }
+        
+        switch (node.type) {
+            case 'Node':
+            case 'Text': {
+                this.name = node.actor;
+                this.text = node.name;
+                this.responses = [];
+                if (node.choices) {
+                    node.choices.forEach(guid => {
+                        let choice = guids[guid];
+                        let {next, cb} = parseVariables(guids[choice.next]); 
+                        this.responses.push({
+                            text: choice.name,
+                            child: next && new Dialogue().parseNode(guids, next),
+                            cb});
+                    })
+                } else if (node.next) {
+                    let next = guids[node.next];
+                    if (next.type === 'Branch') {
+                        this.responses.push(parseBranch(next));
+                    } else {
+                        this.responses.push({
+                            child: new Dialogue().parseNode(guids, node.next)
+                        })
+                    }
+                }
+                break;
+            }
+            default:
+                console.log("SOMETHING WENT WRONG");
+                break;
+        }
+
+        return this;
+    }
+    
     parseFromTalkIt(arr) {
         let search1 = /\bshe\b/gi
         let search2 = /\bher\b/gi
@@ -63,70 +138,7 @@ export default class Dialogue {
 
         // connect graph
         let root = arr.find(entry => entry.type === 'Node');
-        this.name = root.actor;
-        this.text = root.name;
-        this.responses = [];
-
-        //replace all the beloved's pronouns with the correct ones
-
-        const parseChoices = (obj, choices) => {
-            choices.forEach(guid => {
-                let choice = guids[guid];
-                let cb;
-                let child;
-
-                let next = guids[choice.next];
-                let variables = {};
-                while (next && next.type === 'Set') {
-                    variables[next.variable] = next.value;
-                    next = guids[next.next];
-                }
-                if (Object.keys(variables).length) {
-                    cb = () => {
-                        Object.keys(variables).forEach(variableName => {
-                            let {character, variable} = utilityFunctions.parseVariableName(variableName);
-                            store.updateCharacterStat(character, variable, variables[variable]);
-                        })
-                    }
-                }
-
-                if (next) {
-                    // Parse branch
-                    if (next.type === 'Branch') {
-                        let chosen = '_default';
-                        let variableName = next.variable;
-                        let {character, variable} = utilityFunctions.parseVariableName(variableName);
-                        Object.keys(next.branches).forEach(branch => {
-                            // evaluate branch
-                            let value = store.getCharacterStat(character, variable);
-                            if (utilityFunctions.testExpression(branch, value)) {
-                                chosen = branch;
-                            }
-                        })
-                        next = guids[next.branches[chosen]];
-                        // PASS-THRU to text
-                    }
-
-                    // Parse next text block
-                    if (next.type === 'Text') {
-                        child = new Dialogue({
-                            name: next.actor,
-                            text: next.name
-                        });
-                        if (next.choices) {
-                            parseChoices(child, next.choices);
-                        }
-                    }
-                }
-
-                obj.responses.push({
-                    text: choice.name,
-                    child,
-                    cb});
-            })
-        }
-
-        parseChoices(this, root.choices);
+        this.parseNode(guids, root);
     }
 
     // parseFromObject(data) {
@@ -162,7 +174,7 @@ export default class Dialogue {
     // new Dialogue({name: "Akiko", text: "Hi there", responses: [...]})
     // new Dialogue([...parsed TalkIt JSON...])
     // OBSOLETE: new Dialogue({dialogue: ...}, character, protag)
-    constructor(data) {
+    constructor(data = {}) {
         if (Array.isArray(data)) {
             this.parseFromTalkIt(data);
         // } else if (data.dialogue) {
