@@ -76,7 +76,7 @@ export default class Room3 extends GameScene {
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
-        this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
+        this.room2Door = this.add.zone(800, 0, 50, 800).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.immovable = true;
 

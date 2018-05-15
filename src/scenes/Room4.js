@@ -37,6 +37,11 @@ export default class Room3 extends GameScene {
         this.scene.start('Room3')
     }
 
+    changeRoom1() {
+        this.physics.shutdown();
+        this.scene.start('Room1')
+    }
+
     create() {
         super.create();
 
@@ -64,11 +69,15 @@ export default class Room3 extends GameScene {
         this.physics.world.enable(this.door4to3)
         this.door4to3.body.immovable = true;
 
+        this.door4to1 = this.add.zone(0, 220, 50, 650).setName('door4to1').setInteractive();
+        this.physics.world.enable(this.door4to1)
+        this.door4to1.body.immovable = true;
+
         //Camera setup
         this.setCameras();
 
         this.physics.add.overlap(this.protag, this.door4to3, this.changeRoom3)
-        // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
+        this.physics.add.overlap(this.protag, this.door4to1, this.changeRoom1)
 
 
     }

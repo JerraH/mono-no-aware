@@ -140,12 +140,18 @@ export default class GameScene extends Scene {
             controlledY = 500;
             break;
             case '4 to 3':
+            controlledX = 200;
+            controlledY = 420;
             break;
 
             //room 4 positioning
             case '1 to 4':
+            controlledX = 150;
+            controlledY = 500;
             break;
             case '3 to 4':
+            controlledX = 1000;
+            controlledY = 300;
             break;
 
             default: //starting at room 1 for the first time
