@@ -18,20 +18,22 @@ export default class Room3 extends GameScene {
         super.preload();
     }
     createObjects() {
-        this.groundLayer = this.background.create(300, 340, 'background3')
+        this.groundLayer = this.background.create(450, 300, 'background3')
 
         //smoke
-        this.smoke1 = this.smoke.create(100, 200, 'smoke6')
+        this.smoke1 = this.smoke.create(400, 200, 'smoke1')
 
         //things you can go behind
-        this.screen2 = this.behinders.create(520, 250, 'screen2')
-
-        this.screen1 = this.behinders.create(520, 300, 'screen1')
-        this.screen3 = this.behinders.create(520, 200, 'screen3')
 
 
+        this.screen1 = this.behinders.create(400, 50, 'screen1')
+        this.screen2 = this.behinders.create(418, 195, 'screen2')
+        this.hangingScreen = this.behinders.create(640, 380, 'hangingScreen3')
+        this.screen3 = this.behinders.create(460, 300, 'screen3')
 
-        this.hangingScreen = this.behinders.create(700, 470, 'hangingScreen3')
+
+
+
 
         //set world bounds
 
@@ -61,16 +63,22 @@ export default class Room3 extends GameScene {
         this.twins = new Twins({
             scene: this,
             key: 'twins',
-            x: 100,
+            x: 300,
             y: 300
-        })    
+        })
 
         //add colliders
         this.behinders.children.iterate((child) => {
             this.physics.add.collider(this.protag, child)
-            child.body.height = 40;
+            child.body.height = 100;
             child.body.y = child.y + (child.height / 2) - 40
         })
+        this.screen1.body.checkCollision.none = true;
+        this.screen3.body.y -= 80;
+        this.screen2.body.y -= 140;
+        this.screen2.body.height = 160
+        this.hangingScreen.body.height = 40;
+
 
         //Camera setup
         this.cameras.main.startFollow(this.protag)
@@ -95,7 +103,6 @@ export default class Room3 extends GameScene {
 
         //Camera setup
         this.setCameras();
-
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRoom2)
         this.physics.add.overlap(this.protag, this.room4Door, this.changeRoom4)
         // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))

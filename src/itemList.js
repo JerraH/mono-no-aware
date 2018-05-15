@@ -5,7 +5,8 @@ const itemsArr = [
     { id: 'lamp', name: 'Paper Lantern', description: 'Delicate but comes in handy.' },
     { id: 'sake', name: 'Jug of Sake', description: 'Glug glug glug!', image: 'Sake.png', scale: 0.5 },
     { id: 'calligraphyBrush', name: 'Calligraphy Brush', description: 'A stroke of genius.' },
-    { id: 'inari', name: 'inari tofu roll', description: 'Delicious!' }
+    { id: 'inari', name: 'inari tofu roll', description: 'Delicious!' },
+    { id: 'sidetable2', name: 'side table', description: 'You can keep your things here!'}
 ];
 
 // map items array to object

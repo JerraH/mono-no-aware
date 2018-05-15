@@ -17,37 +17,65 @@ export default class Room2 extends GameScene {
         super.preload();
     }
     createObjects() {
-             this.background = this.physics.add.staticGroup();
+        this.background = this.physics.add.staticGroup();
         this.behinders = this.physics.add.staticGroup();
         this.smoke = this.physics.add.group();
+        this.object = this.physics.add.staticGroup();
+
+        this.roomContainer = this.add.container(540, 320)
 
 
-        this.groundLayer = this.background.create(600, 340, 'background2')
+        this.groundLayer = this.background.create(0, 0, 'background')
+        this.roomContainer.add(this.groundLayer)
+        // this.groundLayer.x = this.groundLayer.width / 2
+        // this.groundLayer.y = this.groundLayer.height / 2
 
-        //smoke
-        // this.smoke1 = this.background.create(100, 200, 'smoke1')
-        // // console.log(this.smoke1)
-        // this.smoke2 = this.background.create(440, 280, 'smoke2')
-        // // console.log(this.smoke2)
-        // this.smoke3 = this.smoke.create(75, 50, 'smoke3')
-        // // console.log(this.smoke3)
-        // this.smoke4 = this.smoke.create(190, 190, 'smoke4')
-        // this.smoke5 = this.smoke.create(170, 120, 'smoke5')
+        this.sidetable = this.object.create(50, 350, 'sidetable2')
+
+
+        // smoke
+        this.smoke1 = this.background.create(0, 300, 'smoke1')
+        this.smoke2 = this.background.create(-110, 0, 'smoke2')
+        this.smoke3 = this.smoke.create(75, 50, 'smoke3')
+        this.smoke4 = this.smoke.create(190, 190, 'smoke4')
+        this.smoke5 = this.smoke.create(170, 120, 'smoke5')
+        // console.log("smoke1", this.smoke1)
+        // console.log("smoke2", this.smoke2)
+        console.log("smoke3", this.smoke3)
+        console.log("smoke4", this.smoke4)
+        console.log("smoke5", this.smoke5)
+        this.roomContainer.add(this.smoke2)
 
         //things you can go behind
-        this.slidingDoor = this.behinders.create(700, 150, 'slidingDoor')
-        this.screenDoors = this.behinders.create(920, 150, 'screenDoors')
-
-        this.column1 = this.behinders.create(520, 150, 'column1')
-        this.column2 = this.behinders.create(800, 100, 'column2')
 
 
+        this.backwall = this.behinders.create(560, 138, 'backwall2')
+        this.backwall.body.width = 80
+        this.backwall.depth = 100;
+        this.slidingDoor = this.behinders.create(620, 132, 'slidingDoor')
+        this.screenDoors = this.behinders.create(860, 135, 'screenDoors')
+        console.log(this.column2)
+        console.log(this.screenDoors)
+        console.log("this.backwall", this.backwall)
+        this.column2 = this.behinders.create(900, 135, 'column2')
 
-        // this.column1.body.height = 40;
-        // this.column1.body.y = 250;
+
+        // console.log("this.backwall", this.backwall)
+        // console.log("this.slidingDoors", this.slidingDoor)
+        // console.log("this.screenDoors", this.screenDoors)
 
 
-        this.hangingScreen = this.behinders.create(600, 470, 'hangingScreen')
+        // this.column1 = this.behinders.create(470, 138, 'column1')
+
+
+        this.column2.setDepth(this.screenDoors.depth + 1)
+
+
+
+
+
+
+        this.hangingScreen = this.behinders.create(600, 410, 'hangingScreen')
         this.smokeTopLevel = this.smoke.create(600, 350, 'smoke-top-level')
 
         //set world bounds
@@ -92,11 +120,12 @@ export default class Room2 extends GameScene {
         //creating background objects
         this.createObjects()
 
+
         this.createProtag(this.roomId, {
-            image: 'protagRoom2', 
-            height: 40, 
-            width: 140, 
-            offsetX: 30, 
+            image: 'protagRoom2',
+            height: 40,
+            width: 140,
+            offsetX: 30,
             offsetY: 245
         })//custom options object! :D
 
@@ -112,14 +141,15 @@ export default class Room2 extends GameScene {
                 child.body.height = 40;
                 child.body.y = child.y + (child.height / 2) - 40
         })
+        this.column2.depth += 20
 
-        this.column2.depth = this.screenDoors.depth + 20
+        // this.column2.depth = this.screenDoors.depth + 20
 
         //Camera setup
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
-        this.empressRoomDoor = this.add.zone(1100, 0, 50, 650).setName('empressRoomDoor').setInteractive();
+        this.empressRoomDoor = this.add.zone(1000, 0, 50, 650).setName('empressRoomDoor').setInteractive();
         this.physics.world.enable(this.empressRoomDoor)
         this.empressRoomDoor.body.immovable = true;
 

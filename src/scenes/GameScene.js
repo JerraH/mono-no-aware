@@ -21,6 +21,9 @@ export default class GameScene extends Scene {
 
         //hud
         this.load.image('triangle', 'assets/greenTriangle.png');
+        this.load.image('protag', 'assets/images/characters/protag.png')
+        this.load.image('protag2', 'assets/images/characters/protagforroom2.png')
+        this.load.image('protag3', 'assets/images/characters/protagforroom3.png')
 
         //protags
         this.load.image('protag', 'assets/images/characters/protag.png')
@@ -103,19 +106,18 @@ export default class GameScene extends Scene {
         store.setAllItems(items);
         this.gameItems = [];
         // console.log(store.getAllItems());
-       
     }
-
     createProtag(newRoom, customPhysics = {}) {
         //position protag
+
         let controlledX = 0;
         let controlledY = 0;
         const comingFromTo = store.getCurrentRoom() ? `${store.getCurrentRoom()} to ${newRoom}` : ``;
         store.setCurrentRoom(newRoom);
         const defaultPhysics = {
-            image: 'protag', 
-            height: 30, 
-            width: 120, 
+            image: 'protag',
+            height: 30,
+            width: 120,
             offsetX: 30,
             offsetY: 150,
             veloX: 0,
@@ -137,7 +139,7 @@ export default class GameScene extends Scene {
             controlledX = 780;
             controlledY = 450;
             break;
-            
+
             //room 2 positioning
             case '1 to 2':
             controlledX = 1050;//works but overlaps the exit at this time
@@ -147,7 +149,7 @@ export default class GameScene extends Scene {
             controlledX = 250;//testing
             controlledY = 300;
             break;
-            
+
             //room 3 positioning
             case '2 to 3':
             controlledX = 700;
@@ -172,6 +174,7 @@ export default class GameScene extends Scene {
             controlledX = 500;
             controlledY = 300;
             break;
+
         }
 
         //declare protag
@@ -192,7 +195,7 @@ export default class GameScene extends Scene {
         // this.protag = this.physics.add.sprite(1050, 400, 'protag');
         // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
         // //set's the protag's hit box
-        
+
         //this repeat was in room 3 before
         // this.protag = this.physics.add.sprite(1000, 500, 'protag');
         // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
@@ -203,7 +206,7 @@ export default class GameScene extends Scene {
         //     x: 30,
         //     y: 245
         // };
-        
+
         // this repeat was in room 4 before
         // this.protag = this.physics.add.sprite(1000, 500, 'protag');
         // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
@@ -214,6 +217,7 @@ export default class GameScene extends Scene {
         //     x: 30,
         //     y: 245
         // };
+>>>>>>> e9e8d79d8b35f57cb6bdc555ae2638fb17d7bbbd
     }
 
     createItems(sceneContext, requestedItems) {
@@ -228,7 +232,7 @@ export default class GameScene extends Scene {
         sceneItems.forEach((sceneItem) => {
             this.gameItems.push(sceneItem);
         })
-        
+
         return sceneItems;
     }
 
@@ -382,13 +386,20 @@ export default class GameScene extends Scene {
             if (this.protag.velocity !== 0) {
                 this.protag.depth = this.protag.y + this.protag.height / 2;
                 if (this.behinders && this.behinders.children) {
+                    let count = 0
                     this.behinders.children.iterate((child) => {
-                        child.depth = child.y + child.height / 2
+                        child.depth = child.y + child.height / 2 + (count * 5)
+                        count++
+                        if (child.texture.key === 'backwall2') {
+                            child.depth -= 50
+                        }
                     })
                 }
                 if (this.smoke && this.smoke.children) {
+                    let count = 0
                     this.smoke.children.iterate((child) => {
-                        child.depth = child.y + child.height / 2
+                        child.depth = child.y + child.height / 2 + (count * 5)
+                        count++
                     })
 
                 }
