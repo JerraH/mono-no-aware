@@ -89,7 +89,9 @@ class Store {
     // The player's inventory
 
     addToInventory(item) {
-        this.inventory.push(item);
+        if (!this.inventory.includes(item)) {
+            this.inventory.push(item);
+        }
     }
 
     getInventory() {
@@ -97,10 +99,7 @@ class Store {
     }
 
     removeFromInventory(item) {
-        let index = this.inventory.indexOf(item);
-        if (index !== -1) {
-            this.inventory.splice(index, 1);
-        }
+        this.inventory = this.inventory.filter(inv => inv !== item)
     }
 
     setInventoryActive(active) {
@@ -194,10 +193,9 @@ class Store {
                 // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
                 break;
             case 'item':
-                // add an item to your character stat
-                stats[variable] = stats[variable] || {};
-                stats[variable][value] = (stats[variable][value] || 0) + 1;
-                // console.log("GAVE AN ITEM called", value, "TO", name, "(you now have ", stats[variable][value], ")");
+                // add an item to your inventory
+                this.addToInventory(items[value]);
+                // console.log("GAVE AN ITEM called", value);
             default:
                 break;
         }
