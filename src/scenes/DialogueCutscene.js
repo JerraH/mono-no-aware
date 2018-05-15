@@ -40,8 +40,8 @@ let INTRO_DIALOGUE = [{
 }, {
     type: 'Set',
     id: '098b20b3-cf2e-4bc1-86b2-e7b6921fff05',
-    variable: 'Smarmy',
-    value: '+10',
+    variable: 'Item',
+    value: 'sake',
     next: '237d7dc7-f1a3-4dca-b46e-3781080f84c8'
 }, {
     type: 'Text',
