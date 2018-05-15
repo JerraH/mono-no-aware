@@ -194,7 +194,7 @@ class Store {
     }
     
     getCharacterStat(name, variable) {
-        return (this.characterStats[name] || {})[variable];
+        return (this.characterStats[name] || {})[variable] || 0;
     }
 }
 

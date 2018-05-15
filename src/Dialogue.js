@@ -39,16 +39,19 @@ export default class Dialogue {
                 childFn: () => {
                     let chosen = '_default';
                     Object.keys(node.branches).forEach(branch => {
-                        // evaluate branch
-                        let matching = false;
-                        if (variable === 'item') {
-                            matching = store.searchInventory(branch)
-                        } else {
-                            matching = utilityFunctions.testExpression(branch, 
-                                store.getCharacterStat(character, variable))
-                        }
-                        if (matching) {
-                            chosen = branch;
+                        if (branch !== '_default') {
+                            // evaluate branch
+                            let matching = false;
+                            if (variable === 'item') {
+                                matching = store.searchInventory(branch)
+                            } else {
+                                matching = utilityFunctions.testExpression(branch, 
+                                    store.getCharacterStat(character, variable))
+                                // console.log("test " + branch + " for " + character + "'s", variable + ": " + matching);
+                            }
+                            if (matching) {
+                                chosen = branch;
+                            }
                         }
                     })
                     return new Dialogue().parseNode(guids, guids[node.branches[chosen]]);
