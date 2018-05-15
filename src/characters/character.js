@@ -41,21 +41,3 @@ Character.prototype.enterConvo = function () {
         this.scene.scene.launch('dialogue');
     }
 }
-
-
-Character.prototype.updateVariables = function (updates) {
-    Object.keys(updates).forEach(variable => {
-        let value = updates[variable];
-        switch (variable) {
-            case 'Smarmy':
-            case 'Arrogance':
-            case 'Humility':
-            case 'Happinees':
-                // PERCENTAGES: 0 .. 100
-                this.variables[variable] = Math.min(Math.max(0, this.variables[variable] + parseInt(value)), 100);
-                break;
-            default:
-                break;
-        }
-    })
-}

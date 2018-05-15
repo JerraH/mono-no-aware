@@ -11,7 +11,7 @@ export default class Kikue extends Character {
     super(config);
     this.name = 'Kikue';
     this.pronouns = 'She';
-    this.dialogue = new Dialogue(KIKUE_DIALOGUE, this);
+    this.dialogue = new Dialogue(KIKUE_DIALOGUE);
 
     // this.state = {
     //   happinessMeter: 50,

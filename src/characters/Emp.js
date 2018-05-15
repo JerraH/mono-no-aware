@@ -26,13 +26,15 @@ export default class Emp extends Character {
             this.pronoun3 = 'theirs'
             this.name = 'Eminence'
         }
-        this.dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
-        this.dialogue.addResponse({
-            text: "I'm ready!",
-            childFn: this.saveEmpress.bind(this)
-        });
-        this.dialogue.addResponse({
-            text: "I need more time."
+        this.dialogue = new Dialogue({
+            name: 'Attendant',
+            text: 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?",
+            responses: [{
+                text: "I'm ready!",
+                childFn: this.saveEmpress.bind(this)
+            }, {
+                text: "I need more time."
+            }]
         });
         this.body.angle = 28;
         // this.body.checkCollision.none = true;
@@ -41,15 +43,21 @@ export default class Emp extends Character {
     saveEmpress() {
         let inventory = store.getInventory();
         if (inventory.includes(store.cure1) && inventory.includes(store.cure2)) {
-            return new Dialogue("Attendant", "You cured " + this.pronoun2 + "!")
-                .addResponse({
+            return new Dialogue({
+                name: "Attendant",
+                text: "You cured " + this.pronoun2 + "!",
+                responses: [{
                     text: "Yay!",
                     cb: () => {
                         this.scene.scene.start('playagain')
                     }
-                })
+                }]
+            });
         } else if (inventory.includes(store.cure1) || inventory.includes(store.cure2)) {
-            return new Dialogue("Attendant", "Oh no!  Whatever you did didn't seem to work.....")
+            return new Dialogue({
+                name: "Attendant",
+                text: "Oh no!  Whatever you did didn't seem to work....."
+            });
         // } else {
         //     console.log("the empress is asleep")
         }

@@ -79,22 +79,25 @@ export default class InventoryScene extends Scene {
                     this.updateSelectionTween();
                 }
                 break;
-            case 'Enter':
+            case 'Enter': {
                 // look at item
                 let item = store.getInventory()[this.selectionIndex];
-                let dialogue = new Dialogue(item.name, item.description);
-                dialogue.addResponse({
-                    text: 'Use it',
-                    cb: () => {
-                        // use item
-                    }
-                })
-                dialogue.addResponse({
-                    text: 'Go back'
-                })
+                let dialogue = new Dialogue({
+                    name: item.name,
+                    text: item.description,
+                    responses: [{
+                        text: 'Use it',
+                        cb: () => {
+                            // use item
+                        }
+                    }, {
+                        text: 'Go back'
+                    }]
+                });
                 store.setDialogue(dialogue);
                 this.scene.launch('dialogue');
                 break;
+            }
             case 'Escape':
                 // exit inventory
                 this.everything.forEach(item => {

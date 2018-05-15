@@ -10,7 +10,7 @@ export default class Akiko extends Character {
     super(config);
     this.name = 'Akiko';
     this.pronouns = 'She';
-    this.dialogue = new Dialogue(AKIKO_DIALOGUE, this);
+    this.dialogue = new Dialogue(AKIKO_DIALOGUE);
 
     // this.state = {
     //   happinessMeter: 50,

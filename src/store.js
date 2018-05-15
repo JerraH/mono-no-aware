@@ -16,7 +16,8 @@ class Store {
         this.cure2 = items.sake;
         this.music = null;
         this.inConversation = false;
-        this.timers = []
+        this.timers = [];
+        this.characterStats = {};
     }
 
     constructor() {
@@ -87,8 +88,14 @@ class Store {
 
     // The player's inventory
 
+    searchInventory(id) {
+        return this.inventory.find(item => item.id === id);
+    }
+
     addToInventory(item) {
-        this.inventory.push(item);
+        if (!this.inventory.includes(item)) {
+            this.inventory.push(item);
+        }
     }
 
     getInventory() {
@@ -96,10 +103,7 @@ class Store {
     }
 
     removeFromInventory(item) {
-        let index = this.inventory.indexOf(item);
-        if (index !== -1) {
-            this.inventory.splice(index, 1);
-        }
+        this.inventory = this.inventory.filter(inv => inv !== item)
     }
 
     setInventoryActive(active) {
@@ -174,6 +178,23 @@ class Store {
     }
     getCurrentRoom() {
         return this.currentRoom;
+    }
+
+    updateCharacterStat(name, variable, value) {
+        // sanitize the inputs
+        name = name.toLowerCase();
+        variable = variable.toLowerCase();
+        value = value.toLowerCase();
+
+        let stats = this.characterStats[name] || {};
+        // PERCENTAGES: 0 .. 100
+        stats[variable] = Math.min(Math.max(0, (stats[variable] || 0) + parseInt(value)), 100);
+        // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
+        this.characterStats[name] = stats;
+    }
+    
+    getCharacterStat(name, variable) {
+        return (this.characterStats[name] || {})[variable] || 0;
     }
 }
 
