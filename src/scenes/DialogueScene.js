@@ -105,7 +105,7 @@ export default class DialogueScene extends Scene {
                 }
                 break;
             case 'ArrowDown':
-                if (this.selectionIndex < this.responses.length-1) {
+                if (this.selectionIndex < this.responsesText.length-1) {
                     this.sound.add('tap').play({ volume: 0.5 });
                     this.selectionIndex++;
                     this.updateSelectionTween();
@@ -231,19 +231,22 @@ export default class DialogueScene extends Scene {
         this.responsesText.forEach(response => response.destroy());
         this.responsesText.length = 0;
         for (let i = 0; i < this.responses.length; i++) {
-            let response = this.add.text(0, 0, this.responses[i].text, { font: "40px Amatic SC" });
-            this.responsesText.push(response);
-            Phaser.Display.Align.In.Center(response, this.add.zone(WIDTH / 2,
-                this.contentY + this.contentHeight - BORDER_SIZE - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
-                0, 0));
-            maxWidth = Math.max(maxWidth, response.width);
+            if (this.responses[i].text) {
+                // only show responses with text
+                let response = this.add.text(0, 0, this.responses[i].text, { font: "40px Amatic SC" });
+                this.responsesText.push(response);
+                Phaser.Display.Align.In.Center(response, this.add.zone(WIDTH / 2,
+                    this.contentY + this.contentHeight - BORDER_SIZE - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
+                    0, 0));
+                maxWidth = Math.max(maxWidth, response.width);
+            }
         }
         maxWidth += 20;
 
         for (let i = 0; i < 2; i++) {
             let selection = this.selection[i];
             selection.clear();
-            if (this.responses.length) {
+            if (this.responsesText.length) {
                 selection.lineStyle(3.5, (i == 0) ? 0x00ffff : 0xffcf00, 1);
                 selection.strokeRect(0, 0, maxWidth, 54);
                 selection.x = (WIDTH - maxWidth) / 2;
@@ -253,7 +256,7 @@ export default class DialogueScene extends Scene {
     }
 
     create() {
-        this.protag = store.protag;
+        // this.protag = store.protag;
 
         this.bkg = this.add.graphics();
         this.selection = this.add.graphics();
