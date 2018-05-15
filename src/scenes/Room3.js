@@ -16,22 +16,12 @@ export default class Room3 extends GameScene {
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/characters/protagforroom3.png');
-        this.load.image('background3', 'assets/images/scenes/room3/background3.png');
-        this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
-        this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
-        this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
-        this.load.image('hangingScreen3', 'assets/images/scenes/room3/hangingScreenroom3.png');
-        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1.png')
-        this.load.image('smoke2', 'assets/images/scenes/room3/smoke2.png')
-        this.load.image('twins', 'assets/images/characters/twins.png ')
-
     }
     createObjects() {
         this.groundLayer = this.background.create(300, 340, 'background3')
 
         //smoke
-        this.smoke1 = this.smoke.create(100, 200, 'smoke1')
+        this.smoke1 = this.smoke.create(100, 200, 'smoke6')
 
         //things you can go behind
         this.screen2 = this.behinders.create(520, 250, 'screen2')

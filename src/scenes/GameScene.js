@@ -18,8 +18,57 @@ export default class GameScene extends Scene {
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
         this.load.audio('wind', 'assets/audio/wind.m4a')
-        // this.load.image('sake', 'assets/images/Sake.png');
+
+        //hud
         this.load.image('triangle', 'assets/greenTriangle.png');
+
+        //protags
+        this.load.image('protag', 'assets/images/characters/protag.png')
+        this.load.image('protagRoom2', 'assets/images/characters/protagforroom2.png');
+        this.load.image('protagRoom3', 'assets/images/characters/protagforroom3.png');
+
+        //characters
+        //this.load.image('twins', 'assets/images/characters/twins.png ')
+        this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
+        this.load.image('akiko', 'assets/images/characters/akiko.png')
+
+        //backgrounds
+        this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
+        this.load.image('background2', 'assets/images/scenes/room2/floorboards.png');
+        this.load.image('background3', 'assets/images/scenes/room3/background3.png');
+        this.load.image('background4', 'assets/images/scenes/room4/backgroundforroom4.png');
+
+        //decorations
+        this.load.image('smoke1', 'assets/images/scenes/room2/smoke1.png');
+        this.load.image('smoke2', 'assets/images/scenes/room2/smoke2.png');
+        this.load.image('smoke4', 'assets/images/scenes/room2/smoke4.png');
+        this.load.image('smoke3', 'assets/images/scenes/room2/smoke3.png');
+        this.load.image('smoke5', 'assets/images/scenes/room2/smoke5.png');
+        this.load.image('smoke6', 'assets/images/scenes/room3/smoke1.png')
+        this.load.image('smoke7', 'assets/images/scenes/room3/smoke2.png')
+
+        //room 1 parts
+        this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
+
+        //room2 parts
+        this.load.image('column1', 'assets/images/scenes/room2/column1.png');
+        this.load.image('column2', 'assets/images/scenes/room2/column2.png');
+        this.load.image('screenDoors', 'assets/images/scenes/room2/screendoors.png');
+        this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
+        this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreenroom2.png');
+        this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
+
+        //room 3 parts
+        this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
+        this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
+        this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
+        this.load.image('hangingScreen3', 'assets/images/scenes/room3/hangingscreenroom3.png');
+
+        //room 4 parts
+        this.load.image('bed', 'assets/images/scenes/room4/bed.png');
+        this.load.image('bookshelf', 'assets/images/scenes/room4/bookshelf.png');
+        this.load.image('GoBoard', 'assets/images/scenes/room4/GoBoard.png');
+        this.load.image('wall-and-screen', 'assets/images/scenes/room4/wall-and-screen.png')
 
         Object.keys(items).forEach(id => {
             let item = items[id];
@@ -29,11 +78,6 @@ export default class GameScene extends Scene {
             }
         })
     }
-
-    // globalPreload() {//can be run inside of every scene's preload, use .call(this)
-    //         this.load.image('sake', 'assets/catToy.png');
-    //         this.load.image('triangle', 'assets/greenTriangle.png');
-    // }
 
     create() {
         //create static groups
@@ -102,8 +146,6 @@ export default class GameScene extends Scene {
             case '1 to 4':
             break;
             case '3 to 4':
-            controlledX = 1000;
-            controlledy = 100;
             break;
 
             default: //starting at room 1 for the first time

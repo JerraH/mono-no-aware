@@ -15,19 +15,6 @@ export default class Room2 extends GameScene {
 
     preload() {
         super.preload();
-        this.load.image('protag', 'assets/images/characters/protagforroom2.png');
-        this.load.image('background', 'assets/images/scenes/room2/floorboards.png');
-        this.load.image('column1', 'assets/images/scenes/room2/column1.png');
-        this.load.image('column2', 'assets/images/scenes/room2/column2.png');
-        this.load.image('screenDoors', 'assets/images/scenes/room2/screendoors.png');
-        this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
-        this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreenroom2.png');
-        this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
-        this.load.image('smoke1', 'assets/images/scenes/room2/smoke1.png');
-        this.load.image('smoke2', 'assets/images/scenes/room2/smoke2.png');
-        this.load.image('smoke4', 'assets/images/scenes/room2/smoke4.png');
-        this.load.image('smoke3', 'assets/images/scenes/room2/smoke3.png');
-        this.load.image('smoke5', 'assets/images/scenes/room2/smoke5.png');
     }
     createObjects() {
              this.background = this.physics.add.staticGroup();
@@ -35,7 +22,7 @@ export default class Room2 extends GameScene {
         this.smoke = this.physics.add.group();
 
 
-        this.groundLayer = this.background.create(600, 340, 'background')
+        this.groundLayer = this.background.create(600, 340, 'background2')
 
         //smoke
         // this.smoke1 = this.background.create(100, 200, 'smoke1')

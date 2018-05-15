@@ -11,23 +11,15 @@ export default class EmpressBedroom extends GameScene {
 
     constructor(config) {
         super(config)
-        this.changeRooms = this.changeRooms.bind(this)
+        this.changeRoom2 = this.changeRoom2.bind(this)
+        this.changeRoom4 = this.changeRoom4.bind(this)
         this.roomId = 1;
 
 
     }
 
     preload() {
-        //this.globalPreload.call(this); don't delete my beautiful function!
         super.preload();
-        this.load.image('protag', 'assets/images/characters/protag.png')
-        this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
-        this.load.image('akiko', 'assets/images/characters/akiko.png')
-        this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
-        this.load.image('walls', 'assets/images/scenes/EmpressBedroom/walls.png')
-        this.load.image('toy', 'assets/catToy.png')
-        this.load.image('triangle', 'assets/greenTriangle.png');
-        // this.load.image('sake', 'assets/images/item/Sake.png')
     }
 
     createBg() {
@@ -52,11 +44,18 @@ export default class EmpressBedroom extends GameScene {
 
     }
 
-    changeRooms() {
+    changeRoom2() {
         this.physics.shutdown();
         this.scene.start('Room2')
 
     }
+
+    changeRoom4() {
+        this.physics.shutdown();
+        this.scene.start('Room4')
+
+    }
+
     createPolygon() {
 
         let polygon = new Phaser.Geom.Polygon([
@@ -93,7 +92,14 @@ export default class EmpressBedroom extends GameScene {
         this.room2Door.body.isCircle = true;
         this.room2Door.body.immovable = true;
 
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+        this.room4Door = this.add.zone(900, 450, 200, 200).setName('room4Door').setInteractive();
+        this.physics.world.enable(this.room4Door)
+        this.room4Door.body.allowRotation = true;
+        this.room4Door.body.isCircle = true;
+        this.room4Door.body.immovable = true;
+
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRoom2)
+        this.physics.add.overlap(this.protag, this.room4Door, this.changeRoom4)
     }
 
     create() {
