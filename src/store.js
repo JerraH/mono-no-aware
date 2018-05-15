@@ -88,6 +88,10 @@ class Store {
 
     // The player's inventory
 
+    searchInventory(id) {
+        return this.inventory.find(item => item.id === id);
+    }
+
     addToInventory(item) {
         if (!this.inventory.includes(item)) {
             this.inventory.push(item);
@@ -183,22 +187,9 @@ class Store {
         value = value.toLowerCase();
 
         let stats = this.characterStats[name] || {};
-        switch (variable) {
-            case 'smarmy':
-            case 'arrogance':
-            case 'humility':
-            case 'happinees':
-                // PERCENTAGES: 0 .. 100
-                stats[variable] = Math.min(Math.max(0, (stats[variable] || 0) + parseInt(value)), 100);
-                // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
-                break;
-            case 'item':
-                // add an item to your inventory
-                this.addToInventory(items[value]);
-                // console.log("GAVE AN ITEM called", value);
-            default:
-                break;
-        }
+        // PERCENTAGES: 0 .. 100
+        stats[variable] = Math.min(Math.max(0, (stats[variable] || 0) + parseInt(value)), 100);
+        // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
         this.characterStats[name] = stats;
     }
     
