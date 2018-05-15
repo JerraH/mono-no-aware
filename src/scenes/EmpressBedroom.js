@@ -12,6 +12,7 @@ export default class EmpressBedroom extends GameScene {
     constructor(config) {
         super(config)
         this.changeRooms = this.changeRooms.bind(this)
+        this.roomId = 1;
 
 
     }
@@ -35,19 +36,7 @@ export default class EmpressBedroom extends GameScene {
         this.physics.world.bounds.width = this.groundLayer.width
         this.physics.world.bounds.height = this.groundLayer.height
     }
-    createProtag() {
-        // Protagonist
-        this.protag = this.physics.add.sprite(500, 300, 'protag');
 
-        //set's the protag's hit box
-        this.protag.body.height = 30
-        this.protag.body.width = 120
-        this.protag.body.offset = {
-            x: 30,
-            y: 150
-        };
-        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-    }
     createEmpress() {
         this.emp = new Empress({
             scene: this,
@@ -65,7 +54,7 @@ export default class EmpressBedroom extends GameScene {
 
     changeRooms() {
         this.physics.shutdown();
-        this.scene.start('room2')
+        this.scene.start('Room2')
 
     }
     createPolygon() {
@@ -123,7 +112,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.createBg();
 
-        this.createProtag();
+        this.createProtag(this.roomId)///this function has been moved to Gamescene
 
         //This function creates Scene Items and stores them in this.allItems,
         //which is then utilized by game scene when you press the enter key on any Item

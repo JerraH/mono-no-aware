@@ -10,6 +10,7 @@ export default class Room3 extends GameScene {
         super(config);
         this.changeRooms = this.changeRooms.bind(this);
         this.timers = []
+        this.roomId = 3;
     }
 
     preload() {
@@ -55,26 +56,18 @@ export default class Room3 extends GameScene {
     create() {
         super.create();
 
-
         //creating background objects
         this.createObjects()
 
-this.twins = new Twins({
+        //declare protag
+        this.createProtag(this.roomId)///this function has been moved to Gamescene
+
+        this.twins = new Twins({
             scene: this,
             key: 'twins',
             x: 100,
             y: 300
-        })        //declare protag
-        this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        //set's the protag's hit box
-        this.protag.body.height = 40
-        this.protag.body.width = 140
-        this.protag.body.offset = {
-            x: 30,
-            y: 245
-        };
-
+        })    
 
         //add colliders
         this.behinders.children.iterate((child) => {
