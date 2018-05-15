@@ -3,7 +3,7 @@ import {
 } from './GameScene';
 
 
-export default class Room3 extends GameScene {
+export default class Room4 extends GameScene {
     constructor(config) {
         super(config);
         this.changeRooms = this.changeRooms.bind(this);

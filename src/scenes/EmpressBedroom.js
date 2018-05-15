@@ -112,7 +112,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.createBg();
 
-        this.createProtag(this.roomId)///this function has been moved to Gamescene
+        this.createProtag(this.roomId, 'protag', 30, 130)///this function has been moved to Gamescene
 
         //This function creates Scene Items and stores them in this.allItems,
         //which is then utilized by game scene when you press the enter key on any Item
@@ -128,6 +128,7 @@ export default class EmpressBedroom extends GameScene {
         // console.log(this.polygon)
 
         this.createRoomChangeZone()
+
 
         //create and instantiate characters/sprites
         this.akiko = new Akiko({

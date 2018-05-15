@@ -23,7 +23,7 @@ export default class Room3 extends GameScene {
         this.load.image('hangingScreen3', 'assets/images/scenes/room3/hangingScreenroom3.png');
         this.load.image('smoke1', 'assets/images/scenes/room3/smoke1.png')
         this.load.image('smoke2', 'assets/images/scenes/room3/smoke2.png')
-        this.load.image('twins', 'assets/images/characters/twins.png ')
+        this.load.image('twins', 'assets/images/characters/twinsSmall.png ')
 
     }
     createObjects() {
@@ -67,7 +67,7 @@ export default class Room3 extends GameScene {
             key: 'twins',
             x: 100,
             y: 300
-        })    
+        })
 
         //add colliders
         this.behinders.children.iterate((child) => {
