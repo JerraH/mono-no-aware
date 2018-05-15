@@ -68,7 +68,6 @@ export default class GameScene extends Scene {
         let controlledY = 0;
         const comingFromTo = store.getCurrentRoom() ? `${store.getCurrentRoom()} to ${newRoom}` : ``;
         store.setCurrentRoom(newRoom);
-        console.log(comingFromTo)
 
         switch (comingFromTo){
             //room 1 positioning
@@ -103,6 +102,8 @@ export default class GameScene extends Scene {
             case '1 to 4':
             break;
             case '3 to 4':
+            controlledX = 1000;
+            controlledy = 100;
             break;
 
             default: //starting at room 1 for the first time
@@ -284,6 +285,7 @@ export default class GameScene extends Scene {
             }
 
             if (this.keys.enter.isDown) {
+                console.log(`${this.protag.x}, ${this.protag.y}`)
                 const currentItem = this.gameItems.filter(item => {
                     return item.sign.visible;
                 });

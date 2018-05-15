@@ -8,7 +8,8 @@ import Twins from '../characters/twins'
 export default class Room3 extends GameScene {
     constructor(config) {
         super(config);
-        this.changeRooms = this.changeRooms.bind(this);
+        this.changeRoom2 = this.changeRoom2.bind(this);
+        this.changeRoom4 = this.changeRoom4.bind(this);
         this.timers = []
         this.roomId = 3;
     }
@@ -48,9 +49,14 @@ export default class Room3 extends GameScene {
         this.physics.world.bounds.height = this.groundLayer.height
     }
 
-    changeRooms() {
+    changeRoom2() {
         this.physics.shutdown();
         this.scene.start('Room2')
+    }
+
+    changeRoom4() {
+        this.physics.shutdown();
+        this.scene.start('Room4')
     }
 
     create() {
@@ -83,6 +89,11 @@ export default class Room3 extends GameScene {
         this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
         this.physics.world.enable(this.room2Door)
         this.room2Door.body.immovable = true;
+
+        this.room4Door = this.add.zone(0, 390, 100, 250).setName('room4Door').setInteractive();
+        this.physics.world.enable(this.room4Door)
+        this.room2Door.body.immovable = true;
+
         // console.log(this.room2Door)
         // let checkMotion = () => {
         //     if (this.cursors.right.isDown) {
@@ -95,7 +106,8 @@ export default class Room3 extends GameScene {
         //Camera setup
         this.setCameras();
 
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms)
+        this.physics.add.overlap(this.protag, this.room2Door, this.changeRoom2)
+        this.physics.add.overlap(this.protag, this.room4Door, this.changeRoom4)
         // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
 
 
