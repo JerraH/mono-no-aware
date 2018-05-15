@@ -270,6 +270,10 @@ class DialogueCutscene extends Phaser.Scene {
 
         let response = this.responses.length && this.responses[this.selectionIndex];
 
+        if (response && response.childFn) {
+            response.child = response.childFn();
+        }
+
         // set dialogue to child, if one exists, otherwise reset it
         store.setDialogue(response && response.child);
 

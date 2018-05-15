@@ -2,7 +2,7 @@ import items from './itemList'
 import Constants from './constants'
 
 class Store {
-    constructor() {
+    reset() {
         this.pronoun = '';
         this.beloved = {title: '', pronouns: []};
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
@@ -19,7 +19,9 @@ class Store {
         this.timers = []
     }
 
-
+    constructor() {
+        this.reset();
+    }
 
     // The player's chosen pronoun
     setPronoun(pronoun) {

@@ -16,12 +16,12 @@ export default class Room2 extends GameScene {
     preload() {
         super.preload();
         this.load.image('protag', 'assets/images/characters/protagforroom2.png');
-        this.load.image('background', 'assets/images/scenes/room2/room2.png');
+        this.load.image('background', 'assets/images/scenes/room2/floorboards.png');
         this.load.image('column1', 'assets/images/scenes/room2/column1.png');
         this.load.image('column2', 'assets/images/scenes/room2/column2.png');
         this.load.image('screenDoors', 'assets/images/scenes/room2/screendoors.png');
         this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
-        this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreen.png');
+        this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreenroom2.png');
         this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
         this.load.image('smoke1', 'assets/images/scenes/room2/smoke1.png');
         this.load.image('smoke2', 'assets/images/scenes/room2/smoke2.png');
@@ -105,8 +105,21 @@ export default class Room2 extends GameScene {
         //creating background objects
         this.createObjects()
 
+<<<<<<< HEAD
         this.createProtag(this.roomId)///this function has been moved to Gamescene
 
+=======
+        //declare protag
+        this.protag = this.physics.add.sprite(1050, 400, 'protag');
+        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        //set's the protag's hit box
+        this.protag.body.height = 40
+        this.protag.body.width = 140
+        this.protag.body.offset = {
+            x: 30,
+            y: 160
+        };
+>>>>>>> master
         // this.slidingDoor.depth = this.screenDoors.depth + 10
         // this.column2.depth = this.screenDoors.depth - 20
         // console.log("screendoors", this.screenDoors)

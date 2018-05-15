@@ -29,12 +29,13 @@ export default class Emp extends Character {
         this.dialogue = new Dialogue('Attendant', 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?");
         this.dialogue.addResponse({
             text: "I'm ready!",
-            child: this.saveEmpress()
+            childFn: this.saveEmpress.bind(this)
         });
         this.dialogue.addResponse({
             text: "I need more time."
         });
-        this.body.checkCollision.none = true;
+        this.body.angle = 28;
+        // this.body.checkCollision.none = true;
 
     }
     saveEmpress() {
