@@ -59,6 +59,102 @@ export default class GameScene extends Scene {
         store.setAllItems(items);
         this.gameItems = [];
         // console.log(store.getAllItems());
+       
+    }
+
+    createProtag(newRoom) {
+        //position protag
+        let controlledX = 0;
+        let controlledY = 0;
+        const comingFromTo = store.getCurrentRoom() ? `${store.getCurrentRoom()} to ${newRoom}` : ``;
+        store.setCurrentRoom(newRoom);
+        console.log(comingFromTo)
+
+        switch (comingFromTo){
+            //room 1 positioning
+            case '2 to 1':
+            controlledX = 500;
+            controlledY = 300;
+            break;
+            case '4 to 1':
+            controlledX = 500;
+            controlledY = 300;
+            break;
+            
+            //room 2 positioning
+            case '1 to 2':
+            controlledX = 1050;//works but overlaps the exit at this time
+            controlledY = 400;
+            break;
+            case '3 to 2':
+            controlledX = 250;//testing
+            controlledY = 300;
+            break;
+            
+            //room 3 positioning
+            case '2 to 3':
+            controlledX = 1000;
+            controlledY = 500;
+            break;
+            case '4 to 3':
+            break;
+
+            //room 4 positioning
+            case '1 to 4':
+            break;
+            case '3 to 4':
+            break;
+
+            default: //starting at room 1 for the first time
+            controlledX = 500;
+            controlledY = 300;
+            break;
+        }
+
+        //declare protag
+        this.protag = this.physics.add.sprite(controlledX, controlledY, 'protag');
+
+        //set's the protag's hit box, this was copied from room 1
+        this.protag.body.height = 30
+        this.protag.body.width = 120
+        this.protag.body.offset = {
+            x: 30,
+            y: 150
+        };
+        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+
+        // this repeat was in room 2 before
+        // this.protag = this.physics.add.sprite(1050, 400, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
+        
+        //this repeat was in room 3 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
+        
+        // this repeat was in room 4 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
     }
 
     createItems(sceneContext, requestedItems) {

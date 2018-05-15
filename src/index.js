@@ -11,6 +11,12 @@ import DialogueScene from './scenes/DialogueScene'
 import Garden from './scenes/Garden'
 import Room2 from './scenes/Room2';
 import Room3 from './scenes/Room3';
+import Room4 from './scenes/Room4';
+import Room5 from './scenes/Room5';
+import Room6 from './scenes/Room6';
+import Room7 from './scenes/Room7';
+import Room8 from './scenes/Room8';
+import Room9 from './scenes/Room9';
 import InventoryScene from './scenes/InventoryScene';
 import HUD from './scenes/hud'
 import DialogueCutscene from './scenes/DialogueCutscene';
@@ -24,7 +30,7 @@ let config = {
     physics: {
         default: 'arcade',
         arcade: {
-            // debug: true
+            debug: true
         }
     }
 };
@@ -37,7 +43,14 @@ game.scene.add('pronoun', PronounScene);
 game.scene.add('beloved', BelovedScene);
 game.scene.add('game', GameScene);
 game.scene.add('EmpressBedroom', EmpressBedroom);
-game.scene.add('room2', Room2)
+game.scene.add('Room2', Room2)
+game.scene.add('Room3', Room3)
+game.scene.add('Room4', Room4)
+game.scene.add('Room5', Room5)
+game.scene.add('Room6', Room6)
+game.scene.add('Room7', Room7)
+game.scene.add('Room8', Room8)
+game.scene.add('Room9', Room9)
 game.scene.add('dialogue', DialogueScene);
 game.scene.add('inventory', InventoryScene);
 game.scene.add('interaction', InteractionScene)
@@ -45,7 +58,6 @@ game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.add('HUD', HUD)
 game.scene.add('cutscene', DialogueCutscene)
-game.scene.add('Room3', Room3)
 game.scene.start('preload');
 
 

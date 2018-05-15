@@ -8,6 +8,7 @@ export default class Room3 extends GameScene {
         super(config);
         this.changeRooms = this.changeRooms.bind(this);
         this.timers = []
+        this.roomId = 4;
     }
 
     preload() {
@@ -56,16 +57,7 @@ export default class Room3 extends GameScene {
         //creating background objects
         this.createObjects()
 
-        //declare protag
-        this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        //set's the protag's hit box
-        this.protag.body.height = 40
-        this.protag.body.width = 140
-        this.protag.body.offset = {
-            x: 30,
-            y: 245
-        };
+        this.createProtag(this.roomId)///this function has been moved to Gamescene
 
 
 

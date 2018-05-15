@@ -11,6 +11,7 @@ class Store {
         this.inventoryActive = false;
         this.interactionActive = false;
         this.currentItem = {};
+        this.currentRoom = 0;
         this.cure1 = items.bow;
         this.cure2 = items.sake;
         this.music = null;
@@ -163,6 +164,14 @@ class Store {
     }
     getTextboxConstants() {
         return this.textboxConstants
+    }
+
+    //which room were/are you in?
+    setCurrentRoom(newRoom) {
+        this.currentRoom = newRoom;
+    }
+    getCurrentRoom() {
+        return this.currentRoom;
     }
 }
 

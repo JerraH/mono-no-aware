@@ -9,6 +9,7 @@ export default class Room2 extends GameScene {
         this.changeRoomsEmp = this.changeRoomsEmp.bind(this);
         this.changeRooms3 = this.changeRooms3.bind(this);
         this.createObjects = this.createObjects.bind(this)
+        this.roomId = 2;
 
     }
 
@@ -37,14 +38,14 @@ export default class Room2 extends GameScene {
         this.groundLayer = this.background.create(600, 340, 'background')
 
         //smoke
-        this.smoke1 = this.background.create(100, 200, 'smoke1')
-        // console.log(this.smoke1)
-        this.smoke2 = this.background.create(440, 280, 'smoke2')
-        // console.log(this.smoke2)
-        this.smoke3 = this.smoke.create(75, 50, 'smoke3')
-        // console.log(this.smoke3)
-        this.smoke4 = this.smoke.create(190, 190, 'smoke4')
-        this.smoke5 = this.smoke.create(170, 120, 'smoke5')
+        // this.smoke1 = this.background.create(100, 200, 'smoke1')
+        // // console.log(this.smoke1)
+        // this.smoke2 = this.background.create(440, 280, 'smoke2')
+        // // console.log(this.smoke2)
+        // this.smoke3 = this.smoke.create(75, 50, 'smoke3')
+        // // console.log(this.smoke3)
+        // this.smoke4 = this.smoke.create(190, 190, 'smoke4')
+        // this.smoke5 = this.smoke.create(170, 120, 'smoke5')
 
         //things you can go behind
         this.slidingDoor = this.behinders.create(700, 150, 'slidingDoor')
@@ -104,16 +105,8 @@ export default class Room2 extends GameScene {
         //creating background objects
         this.createObjects()
 
-        //declare protag
-        this.protag = this.physics.add.sprite(1050, 400, 'protag');
-        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        //set's the protag's hit box
-        this.protag.body.height = 40
-        this.protag.body.width = 140
-        this.protag.body.offset = {
-            x: 30,
-            y: 245
-        };
+        this.createProtag(this.roomId)///this function has been moved to Gamescene
+
         // this.slidingDoor.depth = this.screenDoors.depth + 10
         // this.column2.depth = this.screenDoors.depth - 20
         // console.log("screendoors", this.screenDoors)
@@ -133,9 +126,10 @@ export default class Room2 extends GameScene {
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
 
-        this.room2Door = this.add.zone(1100, 0, 50, 650).setName('room2Door').setInteractive();
-        this.physics.world.enable(this.room2Door)
-        this.room2Door.body.immovable = true;
+        this.empressRoomDoor = this.add.zone(1100, 0, 50, 650).setName('empressRoomDoor').setInteractive();
+        this.physics.world.enable(this.empressRoomDoor)
+        this.empressRoomDoor.body.immovable = true;
+
         this.room3Door = this.add.zone(150, 50, 300, 100).setName('room3Door').setInteractive();
         this.physics.world.enable(this.room3Door)
         this.room3Door.body.immovable = true;
@@ -144,9 +138,9 @@ export default class Room2 extends GameScene {
         //Camera setup
         this.setCameras();
 
-        this.physics.add.overlap(this.protag, this.room2Door, this.changeRoomsEmp)
+        this.physics.add.overlap(this.protag, this.empressRoomDoor, this.changeRoomsEmp)
         this.physics.add.overlap(this.protag, this.room3Door, this.changeRooms3)
-        // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
+        // console.log(this.physics.add.overlap(this.protag, this.empressRoomDoor, this.changeRooms))
 
 
     }
