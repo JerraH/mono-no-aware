@@ -29,7 +29,7 @@ class DrinkingBuddies extends DialogueCutscene {
         for (let i = 0; i < 2; i++) {
             this.selection.push(this.add.graphics(200, 44));
         }
-        this.dialogue = new Dialogue(INTRO_DIALOGUE, this.actor);
+        this.dialogue = new Dialogue(INTRO_DIALOGUE);
         // console.log('my responses are', this.dialogue.responses)
         store.setDialogue(this.dialogue);
 

@@ -73,7 +73,10 @@ export default class InventoryScene extends Scene {
                 break;
             case 'Look':
                 // look at item
-                store.setDialogue(new Dialogue(this.currentItem.name, this.currentItem.description));
+                store.setDialogue(new Dialogue({
+                    name: this.currentItem.name, 
+                    text: this.currentItem.description
+                }));
                 this.scene.launch('dialogue');
                 break;
             case 'Leave':

@@ -3,6 +3,29 @@ import Phaser from 'phaser'
 import store from './store'
 
 const utilityFunctions = {
+    parseVariableName: function (variable) {
+        let split = variable.split('.');
+        return {
+            character: (split.length === 1) ? 'protag' : split[0],
+            variable: split[split.length - 1]
+        }
+    },
+    testExpression: function (expr, value) {
+        let split = expr.split(' ');
+        const OPERATOR_FN = {
+            '<': (a, b) => a < b,
+            '<=': (a, b) => a <= b,
+            '=': (a, b) => a === b,
+            '>=': (a, b) => a >= b,
+            '>': (a, b) => a > b
+        }
+        if (split[0] === 'x') {
+            return OPERATOR_FN[split[1]](value, parseInt(split[2]));
+        } else if (split[2] === 'x') {
+            return OPERATOR_FN[split[1]](parseInt(split[0]), value) &&
+                OPERATOR_FN[split[3]](value, parseInt(split[4]));
+        }
+    },
     handleKeyVertical: function (callback, exitFunc, options) {
         // console.log('the this inside my handlekeyvertical is', this)
         this.selectionIndex = 0;

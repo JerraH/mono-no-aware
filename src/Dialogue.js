@@ -1,10 +1,10 @@
 import store from './store';
+import utilityFunctions from './utilityFunctions'
 var nlp = require('compromise')
-
 
 export default class Dialogue {
 
-    parseFromTalkIt(arr, character) {
+    parseFromTalkIt(arr) {
         let search1 = /\bshe\b/gi
         let search2 = /\bher\b/gi
         let search3 = /\bhers\b/gi
@@ -17,20 +17,17 @@ export default class Dialogue {
         let wordAfter = /(they\s)\S+/gi
         let beloved = store.getBeloved();
         let title = beloved.title
-        // console.log(beloved.pronouns)
         let pro1 = beloved.pronouns[0]
         let pro2 = beloved.pronouns[1]
         let pro3 = beloved.pronouns[2]
         let pro4 = beloved.pronouns[3]
         // parse guids
         let guids = {};
-        // console.log(arr)
         arr.forEach(entry => {
             guids[entry.id] = entry;
             for (let property in entry) {
                 if (entry[property] && entry[property] !== '' && typeof entry[property] === 'string')
                  {
-
                     entry[property] = entry[property].replace(search1, pro1);
                     entry[property] = entry[property].replace(search2, pro2);
                     entry[property] = entry[property].replace(search3, pro3);
@@ -60,8 +57,6 @@ export default class Dialogue {
 
                     }
                 }
-
-
             }
         })
 
@@ -73,14 +68,12 @@ export default class Dialogue {
         this.responses = [];
 
         //replace all the beloved's pronouns with the correct ones
-        // console.log(root)
 
         const parseChoices = (obj, choices) => {
             choices.forEach(guid => {
                 let choice = guids[guid];
                 let cb;
                 let child;
-                // console.log(choice)
 
                 let next = guids[choice.next];
                 let variables = {};
@@ -90,18 +83,43 @@ export default class Dialogue {
                 }
                 if (Object.keys(variables).length) {
                     cb = () => {
-                        character.updateVariables(variables);
+                        Object.keys(variables).forEach(variableName => {
+                            let {character, variable} = utilityFunctions.parseVariableName(variableName);
+                            store.updateCharacterStat(character, variable, variables[variable]);
+                        })
                     }
                 }
 
-                if (next && next.type === 'Text') {
-                    child = new Dialogue(next.actor, next.name);
-                    if (next.choices) {
-                        parseChoices(child, next.choices);
+                if (next) {
+                    // Parse branch
+                    if (next.type === 'Branch') {
+                        let chosen = '_default';
+                        let variableName = next.variable;
+                        let {character, variable} = utilityFunctions.parseVariableName(variableName);
+                        Object.keys(next.branches).forEach(branch => {
+                            // evaluate branch
+                            let value = store.getCharacterStat(character, variable);
+                            if (utilityFunctions.testExpression(branch, value)) {
+                                chosen = branch;
+                            }
+                        })
+                        next = guids[next.branches[chosen]];
+                        // PASS-THRU to text
+                    }
+
+                    // Parse next text block
+                    if (next.type === 'Text') {
+                        child = new Dialogue({
+                            name: next.actor,
+                            text: next.name
+                        });
+                        if (next.choices) {
+                            parseChoices(child, next.choices);
+                        }
                     }
                 }
 
-                obj.addResponse({
+                obj.responses.push({
                     text: choice.name,
                     child,
                     cb});
@@ -111,48 +129,48 @@ export default class Dialogue {
         parseChoices(this, root.choices);
     }
 
-    parseFromObject(obj, character) {
-        this.name = obj.name;
-        this.text = obj.textFrom;
-        this.responses = [];
-        if (obj.responses) {
-            this.responses = obj.responses.map(response => {
-                let data = {
-                    response: response.textTo
-                }
-                if (response.variables && character) {
-                    data.cb = () => {
-                        character.updateVariables(response.variables)
-                    }
-                }
-                if (response.next) {
-                    let params = Object.assign({}, response.next);
-                    params.name = obj.name;
-                    data.child = new Dialogue(params, character);
-                }
-                return data;
-            })
-        }
-    }
+    // parseFromObject(data) {
+    //     let {dialogue, character, protag} = data;
+    //     this.name = dialogue.name;
+    //     this.text = dialogue.textFrom;
+    //     this.responses = [];
+    //     if (dialogue.responses) {
+    //         this.responses = dialogue.responses.map(response => {
+    //             let data = {
+    //                 response: response.textTo
+    //             }
+    //             if (response.variables && character) {
+    //                 data.cb = () => {
+    //                     character.updateVariables(response.variables)
+    //                 }
+    //             }
+    //             if (response.next) {
+    //                 let params = Object.assign({}, response.next);
+    //                 params.name = dialogue.name;
+    //                 data.child = new Dialogue({
+    //                     dialogue: params,
+    //                     character,
+    //                     protag
+    //                 });
+    //             }
+    //             return data;
+    //         })
+    //     }
+    // }
 
     // Examples:
-    // new Dialogue("Akiko", "Hi there")
-    // new Dialogue({... parsed JSON goes here ...}, Character)
-    constructor(param1, param2) {
-        if (typeof (param1) === 'string') {
-            this.name = param1;
-            this.text = param2;
-
-            this.responses = [];
-        } else if (Array.isArray(param1)) {
-            this.parseFromTalkIt(param1, param2);
+    // new Dialogue({name: "Akiko", text: "Hi there", responses: [...]})
+    // new Dialogue([...parsed TalkIt JSON...])
+    // OBSOLETE: new Dialogue({dialogue: ...}, character, protag)
+    constructor(data) {
+        if (Array.isArray(data)) {
+            this.parseFromTalkIt(data);
+        // } else if (data.dialogue) {
+        //     this.parseFromObject(data);
         } else {
-            this.parseFromObject(param1, param2);
+            this.name = data.name || 'Who dis?';
+            this.text = data.text || "I think I'm supposed to say something.";
+            this.responses = data.responses || [];
         }
-    }
-
-    addResponse(data) {
-        this.responses.push(data);
-        return this;
     }
 }

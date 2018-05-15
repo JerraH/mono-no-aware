@@ -253,7 +253,7 @@ export default class DialogueScene extends Scene {
     }
 
     create() {
-        this.protag = store.protag;
+        // this.protag = store.protag;
 
         this.bkg = this.add.graphics();
         this.selection = this.add.graphics();

@@ -16,7 +16,8 @@ class Store {
         this.cure2 = items.sake;
         this.music = null;
         this.inConversation = false;
-        this.timers = []
+        this.timers = [];
+        this.characterStats = {};
     }
 
     constructor() {
@@ -174,6 +175,34 @@ class Store {
     }
     getCurrentRoom() {
         return this.currentRoom;
+    }
+
+    updateCharacterStat(name, variable, value) {
+        // sanitize the inputs
+        name = name.toLowerCase();
+        variable = variable.toLowerCase();
+
+        let stats = this.characterStats[name] || {};
+        switch (variable) {
+            case 'smarmy':
+            case 'arrogance':
+            case 'humility':
+            case 'happinees':
+                // PERCENTAGES: 0 .. 100
+                stats[variable] = Math.min(Math.max(0, (stats[variable] || 0) + parseInt(value)), 100);
+                break;
+            case 'item':
+                // add an item to your character stat
+                stats[variable] = stats[variable] || {};
+                stats[variable][value] = (stats[variable][value] || 0) + 1;
+            default:
+                break;
+        }
+        this.characterStats[name] = stats;
+    }
+    
+    getCharacterStat(name, variable) {
+        return (this.characterStats[name] || {})[variable];
     }
 }
 
