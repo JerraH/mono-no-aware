@@ -1,6 +1,8 @@
 import {
     default as GameScene
 } from './GameScene';
+import Twins from '../characters/twins'
+
 
 
 export default class Room3 extends GameScene {
@@ -13,21 +15,21 @@ export default class Room3 extends GameScene {
     preload() {
         super.preload();
         this.load.image('protag', 'assets/images/characters/protagforroom3.png');
-        this.load.image('background', 'assets/images/scenes/room3/background.png');
+        this.load.image('background3', 'assets/images/scenes/room3/background3.png');
         this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
         this.load.image('screen2', 'assets/images/scenes/room3/screen2.png');
         this.load.image('screen3', 'assets/images/scenes/room3/screen3.png');
-        this.load.image('hangingScreen', 'assets/images/scenes/room3/hangingScreen.png');
-        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1')
-        this.load.image('smoke2', 'assets/images/scenes/room3/smoke2')
+        this.load.image('hangingScreen3', 'assets/images/scenes/room3/hangingScreenroom3.png');
+        this.load.image('smoke1', 'assets/images/scenes/room3/smoke1.png')
+        this.load.image('smoke2', 'assets/images/scenes/room3/smoke2.png')
+        this.load.image('twins', 'assets/images/characters/twins.png ')
 
     }
     createObjects() {
-        this.groundLayer = this.background.create(600, 340, 'background')
+        this.groundLayer = this.background.create(300, 340, 'background3')
 
         //smoke
         this.smoke1 = this.smoke.create(100, 200, 'smoke1')
-        // console.log(this.smoke1)
 
         //things you can go behind
         this.screen2 = this.behinders.create(520, 250, 'screen2')
@@ -37,11 +39,7 @@ export default class Room3 extends GameScene {
 
 
 
-        // this.column1.body.height = 40;
-        // this.column1.body.y = 250;
-
-
-        this.hangingScreen = this.behinders.create(700, 470, 'hangingScreen')
+        this.hangingScreen = this.behinders.create(700, 470, 'hangingScreen3')
 
         //set world bounds
 
@@ -58,11 +56,15 @@ export default class Room3 extends GameScene {
         super.create();
 
 
-
         //creating background objects
         this.createObjects()
 
-        //declare protag
+this.twins = new Twins({
+            scene: this,
+            key: 'twins',
+            x: 100,
+            y: 300
+        })        //declare protag
         this.protag = this.physics.add.sprite(1000, 500, 'protag');
         this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
         //set's the protag's hit box
@@ -72,7 +74,6 @@ export default class Room3 extends GameScene {
             x: 30,
             y: 245
         };
-
 
 
         //add colliders
