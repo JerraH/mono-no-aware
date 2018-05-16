@@ -74,7 +74,6 @@ export default class Room3 extends GameScene {
         this.screen2.body.height = 160
         this.hangingScreen.body.height = 40;
 
-
         //Camera setup
         this.cameras.main.startFollow(this.protag)
         this.cameras.main.setBounds(0, 0, this.groundLayer.width, this.groundLayer.height)
@@ -107,7 +106,6 @@ export default class Room3 extends GameScene {
         this.physics.add.overlap(this.protag, this.room2Door, this.changeRoom2)
         this.physics.add.overlap(this.protag, this.room4Door, this.changeRoom4)
         // console.log(this.physics.add.overlap(this.protag, this.room2Door, this.changeRooms))
-
 
     }
     update() {

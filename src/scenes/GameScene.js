@@ -21,9 +21,6 @@ export default class GameScene extends Scene {
 
         //hud
         this.load.image('triangle', 'assets/greenTriangle.png');
-        this.load.image('protag', 'assets/images/characters/protag.png')
-        this.load.image('protag2', 'assets/images/characters/protagforroom2.png')
-        this.load.image('protag3', 'assets/images/characters/protagforroom3.png')
 
         //protags
         this.load.image('protag', 'assets/images/characters/protag.png')
@@ -192,6 +189,33 @@ export default class GameScene extends Scene {
         this.protag.setVelocity(finalPhysics.veloX, finalPhysics.veloY)
         .setBounce(finalPhysics.bounceX, finalPhysics.bounceY)
         .setCollideWorldBounds(finalPhysics.worldBounds);
+
+        // this repeat was in room 2 before
+        // this.protag = this.physics.add.sprite(1050, 400, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+
+        //this repeat was in room 3 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
+
+        // this repeat was in room 4 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
     }
 
     createItems(sceneContext, requestedItems) {
@@ -321,7 +345,7 @@ export default class GameScene extends Scene {
             }
 
             if (this.keys.enter.isDown) {
-                console.log(`${this.protag.x}, ${this.protag.y}`)
+                console.log(`${this.protag.body.x}, ${this.protag.body.y}`)
                 const currentItem = this.gameItems.filter(item => {
                     return item.sign.visible;
                 });

@@ -32,7 +32,6 @@ export default class Room4 extends GameScene {
         this.smoke.create(0, 0, 'smoke4')
         this.smoke.create(0, 0, 'smoke5')
 
-
         //set world bounds
 
         this.physics.world.bounds.width = this.groundLayer.width
@@ -52,14 +51,10 @@ export default class Room4 extends GameScene {
     create() {
         super.create();
 
-
-
         //creating background objects
         this.createObjects()
 
         this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
-
-
 
         //add colliders
         this.behinders.children.iterate((child) => {
@@ -85,8 +80,6 @@ export default class Room4 extends GameScene {
 
         this.physics.add.overlap(this.protag, this.door4to3, this.changeRoom3)
         this.physics.add.overlap(this.protag, this.door4to1, this.changeRoom1)
-
-
     }
     // update() {
     //     super.update()
