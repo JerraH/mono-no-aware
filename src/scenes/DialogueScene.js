@@ -46,7 +46,10 @@ export default class DialogueScene extends TextBox {
         for (let i = 0; i < this.responses.length; i++) {
             if (this.responses[i].text) {
                 // only show responses with text
-                let response = this.add.text(0, 0, this.responses[i].text, { font: "40px Amatic SC" });
+                let response = this.add.text(0, 0, this.responses[i].text, { font: "20px Amatic SC", wordWrap: {
+                    width: BOX_WIDTH,
+                    useAdvancedWrap: true
+                } });
                 this.responsesText.push(response);
                 Phaser.Display.Align.In.Center(response, this.add.zone(this.constants.WIDTH / 2,
                     contentY + contentHeight - this.constants.BORDER_SIZE - (this.responses.length - i - 0.5) * this.constants.SELECTION_HEIGHT,

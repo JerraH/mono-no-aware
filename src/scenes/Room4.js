@@ -16,21 +16,19 @@ export default class Room4 extends GameScene {
         super.preload();
     }
     createObjects() {
-        this.groundLayer = this.background.create(600, 340, 'background4')
-        this.bookshelf = this.behinders.create(275, 290, 'bookshelf')
-        this.bookshelf.body.height = 563;
-        this.bookshelf.body.width = 209;
-        //I think that the original behinders code might be stopping me from doing this
-        //Will check this tomorrow
-        this.bookshelf.body.offset = {x: 0, y: 0}
-
+        this.groundLayer = this.background.create(600, 340, 'background4');
+        this.bookshelf = this.behinders.create(264, 282, 'bookshelf');
+        this.background.create(575, 415, 'bed');
+        this.behinders.create(1010, 555, 'GoBoard');
+        this.behinders.create(415, 350, 'wall-and-screen');
+        
         //smoke
 
-        this.smoke.create(0, 0, 'smoke1')
+        /*this.smoke.create(0, 0, 'smoke1')
         this.smoke.create(0, 0, 'smoke2')
         this.smoke.create(0, 0, 'smoke3')
         this.smoke.create(0, 0, 'smoke4')
-        this.smoke.create(0, 0, 'smoke5')
+        this.smoke.create(0, 0, 'smoke5')*/
 
         //set world bounds
 
@@ -62,6 +60,15 @@ export default class Room4 extends GameScene {
             child.body.height = 40;
             child.body.y = child.y + (child.height / 2) - 40
         })
+
+        /*this.bookshelf.body.height = 285;
+        this.bookshelf.body.width = 75;//150 for full shelf width I think
+
+        this.bookshelf.body.position = { 
+            x: this.bookshelf.x - (this.bookshelf.texture.source[0].width / 2),
+            y: this.bookshelf.y - (this.bookshelf.texture.source[0].height / 2)
+        }
+        this.bookshelf.depth -= 50;//just experimenting here*/
 
         //Camera setup
         this.cameras.main.startFollow(this.protag)
