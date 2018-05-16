@@ -217,7 +217,6 @@ export default class GameScene extends Scene {
         //     x: 30,
         //     y: 245
         // };
->>>>>>> e9e8d79d8b35f57cb6bdc555ae2638fb17d7bbbd
     }
 
     createItems(sceneContext, requestedItems) {
