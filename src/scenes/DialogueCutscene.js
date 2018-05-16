@@ -179,7 +179,10 @@ export default class DialogueCutscene extends TextBox {
     constructor(config) {
         super(config)
         this.constants = Object.assign({}, this.constants, {
-            TEXT_WIDTH: 290
+            TEXT_WIDTH: 290,
+            LEFT: 455,
+            TOP: 30,
+            MAX_HEIGHT: 520
         });
     }
 
@@ -188,14 +191,6 @@ export default class DialogueCutscene extends TextBox {
 
         this.selectionIndex = 0;
         this.responses = dialogue.responses;
-
-        //add the main body text
-        if (this.text) {
-            this.text.destroy()
-        }
-        this.text = this.add.text(0, 0, dialogue.text, this.style)
-        Phaser.Display.Align.In.Center(this.text, this.dialogueContainer)
-        this.text.y = 100
 
         //add the dialogue title
         if (this.title) {
@@ -206,7 +201,16 @@ export default class DialogueCutscene extends TextBox {
             fill: 'black'
         });
         Phaser.Display.Align.In.Center(this.title, this.dialogueContainer)
+        this.title.y = this.constants.TOP;
         this.title.setDepth(2000)
+
+        //add the main body text
+        if (this.text) {
+            this.text.destroy()
+        }
+        this.text = this.add.text(0, 0, dialogue.text, this.style)
+        Phaser.Display.Align.In.Center(this.text, this.dialogueContainer)
+        this.text.y = this.title.y + this.title.height + 10;
 
         //make sure your responsesText array is empty
         this.responsesText = this.responsesText.filter(response => {
@@ -232,11 +236,10 @@ export default class DialogueCutscene extends TextBox {
             }
         }
 
-        const MAX_Y = 580;
-        if (responseY > MAX_Y) {
-            let scaleY = (MAX_Y - this.text.y) / (responseY - this.text.y);
+        if (responseY > this.constants.TOP + this.constants.MAX_HEIGHT) {
+            let scaleY = (this.constants.TOP + this.constants.MAX_HEIGHT - this.text.y) / 
+                (responseY - this.text.y);
             this.text.scaleY = scaleY;
-            this.text.y -= 10;
             responseY = this.text.y + this.text.displayHeight + 10;
             this.responsesText.forEach(response => {
                 response.selected.scaleY = response.unselected.scaleY = scaleY;

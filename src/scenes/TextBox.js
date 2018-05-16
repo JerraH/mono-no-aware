@@ -17,14 +17,6 @@ export default class TextBox extends Phaser.Scene {
         }
     }
 
-    render() {
-        // a child will implement this
-    }
-
-    overlayBackground() {        
-        // a child will implement this
-    }
-
     handleClose() {
         this.scene.stop();        
     }
@@ -144,14 +136,22 @@ export default class TextBox extends Phaser.Scene {
             stroke: '#000000'
         })        
 
-        this.dialogueContainer = this.add.container(600, 60);
+        this.dialogueContainer = this.add.container(this.constants.LEFT + this.constants.TEXT_WIDTH / 2, 0);
         this.bkg = this.add.graphics();
         this.selection = this.add.graphics();
         this.responsesText = [];
         this.selectionTweens = [];
-        this.overlayBackground();
+        if (this.overlayBackground) {
+            this.overlayBackground();
+        }
         this.render();
         this.sound.add('chat').play({ volume: 0.1 });
         this.input.keyboard.on('keydown', this.handleKey);
+    }
+
+    update(time, delta) {
+        if (this.handleUpdate) {
+            this.handleUpdate(delta);
+        }
     }
 }
