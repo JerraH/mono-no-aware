@@ -6,13 +6,22 @@ import General from '../characters/general';
 
 let style = {
     font: '18px Cabin',
-    fill: 'black',
+    color: 'black',
     align: 'left',
     wordWrap: {
         width: 300,
         useAdvancedWrap: true
     }
-};
+}
+let unselectedStyle = Object.assign({}, style, {
+    strokeThickness: 6,
+    stroke: '#ffefdf'
+})
+let selectedStyle = Object.assign({}, unselectedStyle, {
+    color: '#ffff00',
+    stroke: '#000000'
+})
+
 let INTRO_DIALOGUE = [{
     type: 'Node',
     id: 'b17c37fb-5006-4bf1-b5c0-d8ce645d4064',
@@ -221,7 +230,7 @@ class DialogueCutscene extends Phaser.Scene {
         this.responses = dialogue.responses;
 
         //add the main body text
-       this.addText(dialogue)
+        this.addText(dialogue)
 
         //add the dialogue title
         if (this.title) {
@@ -237,38 +246,47 @@ class DialogueCutscene extends Phaser.Scene {
         let maxWidth = 0;
 
         //make sure your responsesText array is empty
-        this.responsesText.forEach(response => response.destroy());
+        this.responsesText = this.responsesText.filter(response => {
+            response.unselected.destroy();
+            response.selected.destroy();
+            return false;
+        });
         this.responsesText.length = 0;
         for (let i = 0; i < this.responses.length; i++) {
             if (this.responses[i].text) {
                 // only show responses with text
-                let response = this.add.text(0, 0, this.responses[i].text, style);
-                this.responsesText.push(response);
-                Phaser.Display.Align.In.Center(response, this.dialogueContainer);
-                response.y = (this.text.y + this.text.height) + 50 + (40 * i)
-                maxWidth = Math.max(maxWidth, response.width);
+                let unselected = this.add.text(0, 0, this.responses[i].text, unselectedStyle);
+                let selected = this.add.text(0, 0, this.responses[i].text, selectedStyle);
+                // unselected.alpha = (i !== 0) ? 1 : 0;
+                selected.alpha = (i === 0) ? 1 : 0;
+                this.responsesText.push({selected, unselected});
+                [selected, unselected].forEach(response => {
+                    Phaser.Display.Align.In.Center(response, this.dialogueContainer);
+                    response.y = (this.text.y + this.text.height) + 50 + (40 * i)
+                    maxWidth = Math.max(maxWidth, response.width);                        
+                })
             }
         }
         maxWidth += 20;
 
 
-        for (let i = 0; i < 2; i++) {
-            let selection = this.selection[i];
-            selection.clear();
-            if (this.responsesText.length) {
-                selection.lineStyle(3.5, (i === 0) ? 0 : 0xffcf00, 1);
-                selection.strokeRect(0, 0, 298, 44);
-                selection.x = 450;
-                selection.y = this.getSelectionY();
-                selection.setDepth(3000)
-            }
-        }
+    //     for (let i = 0; i < 2; i++) {
+    //         let selection = this.selection[i];
+    //         selection.clear();
+    //         if (this.responsesText.length) {
+    //             selection.lineStyle(3.5, (i === 0) ? 0 : 0xffcf00, 1);
+    //             selection.strokeRect(0, 0, 298, 44);
+    //             selection.x = 450;
+    //             selection.y = this.getSelectionY();
+    //             selection.setDepth(3000)
+    //         }
+    //     }
     }
     handleResponse() {
-        if (this.selectionTween) {
-            this.selectionTween.stop();
-            this.selectionTween = null;
-        }
+        this.selectionTweens = this.selectionTweens.filter(tween => {
+            tween.stop();
+            return false;
+        });
 
         let response = this.responses.length && this.responses[this.selectionIndex];
 
@@ -300,11 +318,7 @@ class DialogueCutscene extends Phaser.Scene {
             this.scene.start('EmpressBedroom');
         }
     }
-    //sound and animation for movement of selection box
-    soundAndAnim() {
-        this.sound.add('tap').play({volume: 0.5});
-        this.updateSelectionTween();
-    }
+
     handleKey(event) {
         if (event.repeat) {
             return;
@@ -312,14 +326,14 @@ class DialogueCutscene extends Phaser.Scene {
         switch (event.key) {
             case 'ArrowUp':
                 if (this.selectionIndex > 0) {
+                    this.updateSelectionTween(this.selectionIndex, this.selectionIndex - 1);
                     this.selectionIndex--;
-                    this.soundAndAnim()
                 }
                 break;
             case 'ArrowDown':
                 if (this.selectionIndex < this.responsesText.length-1) {
+                    this.updateSelectionTween(this.selectionIndex, this.selectionIndex + 1);
                     this.selectionIndex++;
-                    this.soundAndAnim()
                 }
                 break;
             case 'Escape':
@@ -334,21 +348,30 @@ class DialogueCutscene extends Phaser.Scene {
                 break;
         }
     }
-    updateSelectionTween() {
-        if (this.selectionTween) {
-            this.selectionTween.stop();
-        }
-        this.selectionTween = this.tweens.add({
-            targets: this.selection,
+    updateSelectionTween(lastIndex, nextIndex) {
+        // trigger sound
+        this.sound.add('tap').play({volume: 0.5});
+        
+        // fade out last item
+        this.selectionTweens.push(this.tweens.add({
+            targets: this.responsesText[lastIndex].selected,
             ease: 'Sine.easeInOut',
             duration: 300,
-            y: this.getSelectionY()
-        });
+            alpha: 0
+        }));
+
+        // fade in last item
+        this.selectionTweens.push(this.tweens.add({
+            targets: this.responsesText[nextIndex].selected,
+            ease: 'Sine.easeInOut',
+            duration: 300,
+            alpha: 1
+        }));
     }
 
-    getSelectionY() {
-        return (this.text.y + this.text.height) + 40 + (40 * this.selectionIndex)
-    }
+    // getSelectionY() {
+    //     return (this.text.y + this.text.height) + 40 + (40 * this.selectionIndex)
+    // }
     preload() {
         this.load.audio('chat', 'assets/audio/chat.m4a')
         this.load.audio('select', 'assets/audio/select.m4a')
@@ -379,10 +402,11 @@ class DialogueCutscene extends Phaser.Scene {
         this.words = [];
         this.title = null;
         this.responsesText = [];
-        this.selection = [];
-        for (let i = 0; i < 2; i++) {
-            this.selection.push(this.add.graphics(200, 44));
-        }
+        this.selectionTweens = [];
+        // this.selection = [];
+        // for (let i = 0; i < 2; i++) {
+        //     this.selection.push(this.add.graphics(200, 44));
+        // }
         this.dialogue = new Dialogue(INTRO_DIALOGUE);
         // console.log('my responses are', this.dialogue.responses)
         store.setDialogue(this.dialogue);
