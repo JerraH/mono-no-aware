@@ -23,7 +23,7 @@ export default class Room2 extends GameScene {
 
         this.roomContainer = this.add.container(540, 320)
 
-        this.groundLayer = this.background.create(0, 0, 'background')
+        this.groundLayer = this.background.create(0, 0, 'background2')
         this.roomContainer.add(this.groundLayer)
         // this.groundLayer.x = this.groundLayer.width / 2
         // this.groundLayer.y = this.groundLayer.height / 2

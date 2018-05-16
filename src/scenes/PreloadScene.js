@@ -25,7 +25,7 @@ export default class PreloadScene extends Scene {
             // store.setDialogue(new Dialogue('Title', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris sit amet urna nec augue facilisis ultrices nec id urna. Mauris tincidunt sapien id arcu volutpat, nec varius leo tempor. Quisque dolor justo, porta ut sagittis in, tincidunt sed metus. Morbi tristique felis et diam tempus, id eleifend tortor tempus.'));
             // this.scene.start('dialogue');
 
-            this.scene.start('Room3');
+            this.scene.start('title');
         }
     }
 }
