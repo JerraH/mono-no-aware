@@ -23,7 +23,7 @@ export default class Room2 extends GameScene {
 
         this.roomContainer = this.add.container(540, 320)
 
-        this.groundLayer = this.background.create(0, 0, 'background')
+        this.groundLayer = this.background.create(0, 0, 'background2')
         this.roomContainer.add(this.groundLayer)
         // this.groundLayer.x = this.groundLayer.width / 2
         // this.groundLayer.y = this.groundLayer.height / 2
@@ -38,9 +38,9 @@ export default class Room2 extends GameScene {
         this.smoke5 = this.smoke.create(170, 120, 'smoke5')
         // console.log("smoke1", this.smoke1)
         // console.log("smoke2", this.smoke2)
-        console.log("smoke3", this.smoke3)
-        console.log("smoke4", this.smoke4)
-        console.log("smoke5", this.smoke5)
+        // console.log("smoke3", this.smoke3)
+        // console.log("smoke4", this.smoke4)
+        // console.log("smoke5", this.smoke5)
         this.roomContainer.add(this.smoke2)
 
         //things you can go behind
@@ -50,9 +50,9 @@ export default class Room2 extends GameScene {
         this.backwall.depth = 100;
         this.slidingDoor = this.behinders.create(620, 132, 'slidingDoor')
         this.screenDoors = this.behinders.create(860, 135, 'screenDoors')
-        console.log(this.column2)
-        console.log(this.screenDoors)
-        console.log("this.backwall", this.backwall)
+        // console.log(this.column2)
+        // console.log(this.screenDoors)
+        // console.log("this.backwall", this.backwall)
         this.column2 = this.behinders.create(900, 135, 'column2')
 
         // console.log("this.backwall", this.backwall)
@@ -87,7 +87,7 @@ export default class Room2 extends GameScene {
     }
     changeRooms3() {
         let checkMotion = () => {
-            if (this.cursors.left.isDown) {
+            if (this.cursors.left.isDown || this.cursors.up.isDown) {
                 return true
             } else {
                 return false;
