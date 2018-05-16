@@ -15,26 +15,6 @@ export default class TextBox extends Phaser.Scene {
             LINE_HEIGHT: 40,
             SELECTION_HEIGHT: 54
         }
-
-        this.style = {
-            font: '18px Cabin',
-            color: 'black',
-            align: 'left',
-            wordWrap: {
-                width: 300,
-                useAdvancedWrap: true
-            }
-        }
-        
-        this.unselectedStyle = Object.assign({}, this.style, {
-            strokeThickness: 6,
-            stroke: '#ffefdf'
-        })
-        
-        this.selectedStyle = Object.assign({}, this.unselectedStyle, {
-            color: '#ffff00',
-            stroke: '#000000'
-        })        
     }
 
     render() {
@@ -144,7 +124,27 @@ export default class TextBox extends Phaser.Scene {
     }
 
     create() {
-        this.dialogueContainer = this.add.container(600, 40);
+        this.style = {
+            font: '18px Cabin',
+            color: 'black',
+            align: 'left',
+            wordWrap: {
+                width: this.constants.TEXT_WIDTH,
+                useAdvancedWrap: true
+            }
+        }
+        
+        this.unselectedStyle = Object.assign({}, this.style, {
+            strokeThickness: 6,
+            stroke: '#ffefdf'
+        })
+        
+        this.selectedStyle = Object.assign({}, this.unselectedStyle, {
+            color: '#ffff00',
+            stroke: '#000000'
+        })        
+
+        this.dialogueContainer = this.add.container(600, 60);
         this.bkg = this.add.graphics();
         this.selection = this.add.graphics();
         this.responsesText = [];

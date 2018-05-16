@@ -179,8 +179,7 @@ export default class DialogueCutscene extends TextBox {
     constructor(config) {
         super(config)
         this.constants = Object.assign({}, this.constants, {
-            TEXT_WIDTH: 260,
-            MAX_HEIGHT: 600
+            TEXT_WIDTH: 290
         });
     }
 
@@ -202,7 +201,7 @@ export default class DialogueCutscene extends TextBox {
         if (this.title) {
             this.title.destroy();
         }
-        this.title = this.add.text(550, 80, dialogue.name, {
+        this.title = this.add.text(0, 0, dialogue.name, {
             font: '40px Berkshire Swash',
             fill: 'black'
         });
@@ -216,6 +215,7 @@ export default class DialogueCutscene extends TextBox {
             return false;
         });
         this.responsesText.length = 0;
+        let responseY = this.text.y + this.text.height + 20;
         for (let i = 0; i < this.responses.length; i++) {
             if (this.responses[i].text) {
                 // only show responses with text
@@ -226,9 +226,23 @@ export default class DialogueCutscene extends TextBox {
                 this.responsesText.push({selected, unselected});
                 [selected, unselected].forEach(response => {
                     Phaser.Display.Align.In.Center(response, this.dialogueContainer);
-                    response.y = (this.text.y + this.text.height) + 50 + (40 * i)
+                    response.y = responseY;
                 })
+                responseY += selected.height + 10;
             }
+        }
+
+        const MAX_Y = 580;
+        if (responseY > MAX_Y) {
+            let scaleY = (MAX_Y - this.text.y) / (responseY - this.text.y);
+            this.text.scaleY = scaleY;
+            this.text.y -= 10;
+            responseY = this.text.y + this.text.displayHeight + 10;
+            this.responsesText.forEach(response => {
+                response.selected.scaleY = response.unselected.scaleY = scaleY;
+                response.selected.y = response.unselected.y = responseY;
+                responseY += response.selected.displayHeight + 10;
+            })
         }
     }
     
