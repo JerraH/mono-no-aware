@@ -21,9 +21,6 @@ export default class GameScene extends Scene {
 
         //hud
         this.load.image('triangle', 'assets/greenTriangle.png');
-        this.load.image('protag', 'assets/images/characters/protag.png')
-        this.load.image('protag2', 'assets/images/characters/protagforroom2.png')
-        this.load.image('protag3', 'assets/images/characters/protagforroom3.png')
 
         //protags
         this.load.image('protag', 'assets/images/characters/protag.png')
@@ -347,7 +344,7 @@ export default class GameScene extends Scene {
             }
 
             if (this.keys.enter.isDown) {
-                console.log(`${this.protag.x}, ${this.protag.y}`)
+                console.log(`${this.protag.body.x}, ${this.protag.body.y}`)
                 const currentItem = this.gameItems.filter(item => {
                     return item.sign.visible;
                 });
