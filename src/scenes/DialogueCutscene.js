@@ -2,25 +2,7 @@ import Phaser from 'phaser';
 import store from '../store';
 import Dialogue from '../Dialogue';
 import General from '../characters/general';
-
-
-let style = {
-    font: '18px Cabin',
-    color: 'black',
-    align: 'left',
-    wordWrap: {
-        width: 300,
-        useAdvancedWrap: true
-    }
-}
-let unselectedStyle = Object.assign({}, style, {
-    strokeThickness: 6,
-    stroke: '#ffefdf'
-})
-let selectedStyle = Object.assign({}, unselectedStyle, {
-    color: '#ffff00',
-    stroke: '#000000'
-})
+import TextBox from './TextBox';
 
 let INTRO_DIALOGUE = [{
     type: 'Node',
@@ -193,44 +175,28 @@ let INTRO_DIALOGUE = [{
     next: null
 }]
 
-
-class DialogueCutscene extends Phaser.Scene {
+export default class DialogueCutscene extends TextBox {
     constructor(config) {
         super(config)
-        this.type = 'cutscene'
-        this.handleKey = this.handleKey.bind(this);
-        this.addText = this.addText.bind(this);
-        this.constants = {
-            WIDTH: 800,
-            HEIGHT: 600,
+        this.constants = Object.assign({}, this.constants, {
             TEXT_WIDTH: 260,
-            BORDER_SIZE: 25,
-            BOX_WIDTH: this.TEXT_WIDTH + this.BORDER_SIZE + 50,
-            MAX_HEIGHT: 600,
-            SPACE_PX: 15,
-            TITLE_HEIGHT: 50,
-            LINE_HEIGHT: 40,
-            SELECTION_HEIGHT: 54
-        }
-        store.setTextboxConstants(this.constants)
-    }
-    addText(dialogue) {
-         if (this.text) {
-            this.text.destroy()
-        }
-        this.text = this.add.text(0, 150, dialogue.text, style)
-        Phaser.Display.Align.In.Center(this.text, this.dialogueContainer)
-        this.text.y = 100
+            MAX_HEIGHT: 600
+        });
     }
 
-    renderCutscene() {
+    render() {
         let dialogue = store.getDialogue();
 
         this.selectionIndex = 0;
         this.responses = dialogue.responses;
 
         //add the main body text
-        this.addText(dialogue)
+        if (this.text) {
+            this.text.destroy()
+        }
+        this.text = this.add.text(0, 0, dialogue.text, this.style)
+        Phaser.Display.Align.In.Center(this.text, this.dialogueContainer)
+        this.text.y = 100
 
         //add the dialogue title
         if (this.title) {
@@ -243,8 +209,6 @@ class DialogueCutscene extends Phaser.Scene {
         Phaser.Display.Align.In.Center(this.title, this.dialogueContainer)
         this.title.setDepth(2000)
 
-        let maxWidth = 0;
-
         //make sure your responsesText array is empty
         this.responsesText = this.responsesText.filter(response => {
             response.unselected.destroy();
@@ -255,186 +219,51 @@ class DialogueCutscene extends Phaser.Scene {
         for (let i = 0; i < this.responses.length; i++) {
             if (this.responses[i].text) {
                 // only show responses with text
-                let unselected = this.add.text(0, 0, this.responses[i].text, unselectedStyle);
-                let selected = this.add.text(0, 0, this.responses[i].text, selectedStyle);
+                let unselected = this.add.text(0, 0, this.responses[i].text, this.unselectedStyle);
+                let selected = this.add.text(0, 0, this.responses[i].text, this.selectedStyle);
                 // unselected.alpha = (i !== 0) ? 1 : 0;
                 selected.alpha = (i === 0) ? 1 : 0;
                 this.responsesText.push({selected, unselected});
                 [selected, unselected].forEach(response => {
                     Phaser.Display.Align.In.Center(response, this.dialogueContainer);
                     response.y = (this.text.y + this.text.height) + 50 + (40 * i)
-                    maxWidth = Math.max(maxWidth, response.width);                        
                 })
             }
         }
-        maxWidth += 20;
-
-
-    //     for (let i = 0; i < 2; i++) {
-    //         let selection = this.selection[i];
-    //         selection.clear();
-    //         if (this.responsesText.length) {
-    //             selection.lineStyle(3.5, (i === 0) ? 0 : 0xffcf00, 1);
-    //             selection.strokeRect(0, 0, 298, 44);
-    //             selection.x = 450;
-    //             selection.y = this.getSelectionY();
-    //             selection.setDepth(3000)
-    //         }
-    //     }
     }
-    handleResponse() {
-        this.selectionTweens = this.selectionTweens.filter(tween => {
-            tween.stop();
-            return false;
-        });
-
-        let response = this.responses.length && this.responses[this.selectionIndex];
-
-        if (response && response.childFn) {
-            response.child = response.childFn();
-        }
-
-        // set dialogue to child, if one exists, otherwise reset it
-        store.setDialogue(response && response.child);
-
-        if (response && response.cb) {
-            // run callback, if any
-            response.cb();
-        }
-
-        if (response && response.child) {
-            // re-render convo with child text
-            this.sound.add('select').play({
-                volume: 0.5
-            });
-            this.renderCutscene(this.dialogueContainer);
-        } else {
-            // no child, so exit dialogue
-            this.sound.add('close').play({
-                volume: 0.5
-            });
-            this.input.keyboard.off('keydown', this.handleKey)
-            this.scene.launch('HUD')
-            this.scene.start('EmpressBedroom');
-        }
-    }
-
-    handleKey(event) {
-        if (event.repeat) {
-            return;
-        }
-        switch (event.key) {
-            case 'ArrowUp':
-                if (this.selectionIndex > 0) {
-                    this.updateSelectionTween(this.selectionIndex, this.selectionIndex - 1);
-                    this.selectionIndex--;
-                }
-                break;
-            case 'ArrowDown':
-                if (this.selectionIndex < this.responsesText.length-1) {
-                    this.updateSelectionTween(this.selectionIndex, this.selectionIndex + 1);
-                    this.selectionIndex++;
-                }
-                break;
-            case 'Escape':
-                if (this.responses.length === 0) {
-                    this.handleResponse();
-                }
-                break;
-            case 'Enter':
-                this.handleResponse();
-                break;
-            default:
-                break;
-        }
-    }
-    updateSelectionTween(lastIndex, nextIndex) {
-        // trigger sound
-        this.sound.add('tap').play({volume: 0.5});
-        
-        // fade out last item
-        this.selectionTweens.push(this.tweens.add({
-            targets: this.responsesText[lastIndex].selected,
-            ease: 'Sine.easeInOut',
-            duration: 300,
-            alpha: 0
-        }));
-
-        // fade in last item
-        this.selectionTweens.push(this.tweens.add({
-            targets: this.responsesText[nextIndex].selected,
-            ease: 'Sine.easeInOut',
-            duration: 300,
-            alpha: 1
-        }));
-    }
-
-    // getSelectionY() {
-    //     return (this.text.y + this.text.height) + 40 + (40 * this.selectionIndex)
-    // }
+    
     preload() {
-        this.load.audio('chat', 'assets/audio/chat.m4a')
-        this.load.audio('select', 'assets/audio/select.m4a')
-        this.load.audio('close', 'assets/audio/close.m4a')
-        this.load.audio('tap', 'assets/audio/tap.m4a')
+        super.preload();
         this.load.image('general', 'assets/images/characters/general.png')
         this.load.image('introbackground', 'assets/images/introbg.png')
         this.load.image('dialoguebg', 'assets/images/intro-dialogue-bg.png')
     }
-    create() {
 
+    overlayBackground() {
         this.add.image(250, 300, 'introbackground')
         let dialoguebg = this.add.image(0, 300, 'dialoguebg')
+        Phaser.Display.Align.In.Center(dialoguebg, this.dialogueContainer);
+        dialoguebg.y = 300;
         let general = new General({
             scene: this,
             key: 'general',
             x: 250,
             y: 300
         })
-        this.dialogueContainer = this.add.container(600, 40)
-
-        Phaser.Display.Align.In.Center(dialoguebg, this.dialogueContainer);
-        dialoguebg.y = 300;
         this.physics.world.disable(general)
+    }
 
+    handleClose() {
+        this.scene.launch('HUD')
+        this.scene.start('EmpressBedroom');        
+    }
 
-        this.actor = general;
-        this.words = [];
-        this.title = null;
-        this.responsesText = [];
-        this.selectionTweens = [];
-        // this.selection = [];
-        // for (let i = 0; i < 2; i++) {
-        //     this.selection.push(this.add.graphics(200, 44));
-        // }
+    create() {
+        // THIS IS TEMPORARY AND SHOULD IDEALLY BE ASSIGNED BEFORE THE SCENE IS CALLED
         this.dialogue = new Dialogue(INTRO_DIALOGUE);
-        // console.log('my responses are', this.dialogue.responses)
         store.setDialogue(this.dialogue);
+        //////////////////////////////////////////////////////////////////////////////
 
-
-        this.renderCutscene(this.dialogueContainer);
-
-        this.blink = 0;
-
-        this.sound.add('chat').play({
-            volume: 0.1
-        });
-
-        this.input.keyboard.on('keydown', this.handleKey);
-        // this.words.style = { font: "20px Cabin"}
-
-
-        // this.dialogueWindow = this.scene.launch('dialogue', general)
-
-
-
-    //     update(time, delta) {
-    //         this.blink += delta;
-    //         this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
-    //         this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
-       }
-
+        super.create();
+    }
 }
-
-
-export default DialogueCutscene

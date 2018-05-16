@@ -165,12 +165,6 @@ class Store {
     getTime() {
         return this.timeLeft;
     }
-    setTextboxConstants(obj) {
-        this.textboxConstants = obj
-    }
-    getTextboxConstants() {
-        return this.textboxConstants
-    }
 
     //which room were/are you in?
     setCurrentRoom(newRoom) {
