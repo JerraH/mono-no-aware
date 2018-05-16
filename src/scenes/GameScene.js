@@ -14,6 +14,118 @@ export default class GameScene extends Scene {
         this.readyForWind = true;
         this.nextWindMS = 0;
     }
+     createProtag(newRoom, customPhysics = {}) {
+        //position protag
+
+        let controlledX = 0;
+        let controlledY = 0;
+        const comingFromTo = store.getCurrentRoom() ? `${store.getCurrentRoom()} to ${newRoom}` : ``;
+        store.setCurrentRoom(newRoom);
+        const defaultPhysics = {
+            image: 'protag',
+            height: 30,
+            width: 120,
+            offsetX: 30,
+            offsetY: 150,
+            veloX: 0,
+            veloY: 0,
+            bounceX: 0,
+            bounceY: 0,
+            worldBounds: true
+        }
+
+        const finalPhysics = Object.assign(customPhysics );
+
+        switch (comingFromTo){
+            //room 1 positioning
+            case '2 to 1':
+            controlledX = 500;
+            controlledY = 300;
+            break;
+            case '4 to 1':
+            controlledX = 780;
+            controlledY = 450;
+            break;
+
+            //room 2 positioning
+            case '1 to 2':
+            controlledX = 1050;//works but overlaps the exit at this time
+            controlledY = 400;
+            break;
+            case '3 to 2':
+            controlledX = 250;//testing
+            controlledY = 300;
+            break;
+
+            //room 3 positioning
+            case '2 to 3':
+            controlledX = 700;
+            controlledY = 500;
+            break;
+            case '4 to 3':
+            controlledX = 200;
+            controlledY = 420;
+            break;
+
+            //room 4 positioning
+            case '1 to 4':
+            controlledX = 150;
+            controlledY = 500;
+            break;
+            case '3 to 4':
+            controlledX = 1000;
+            controlledY = 300;
+            break;
+
+            default: //starting at room 1 for the first time
+            controlledX = 500;
+            controlledY = 300;
+            break;
+
+        }
+
+        //declare protag
+        this.protag = this.physics.add.sprite(controlledX, controlledY, finalPhysics.image);
+
+        //set's the protag's hit box, this was copied from room 1
+        this.protag.body.height = finalPhysics.height
+        this.protag.body.width = finalPhysics.width
+        this.protag.body.offset = {
+            x: finalPhysics.offsetX,
+            y: finalPhysics.offsetY
+        };
+        this.protag.setVelocity(finalPhysics.veloX, finalPhysics.veloY)
+        .setBounce(finalPhysics.bounceX, finalPhysics.bounceY)
+        .setCollideWorldBounds(finalPhysics.worldBounds);
+        console.log(this.protag)
+
+        // this repeat was in room 2 before
+        // this.protag = this.physics.add.sprite(1050, 400, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+
+        //this repeat was in room 3 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
+
+        // this repeat was in room 4 before
+        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
+        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
+        // //set's the protag's hit box
+        // this.protag.body.height = 40
+        // this.protag.body.width = 140
+        // this.protag.body.offset = {
+        //     x: 30,
+        //     y: 245
+        // };
+    }
 
     preload() {
         this.load.audio('theme', 'assets/audio/theme.m4a')
@@ -106,117 +218,7 @@ export default class GameScene extends Scene {
         this.gameItems = [];
         // console.log(store.getAllItems());
     }
-    createProtag(newRoom, customPhysics = {}) {
-        //position protag
 
-        let controlledX = 0;
-        let controlledY = 0;
-        const comingFromTo = store.getCurrentRoom() ? `${store.getCurrentRoom()} to ${newRoom}` : ``;
-        store.setCurrentRoom(newRoom);
-        const defaultPhysics = {
-            image: 'protag',
-            height: 30,
-            width: 120,
-            offsetX: 30,
-            offsetY: 150,
-            veloX: 0,
-            veloY: 0,
-            bounceX: 0,
-            bounceY: 0,
-            worldBounds: true
-        }
-
-        const finalPhysics = Object.assign(defaultPhysics, customPhysics);
-
-        switch (comingFromTo){
-            //room 1 positioning
-            case '2 to 1':
-            controlledX = 500;
-            controlledY = 300;
-            break;
-            case '4 to 1':
-            controlledX = 780;
-            controlledY = 450;
-            break;
-
-            //room 2 positioning
-            case '1 to 2':
-            controlledX = 1050;//works but overlaps the exit at this time
-            controlledY = 400;
-            break;
-            case '3 to 2':
-            controlledX = 250;//testing
-            controlledY = 300;
-            break;
-
-            //room 3 positioning
-            case '2 to 3':
-            controlledX = 700;
-            controlledY = 500;
-            break;
-            case '4 to 3':
-            controlledX = 200;
-            controlledY = 420;
-            break;
-
-            //room 4 positioning
-            case '1 to 4':
-            controlledX = 150;
-            controlledY = 500;
-            break;
-            case '3 to 4':
-            controlledX = 1000;
-            controlledY = 300;
-            break;
-
-            default: //starting at room 1 for the first time
-            controlledX = 500;
-            controlledY = 300;
-            break;
-
-        }
-
-        //declare protag
-        this.protag = this.physics.add.sprite(controlledX, controlledY, finalPhysics.image);
-
-        //set's the protag's hit box, this was copied from room 1
-        this.protag.body.height = finalPhysics.height
-        this.protag.body.width = finalPhysics.width
-        this.protag.body.offset = {
-            x: finalPhysics.offsetX,
-            y: finalPhysics.offsetY
-        };
-        this.protag.setVelocity(finalPhysics.veloX, finalPhysics.veloY)
-        .setBounce(finalPhysics.bounceX, finalPhysics.bounceY)
-        .setCollideWorldBounds(finalPhysics.worldBounds);
-
-        // this repeat was in room 2 before
-        // this.protag = this.physics.add.sprite(1050, 400, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-
-        //this repeat was in room 3 before
-        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-        // this.protag.body.height = 40
-        // this.protag.body.width = 140
-        // this.protag.body.offset = {
-        //     x: 30,
-        //     y: 245
-        // };
-
-        // this repeat was in room 4 before
-        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-        // this.protag.body.height = 40
-        // this.protag.body.width = 140
-        // this.protag.body.offset = {
-        //     x: 30,
-        //     y: 245
-        // };
-    }
 
     createItems(sceneContext, requestedItems) {
         const sceneItems = [];

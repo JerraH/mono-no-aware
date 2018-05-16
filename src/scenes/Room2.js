@@ -73,31 +73,36 @@ export default class Room2 extends GameScene {
     }
 
     changeRoomsEmp() {
-        let checkMotion = () => {
-            if (this.cursors.right.isDown) {
-                return true
-            } else {
-                return false;
-            }
-        }
-        if (checkMotion()) {
-            this.physics.shutdown();
-            this.scene.start('EmpressBedroom')
-        }
+        // let checkMotion = () => {
+        //     if (this.cursors.right.isDown) {
+        //         return true
+        //     } else {
+        //         return false;
+        //     }
+        // }
+        // if (checkMotion()) {
+        //     this.physics.shutdown();
+        //     this.scene.start('EmpressBedroom')
+        // }
+        this.scene.start('EmpressBedroom')
     }
     changeRooms3() {
-        let checkMotion = () => {
-            if (this.cursors.left.isDown) {
-                return true
-            } else {
-                return false;
-            }
-        }
-        if (checkMotion()) {
-            this.physics.shutdown();
-            this.scene.start('Room3')
-        }
+        // let checkMotion = () => {
+        //     if (this.cursors.left.isDown) {
+        //         return true
+        //     } else {
+        //         return false;
+        //     }
+        // }
+        // if (checkMotion()) {
+        //     this.physics.shutdown();
+        //     this.scene.start('Room3')
+        // }
+        // console.log(this.protag)
+        // return;
+        this.scene.start('Room3')
     }
+
 
     create() {
         super.create();
@@ -115,11 +120,6 @@ export default class Room2 extends GameScene {
             offsetY: 245
         })//custom options object! :D
 
-        // this.slidingDoor.depth = this.screenDoors.depth + 10
-        // this.column2.depth = this.screenDoors.depth - 20
-        // console.log("screendoors", this.screenDoors)
-        // console.log("slidingdoor")
-
         //add colliders
         this.behinders.children.iterate((child) => {
                 this.physics.add.collider(this.protag, child)
@@ -128,7 +128,6 @@ export default class Room2 extends GameScene {
         })
         this.column2.depth += 20
 
-        // this.column2.depth = this.screenDoors.depth + 20
 
         //Camera setup
         this.cameras.main.startFollow(this.protag)
@@ -147,6 +146,5 @@ export default class Room2 extends GameScene {
 
         this.physics.add.overlap(this.protag, this.empressRoomDoor, this.changeRoomsEmp)
         this.physics.add.overlap(this.protag, this.room3Door, this.changeRooms3)
-        // console.log(this.physics.add.overlap(this.protag, this.empressRoomDoor, this.changeRooms))
     }
 }
