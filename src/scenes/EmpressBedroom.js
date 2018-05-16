@@ -14,8 +14,6 @@ export default class EmpressBedroom extends GameScene {
         this.changeRoom2 = this.changeRoom2.bind(this)
         this.changeRoom4 = this.changeRoom4.bind(this)
         this.roomId = 1;
-
-
     }
 
     preload() {
@@ -53,7 +51,6 @@ export default class EmpressBedroom extends GameScene {
     changeRoom4() {
         this.physics.shutdown();
         this.scene.start('Room4')
-
     }
 
     createPolygon() {
@@ -118,7 +115,7 @@ export default class EmpressBedroom extends GameScene {
 
         this.createBg();
 
-        this.createProtag(this.roomId, 'protag', 30, 130)///this function has been moved to Gamescene
+        this.createProtag(this.roomId)///this function has been moved to Gamescene
 
         //This function creates Scene Items and stores them in this.allItems,
         //which is then utilized by game scene when you press the enter key on any Item
