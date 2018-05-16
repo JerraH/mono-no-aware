@@ -60,12 +60,7 @@ export default class Room3 extends GameScene {
         //declare protag
         this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
 
-        this.twins = new Twins({
-            scene: this,
-            key: 'twins',
-            x: 300,
-            y: 300
-        })
+
 
         //add colliders
         this.behinders.children.iterate((child) => {
@@ -100,6 +95,12 @@ export default class Room3 extends GameScene {
         //         return false;
         //     }
         // }
+         this.twins = new Twins({
+            scene: this,
+            key: 'twins',
+            x: 300,
+            y: 300
+        })
 
         //Camera setup
         this.setCameras();

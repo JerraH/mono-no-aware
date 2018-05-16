@@ -137,10 +137,10 @@ export default class DialogueScene extends Scene {
             let splitText = paragraph.split(/\s/).filter(word => word.length);
             let words = splitText.map(word => {
                 if (this.type !== 'cutscene') {
-                    return this.add.text(0, 0, word, { font: "40px Amatic SC", scaleY: 0.5 })
-                }
-                else if (this.type === 'cutscene') {
-                    return this.add.text(0, 0, word, { font: '25px Cabin', scaleY: 2, scaleX: 0.5})
+                    return this.add.text(0, 0, word, { font: "25px Cabin", scaleY: 0.5, wordWrap: {
+        width: 600,
+        useAdvancedWrap: true
+    } })
                 }
             }
 

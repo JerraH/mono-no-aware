@@ -34,6 +34,8 @@ export default class GameScene extends Scene {
         //this.load.image('twins', 'assets/images/characters/Twins.png ')
         this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
         this.load.image('akiko', 'assets/images/characters/akiko.png')
+        this.load.image('twins', 'assets/images/characters/twinsSmall.png')
+        this.load.image('akiko-sit', 'assets/images/characters/akiko-sit.png')
 
         //backgrounds
         this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
@@ -190,34 +192,6 @@ export default class GameScene extends Scene {
         this.protag.setVelocity(finalPhysics.veloX, finalPhysics.veloY)
         .setBounce(finalPhysics.bounceX, finalPhysics.bounceY)
         .setCollideWorldBounds(finalPhysics.worldBounds);
-
-        // this repeat was in room 2 before
-        // this.protag = this.physics.add.sprite(1050, 400, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-
-        //this repeat was in room 3 before
-        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-        // this.protag.body.height = 40
-        // this.protag.body.width = 140
-        // this.protag.body.offset = {
-        //     x: 30,
-        //     y: 245
-        // };
-
-        // this repeat was in room 4 before
-        // this.protag = this.physics.add.sprite(1000, 500, 'protag');
-        // this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
-        // //set's the protag's hit box
-        // this.protag.body.height = 40
-        // this.protag.body.width = 140
-        // this.protag.body.offset = {
-        //     x: 30,
-        //     y: 245
-        // };
->>>>>>> e9e8d79d8b35f57cb6bdc555ae2638fb17d7bbbd
     }
 
     createItems(sceneContext, requestedItems) {
