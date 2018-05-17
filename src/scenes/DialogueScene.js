@@ -1,289 +1,96 @@
-import {Scene} from 'phaser';
+import Phaser from 'phaser';
 import store from '../store';
+import TextBox from './TextBox';
 
-    let WIDTH = 800;
-    let HEIGHT = 600;
-    let TEXT_WIDTH = 600;
-    let BORDER_SIZE = 25;
-    let BOX_WIDTH = TEXT_WIDTH + BORDER_SIZE * 2;
-    let MAX_HEIGHT = 500;
-    let SPACE_PX = 15;
-    let TITLE_HEIGHT = 50;
-    let LINE_HEIGHT = 40;
-    let SELECTION_HEIGHT = 54;
-
-
-
-
-
-
-
-
-export default class DialogueScene extends Scene {
+export default class DialogueScene extends TextBox {
     constructor(config) {
         super(config);
-        this.handleKey = this.handleKey.bind(this);
-        this.textboxConstants = store.getTextboxConstants()
-        if (this.textboxConstants) {
-            WIDTH = store.textboxConstants.WIDTH
-            HEIGHT = store.textboxConstants.HEIGHT;
-            TEXT_WIDTH = store.textboxConstants.TEXT_WIDTH;
-            BORDER_SIZE = store.textboxConstants.BORDER_SIZE;
-            BOX_WIDTH = store.textboxConstants.BOX_WIDTH;
-            MAX_HEIGHT = store.textboxConstants.MAX_HEIGHT;
-            SPACE_PX = store.textboxConstants.SPACE_PX;
-            TITLE_HEIGHT = store.textboxConstants.TITLE_HEIGHT;
-            LINE_HEIGHT = store.textboxConstants.LINE_HEIGHT;
-            SELECTION_HEIGHT = store.textboxConstants.SELECTION_HEIGHT;
-        }
-    }
-
-
-
-    preload() {
-        this.load.audio('chat', 'assets/audio/chat.m4a')
-        this.load.audio('chatresponse', 'assets/audio/chatresponse.m4a')
-        this.load.audio('close', 'assets/audio/close.m4a')
-        this.load.audio('tap', 'assets/audio/tap.m4a')
-    }
-
-    handleResponse() {
-        if (this.selectionTween) {
-            this.selectionTween.stop();
-            this.selectionTween = null;
-        }
-
-        let response = this.responses.length && this.responses[this.selectionIndex];
-
-        if (response && response.childFn) {
-            response.child = response.childFn();
-        }
-
-        // set dialogue to child, if one exists, otherwise reset it
-        store.setDialogue(response && response.child);
-
-        if (response && response.cb) {
-            // run callback, if any
-            response.cb();
-        }
-
-        if (response && response.child) {
-            // re-render convo with child text
-            this.sound.add('chatresponse').play({ volume: 0.5 });
-            this.render();
-        } else {
-            // no child, so exit dialogue
-            this.sound.add('close').play({ volume: 0.5 });
-            this.input.keyboard.off('keydown', this.handleKey)
-            this.scene.stop();
-        }
-    }
-
-    updateSelectionTween() {
-        if (this.selectionTween) {
-            this.selectionTween.stop();
-        }
-        this.selectionTween = this.tweens.add({
-            targets: this.selection,
-            ease: 'Sine.easeInOut',
-            duration: 300,
-            y: this.getSelectionY()
-        });
-    }
-
-    handleKey(event) {
-        if (event.repeat) {
-            return;
-        }
-
-        switch (event.key) {
-            case 'ArrowUp':
-                if (this.selectionIndex > 0) {
-                    this.sound.add('tap').play({ volume: 0.5 });
-                    this.selectionIndex--;
-                    this.updateSelectionTween();
-                }
-                break;
-            case 'ArrowDown':
-                if (this.selectionIndex < this.responsesText.length-1) {
-                    this.sound.add('tap').play({ volume: 0.5 });
-                    this.selectionIndex++;
-                    this.updateSelectionTween();
-                }
-                break;
-            case 'Escape':
-                if (this.responses.length === 0) {
-                    this.handleResponse();
-                }
-                break;
-            case 'Enter':
-                this.handleResponse();
-                break;
-            default:
-                break;
-        }
-    }
-
-    justifyText(text, width) {
-        this.words.forEach(word => word.destroy());
-        this.words = [];
-
-        let y = -LINE_HEIGHT / 2;
-
-        let paragraphs = text.split('\n').filter(line => line.length);
-        paragraphs.forEach(paragraph => {
-            y += LINE_HEIGHT;
-
-            let splitText = paragraph.split(/\s/).filter(word => word.length);
-            let words = splitText.map(word => {
-                if (this.type !== 'cutscene') {
-                    return this.add.text(0, 0, word, { font: "40px Amatic SC", scaleY: 0.5 })
-                }
-                else if (this.type === 'cutscene') {
-                    return this.add.text(0, 0, word, { font: '25px Cabin', scaleY: 2, scaleX: 0.5})
-                }
-            }
-
-        );
-
-            this.words = this.words.concat(words);
-            let curWord = 0;
-            while (curWord < words.length) {
-                // more words, so make a line of text
-                let lineWidth = words[curWord].width;
-                let startingWord = curWord;
-                words[curWord++].y = y;
-                while (curWord < words.length &&
-                    lineWidth + SPACE_PX + words[curWord].width < width) {
-                    words[curWord].x = words[curWord - 1].x + words[curWord - 1].width + SPACE_PX;
-                    words[curWord].y = y;
-                    lineWidth += SPACE_PX + words[curWord].width;
-                    curWord++;
-                }
-                if (curWord !== words.length && curWord - startingWord > 1) {
-                    let addWidth = (width - lineWidth) / (curWord - startingWord - 1);
-                    for (let i = startingWord; i < curWord; i++) {
-                        words[i].x += addWidth * (i - startingWord);
-                    }
-                }
-                y += LINE_HEIGHT;
-                this.wordWidth = Math.max(this.wordWidth, words[curWord-1].x + words[curWord-1].width);
-            }
+        this.constants = Object.assign({}, this.constants, {
+            TEXT_WIDTH: 600,
+            LEFT: 100,
+            TOP: 50,
+            MAX_HEIGHT: 500
         })
-
-        this.wordHeight = y + LINE_HEIGHT;
+        this.blink = 0;
     }
 
-    getSelectionY() {
-        return this.contentY +
-            this.contentHeight -
-            BORDER_SIZE -
-            (this.responses.length - this.selectionIndex) * SELECTION_HEIGHT;
+    handleUpdate(delta) {
+        this.blink += delta;
+        this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
     }
 
     render() {
+        this.style.color = "#ffffff";
+        this.style.font = "24px Cabin";
+        this.unselectedStyle.stroke = "#333333";
+        this.unselectedStyle.color = "#ffffff";
+        this.selectedStyle.stroke = "#333300";
+
         let dialogue = store.getDialogue();
 
         this.selectionIndex = 0;
         this.responses = dialogue.responses;
 
-        // justify text
-        this.wordWidth = 0;
-        this.wordHeight = 0;
-        this.justifyText(dialogue.text.trim(), TEXT_WIDTH);
-        this.contentHeight = this.wordHeight * 0.5 +
-            SELECTION_HEIGHT * this.responses.length +
-            BORDER_SIZE * 2 +
-            TITLE_HEIGHT;
-
-        // scale text height
-        let wordScaleY = 0.5;
-        if (this.contentHeight > MAX_HEIGHT) {
-            // compress text so it fits
-            wordScaleY *= (this.wordHeight - (this.contentHeight - MAX_HEIGHT)) / this.wordHeight;
-            this.contentHeight = MAX_HEIGHT;
-        }
-        this.contentY = (600 - this.contentHeight) / 2;
-
-        this.bkg.clear();
-        this.bkg.lineStyle(2, 0xffffff, 1);
-        this.bkg.fillStyle(0, 0.75);
-        this.bkg.strokeRect(0, 0, BOX_WIDTH, this.contentHeight);
-        this.bkg.fillRect(0, 0, BOX_WIDTH, this.contentHeight);
-        this.bkg.x = (WIDTH - BOX_WIDTH) / 2;
-        this.bkg.y = this.contentY;
-
-        // too tall, so compress lines
-        this.words.forEach(word => {
-            word.x += (WIDTH - this.wordWidth) / 2;
-            word.y = this.contentY + BORDER_SIZE + TITLE_HEIGHT + word.y * wordScaleY;
-            word.scaleY = wordScaleY;
-        })
-
+        //add the dialogue title
         if (this.title) {
             this.title.destroy();
         }
-        this.title = this.add.text(0, 0, dialogue.name, { font: "40px Berkshire Swash" });
-        Phaser.Display.Align.In.Center(this.title, this.add.zone(WIDTH / 2,
-            this.contentY + BORDER_SIZE + TITLE_HEIGHT / 2, 0, 0));
+        this.title = this.add.text(0, 0, dialogue.name, {
+            font: '40px Berkshire Swash',
+            color: '#ffffff'
+        });
+        Phaser.Display.Align.In.Center(this.title, this.dialogueContainer)
 
-        let maxWidth = 0;
-        this.responsesText.forEach(response => response.destroy());
+        if (this.text) {
+            this.text.destroy()
+        }
+        this.text = this.add.text(0, 0, dialogue.text, this.style)
+        console.log(this.style);
+        Phaser.Display.Align.In.Center(this.text, this.dialogueContainer)
+
+        this.responsesText.forEach(response => {
+            response.selected.destroy();
+            response.unselected.destroy();
+        });
         this.responsesText.length = 0;
+        let responseHeight = 0;
         for (let i = 0; i < this.responses.length; i++) {
             if (this.responses[i].text) {
                 // only show responses with text
-                let response = this.add.text(0, 0, this.responses[i].text, { font: "20px Amatic SC", wordWrap: {
-                    width: BOX_WIDTH,
-                    useAdvancedWrap: true
-                } });
-                this.responsesText.push(response);
-                Phaser.Display.Align.In.Center(response, this.add.zone(WIDTH / 2,
-                    this.contentY + this.contentHeight - BORDER_SIZE - (this.responses.length - i - 0.5) * SELECTION_HEIGHT,
-                    0, 0));
-                maxWidth = Math.max(maxWidth, response.width);
+                let unselected = this.add.text(0, 0, this.responses[i].text, this.unselectedStyle);
+                let selected = this.add.text(0, 0, this.responses[i].text, this.selectedStyle);
+                selected.alpha = (i === 0) ? 1 : 0;
+                responseHeight += unselected.height + this.constants.SPACE_PX;
+                this.responsesText.push({unselected, selected});
+                Phaser.Display.Align.In.Center(unselected, this.dialogueContainer);
+                Phaser.Display.Align.In.Center(selected, this.dialogueContainer);
             }
         }
-        maxWidth += 20;
 
-        for (let i = 0; i < 2; i++) {
-            let selection = this.selection[i];
-            selection.clear();
-            if (this.responsesText.length) {
-                selection.lineStyle(3.5, (i == 0) ? 0x00ffff : 0xffcf00, 1);
-                selection.strokeRect(0, 0, maxWidth, 54);
-                selection.x = (WIDTH - maxWidth) / 2;
-                selection.y = this.getSelectionY();
-            }
+        let boxWidth = this.constants.TEXT_WIDTH + this.constants.BORDER_SIZE * 2;
+        let contentHeight = this.title.height + this.text.height + responseHeight +
+            this.constants.BORDER_SIZE * 2 + this.constants.SPACE_PX;
+        if (contentHeight > this.constants.MAX_HEIGHT) {
+            let unaffectedHeight = this.constants.BORDER_SIZE * 2 + this.title.height + this.constants.SPACE_PX;
+            this.text.scaleY = (this.constants.MAX_HEIGHT - unaffectedHeight) / (contentHeight - unaffectedHeight);
+            contentHeight = this.constants.MAX_HEIGHT;
+        }
+        let contentY = (this.constants.HEIGHT - contentHeight) / 2;
+        this.bkg.clear();
+        this.bkg.lineStyle(2, 0xffffff, 1);
+        this.bkg.fillStyle(0, 0.75);
+        this.bkg.strokeRect(0, 0, boxWidth, contentHeight);
+        this.bkg.fillRect(0, 0, boxWidth, contentHeight);
+        this.bkg.x = (this.constants.WIDTH - boxWidth) / 2;
+        this.bkg.y = contentY;
+
+        this.title.y = contentY + this.constants.BORDER_SIZE;
+        this.text.y = this.title.y + this.title.height + this.constants.SPACE_PX;
+        let responseY = this.text.y + this.text.displayHeight + this.constants.SPACE_PX;
+        for (let i = 0; i < this.responsesText.length; i++) {
+            this.responsesText[i].unselected.scaleY = this.responsesText[i].selected.scaleY = this.text.scaleY;
+            this.responsesText[i].unselected.y = this.responsesText[i].selected.y = responseY;
+            responseY += this.responsesText[i].unselected.displayHeight + this.constants.SPACE_PX * this.text.scaleY;
         }
     }
-
-    create() {
-        // this.protag = store.protag;
-
-        this.bkg = this.add.graphics();
-        this.selection = this.add.graphics();
-
-        this.words = [];
-        this.responsesText = [];
-        this.title = null;
-        this.selection = [];
-        for (let i = 0; i < 2; i++) {
-            this.selection.push(this.add.graphics(200, 54));
-        }
-
-        this.render();
-
-        this.blink = 0;
-
-        this.sound.add('chat').play({ volume: 0.1 });
-
-        this.input.keyboard.on('keydown', this.handleKey);
-    }
-
-    update(time, delta) {
-        this.blink += delta;
-        this.title.alpha = [1,0.85,0.7,0.85][Math.floor(this.blink / 500) % 4];
-        this.selection[1].alpha = Math.min(1, Math.abs(this.blink % 1000 - 500) / 500);
-   }
 }
