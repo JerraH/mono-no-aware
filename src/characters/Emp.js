@@ -28,12 +28,12 @@ export default class Emp extends Character {
         }
         this.dialogue = new Dialogue({
             name: 'Attendant',
-            text: 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + "?",
+            text: 'The ' + this.name + ' is asleep.  Would you like to try to cure ' + this.pronoun2 + '?',
             responses: [{
                 text: "I'm ready!",
                 childFn: this.saveEmpress.bind(this)
             }, {
-                text: "I need more time."
+                text: 'I need more time.'
             }]
         });
         this.body.angle = 28;
@@ -44,25 +44,24 @@ export default class Emp extends Character {
         let inventory = store.getInventory();
         if (inventory.includes(store.cure1) && inventory.includes(store.cure2)) {
             return new Dialogue({
-                name: "Attendant",
-                text: "You cured " + this.pronoun2 + "!",
+                name: 'Attendant',
+                text: 'You cured ' + this.pronoun2 + '!',
                 responses: [{
-                    text: "Yay!",
+                    text: 'Yay!',
                     cb: () => {
-                        this.scene.scene.start('playagain')
+                        this.scene.scene.start('EndingScene')
                     }
                 }]
             });
         } else if (inventory.includes(store.cure1) || inventory.includes(store.cure2)) {
             return new Dialogue({
-                name: "Attendant",
+                name: 'Attendant',
                 text: "Oh no!  Whatever you did didn't seem to work....."
             });
         // } else {
         //     console.log("the empress is asleep")
         }
     }
-
 
 
     // create() {

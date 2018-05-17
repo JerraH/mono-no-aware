@@ -58,7 +58,6 @@ game.scene.add('ending', EndingScene);
 game.scene.add('garden', Garden)
 game.scene.add('HUD', HUD)
 game.scene.add('cutscene', DialogueCutscene)
+game.scene.add('EndingScene', EndingScene)
 game.scene.start('preload');
-
-
 
