@@ -4,7 +4,6 @@ import {
 import Twins from '../characters/twins'
 
 
-
 export default class Room3 extends GameScene {
     constructor(config) {
         super(config);
@@ -16,6 +15,7 @@ export default class Room3 extends GameScene {
 
     preload() {
         super.preload();
+        this.load.image('backwall2', 'assets/images/scenes/room2/backwall.png')
     }
     createObjects() {
         this.groundLayer = this.background.create(450, 300, 'background3')
@@ -30,9 +30,6 @@ export default class Room3 extends GameScene {
         this.screen2 = this.behinders.create(418, 195, 'screen2')
         this.hangingScreen = this.behinders.create(640, 380, 'hangingScreen3')
         this.screen3 = this.behinders.create(460, 300, 'screen3')
-
-
-
 
 
         //set world bounds
@@ -58,7 +55,7 @@ export default class Room3 extends GameScene {
         this.createObjects()
 
         //declare protag
-        this.createProtag(this.roomId, {image: 'protagRoom3'})///this function has been moved to Gamescene
+        this.createProtag(this.roomId, {image: 'protagRoom3', scale: {x: 1.25, y: 1.25}})///this function has been moved to Gamescene
 
         this.twins = new Twins({
             scene: this,

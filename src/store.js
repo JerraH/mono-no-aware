@@ -6,7 +6,7 @@ class Store {
         this.pronoun = '';
         this.beloved = {title: '', pronouns: []};
         this.dialogue = null;//{title: "Hello my Baby", text: "HELLO MY BABY, HELLO MY HONEY, HELLO MY RAGTIME GAL / SEND ME A KISS BY WIRE / BABY MY HEART'S ON FIRE / IF YOU REFUSE ME, HONEY YOU LOSE ME, THEN YOU'LL BE LEFT ALONE SO BABY TELEPHONE AND TELL ME I'M YOUR OWN"};
-        this.inventory = [items.bow, items.calligraphyBrush];
+        this.inventory = [items.calligraphyBrush];
         this.allItems = {};
         this.inventoryActive = false;
         this.interactionActive = false;
@@ -186,7 +186,7 @@ class Store {
         // console.log("ADDED", parseInt(value), "TO", name + "'s", variable);
         this.characterStats[name] = stats;
     }
-    
+
     getCharacterStat(name, variable) {
         return (this.characterStats[name] || {})[variable] || 0;
     }

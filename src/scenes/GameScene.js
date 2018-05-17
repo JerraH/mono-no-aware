@@ -28,9 +28,10 @@ export default class GameScene extends Scene {
         this.load.image('protagRoom3', 'assets/images/characters/protagforroom3.png');
 
         //characters
-        //this.load.image('twins', 'assets/images/characters/Twins.png ')
+
         this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
         this.load.image('akiko', 'assets/images/characters/akiko.png')
+        this.load.image('twins', '/assets/images/characters/TwinsSmall.png')
 
         //backgrounds
         this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
@@ -57,6 +58,7 @@ export default class GameScene extends Scene {
         this.load.image('slidingDoor', 'assets/images/scenes/room2/slidingdoor.png');
         this.load.image('hangingScreen', 'assets/images/scenes/room2/hangingscreenroom2.png');
         this.load.image('smoke-top-level', 'assets/images/scenes/room2/smoke-top-level.png');
+
 
         //room 3 parts
         this.load.image('screen1', 'assets/images/scenes/room3/screen1.png');
@@ -219,7 +221,7 @@ export default class GameScene extends Scene {
     createItems(sceneContext, requestedItems) {
         const sceneItems = [];
         requestedItems.forEach((item) => {
-            const newItem = new Item({scene: sceneContext, x: item.x, y:item.y, texture: 'item-' + item.id});
+            const newItem = new Item({scene: sceneContext, x: item.x, y: item.y, texture: 'item-' + item.id});
             // console.log('creating', store.getAllItems(), item, item.id);
             newItem.create(store.getAllItems()[item.id]);
             sceneItems.push(newItem)
@@ -234,7 +236,7 @@ export default class GameScene extends Scene {
 
     setCameras() {
         this.cameras.main.startFollow(this.protag)
-        this.cameras.main.setBounds(0, 0, this.groundLayer.width+50, this.groundLayer.height + 50)
+        this.cameras.main.setBounds(0, 0, this.groundLayer.width + 50, this.groundLayer.height + 50)
     }
 
     // updateFrame() {
@@ -265,7 +267,7 @@ export default class GameScene extends Scene {
             purpose: purpose
         }
         this.updatableTimers = this.updatableTimers.filter(timer => {
-            if(purpose === timer.purpose) {
+            if (purpose === timer.purpose) {
                 return false;
             }
             return true;
@@ -295,7 +297,7 @@ export default class GameScene extends Scene {
         this.updatableTimers = this.updatableTimers.filter(timer => {
             if (this.frameMS >= timer.ms) {
                 timer.cb();
-                if(this.frameMS + 3000 >= timer.ms) {
+                if (this.frameMS + 3000 >= timer.ms) {
                     return false;
                 }
             }

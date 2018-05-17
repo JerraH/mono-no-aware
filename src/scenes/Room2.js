@@ -14,6 +14,8 @@ export default class Room2 extends GameScene {
 
     preload() {
         super.preload();
+
+        this.load.image('backwall2', 'assets/images/scenes/room2/backwall.png')
     }
     createObjects() {
         this.background = this.physics.add.staticGroup();
@@ -28,19 +30,19 @@ export default class Room2 extends GameScene {
         // this.groundLayer.x = this.groundLayer.width / 2
         // this.groundLayer.y = this.groundLayer.height / 2
 
-        this.sidetable = this.object.create(50, 350, 'sidetable2')
+        // this.sidetable = this.object.create(50, 350, 'sidetable2')
 
         // smoke
-        this.smoke1 = this.background.create(0, 300, 'smoke1')
-        this.smoke2 = this.background.create(-110, 0, 'smoke2')
+        this.smoke1 = this.background.create(472, 220, 'smoke1')
+        this.smoke2 = this.background.create(-93, -20, 'smoke2')
         this.smoke3 = this.smoke.create(75, 50, 'smoke3')
-        this.smoke4 = this.smoke.create(190, 190, 'smoke4')
+        this.smoke4 = this.smoke.create(180, 120, 'smoke4')
         this.smoke5 = this.smoke.create(170, 120, 'smoke5')
-        // console.log("smoke1", this.smoke1)
-        // console.log("smoke2", this.smoke2)
-        // console.log("smoke3", this.smoke3)
-        // console.log("smoke4", this.smoke4)
-        // console.log("smoke5", this.smoke5)
+        console.log('smoke1', this.smoke1)
+        console.log('smoke2', this.smoke2)
+        console.log('smoke3', this.smoke3)
+        console.log('smoke4', this.smoke4)
+        console.log('smoke5', this.smoke5)
         this.roomContainer.add(this.smoke2)
 
         //things you can go behind
@@ -64,7 +66,8 @@ export default class Room2 extends GameScene {
         this.column2.setDepth(this.screenDoors.depth + 1)
 
         this.hangingScreen = this.behinders.create(600, 410, 'hangingScreen')
-        this.smokeTopLevel = this.smoke.create(600, 350, 'smoke-top-level')
+        this.smokeTopLevel = this.smoke.create(470, 280, 'smoke-top-level')
+        console.log('smoke top level', this.smokeTopLevel)
 
         //set world bounds
 

@@ -44,10 +44,7 @@ export default class Garden extends GameScene {
 
         //Protagonist
         this.protag = this.physics.add.sprite(400, 300, 'protag');
-        this.protag.setVelocity(0,0).setBounce(0, 0).setCollideWorldBounds(true);
-
-
-
+        this.protag.setVelocity(0, 0).setBounce(0, 0).setCollideWorldBounds(true);
 
 
     //    this.physics.add.collider(this.protag, this.akiko, this.akiko.startConversation)
@@ -59,7 +56,6 @@ export default class Garden extends GameScene {
 
 
     }
-
 
 
 }
