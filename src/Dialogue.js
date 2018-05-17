@@ -19,9 +19,9 @@ export default class Dialogue {
                         // console.log("UPDATE", character, variable, variables[variableName]);
                         let value = variables[variableName];
                         if (variable === 'item') {
-                            store.updateCharacterStat(character, variable, value);
-                        } else {
                             store.addToInventory(items[value]);
+                        } else {
+                            store.updateCharacterStat(character, variable, value);
                         }
                     })
                 }
