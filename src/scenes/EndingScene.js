@@ -21,7 +21,7 @@ export default class EndingScene extends Phaser.Scene {
         }
 
         let theme = this.sound.add('ending');
-        theme.play({ volume: 0.5 });
+        theme.play(/*{ volume: 0.5 }*/);
 
         setTimeout(() => {
             this.archer.destroy()
