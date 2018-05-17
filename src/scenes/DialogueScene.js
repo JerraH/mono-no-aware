@@ -70,6 +70,11 @@ export default class DialogueScene extends TextBox {
         let boxWidth = this.constants.TEXT_WIDTH + this.constants.BORDER_SIZE * 2;
         let contentHeight = this.title.height + this.text.height + responseHeight +
             this.constants.BORDER_SIZE * 2 + this.constants.SPACE_PX;
+        if (contentHeight > this.constants.MAX_HEIGHT) {
+            let unaffectedHeight = this.constants.BORDER_SIZE * 2 + this.title.height + this.constants.SPACE_PX;
+            this.text.scaleY = (this.constants.MAX_HEIGHT - unaffectedHeight) / (contentHeight - unaffectedHeight);
+            contentHeight = this.constants.MAX_HEIGHT;
+        }
         let contentY = (this.constants.HEIGHT - contentHeight) / 2;
         this.bkg.clear();
         this.bkg.lineStyle(2, 0xffffff, 1);
@@ -81,10 +86,11 @@ export default class DialogueScene extends TextBox {
 
         this.title.y = contentY + this.constants.BORDER_SIZE;
         this.text.y = this.title.y + this.title.height + this.constants.SPACE_PX;
-        let responseY = this.text.y + this.text.height + this.constants.SPACE_PX;
+        let responseY = this.text.y + this.text.displayHeight + this.constants.SPACE_PX;
         for (let i = 0; i < this.responsesText.length; i++) {
+            this.responsesText[i].unselected.scaleY = this.responsesText[i].selected.scaleY = this.text.scaleY;
             this.responsesText[i].unselected.y = this.responsesText[i].selected.y = responseY;
-            responseY += this.responsesText[i].unselected.height + this.constants.SPACE_PX;
+            responseY += this.responsesText[i].unselected.displayHeight + this.constants.SPACE_PX * this.text.scaleY;
         }
     }
 }
