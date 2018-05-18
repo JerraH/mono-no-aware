@@ -28,6 +28,7 @@ export default class EndingScene extends Phaser.Scene {
             this.add.image(260, 300, 'arched')
         }, 10000)
         setTimeout(() => {
+            this.scene.stop('HUD');
             this.scene.start('playagain')
         }, 15000)
 

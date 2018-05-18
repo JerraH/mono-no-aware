@@ -49,6 +49,7 @@ export default class Emp extends Character {
                 responses: [{
                     text: 'Yay!',
                     cb: () => {
+                        this.scene.scene.stop('HUD');
                         this.scene.scene.start('EndingScene')
                     }
                 }]
