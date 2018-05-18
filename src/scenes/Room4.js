@@ -19,8 +19,9 @@ export default class Room4 extends GameScene {
         this.groundLayer = this.background.create(600, 340, 'background4');
         this.bookshelf = this.behinders.create(264, 282, 'bookshelf');
         this.background.create(575, 415, 'bed');
-        this.behinders.create(1010, 555, 'GoBoard');
-        this.behinders.create(415, 350, 'wall-and-screen');
+        this.background.create(1010, 555, 'GoBoard');
+        this.background.create(334, 350, 'screen-top');
+        this.behinders.create(492, 350, 'screen-bottom');
         
         //smoke
 

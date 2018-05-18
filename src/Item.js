@@ -20,13 +20,14 @@ export default class Item extends Phaser.GameObjects.Image {
       this.id = id;
       this.scaleX = this.scaleY = scale;
 
+      this.origSignY = this.y - this.body.sourceHeight * scale / 2 - 50;
       this.sign = new Sign({
         scene: this.scene,
         x: this.x,
-        y: this.y - (this.body.sourceHeight/2),
-        texture: 'triangle'
+        y: this.origSignY,
+        texture: 'triangle',
+        alpha: 0
       });
-      this.sign.setDepth(3000);
       this.zone = new Zone({
         scene: this.scene,
         x: this.x - (this.body.sourceWidth * scale * .75),
@@ -51,14 +52,29 @@ export default class Item extends Phaser.GameObjects.Image {
     }
 
     setSign(time) {
-      this.sign.visible = true;
-      this.scene.setUpdatingTimeout(() => {
-        this.sign.visible = false;
-      }, time, 'triangle')
+      this.depth = this.sign.depth = (this.y > this.scene.protag.body.y) ? 3000 : 0;
+      if (!this.sign.visible) {
+        this.sign.visible = true;
+        this.signTween = this.scene.tweens.add({
+          targets: this.sign,
+          ease: 'Sine.easeInOut',
+          duration: 300,
+          y: this.origSignY + 30,
+          alpha: 1
+      });
     }
-
-    update(time, delta) {
-
+      this.scene.setUpdatingTimeout(() => {
+        this.signTween = this.scene.tweens.add({
+          targets: this.sign,
+          ease: 'Sine.easeInOut',
+          duration: 300,
+          y: this.origSignY,
+          alpha: 0,
+          onComplete: () => {
+            this.sign.visible = false;
+          }
+        });
+      }, time, 'triangle')
     }
   }
 

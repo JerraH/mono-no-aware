@@ -28,7 +28,7 @@ export default class Room3 extends GameScene {
 
         this.screen1 = this.behinders.create(400, 50, 'screen1')
         this.screen2 = this.behinders.create(418, 195, 'screen2')
-        this.hangingScreen = this.behinders.create(640, 380, 'hangingScreen3')
+        this.hangingScreen = this.behinders.create(640, 440, 'hangingScreen3')
         this.screen3 = this.behinders.create(460, 300, 'screen3')
 
 

@@ -3,6 +3,7 @@ import store from '../store';
 import items from '../itemList';
 import Item from '../Item';
 
+const MAKE_IT_SNAPPY = false;
 const WIND_DELAY = 3000;
 
 export default class GameScene extends Scene {
@@ -70,7 +71,8 @@ export default class GameScene extends Scene {
         this.load.image('bed', 'assets/images/scenes/room4/bed.png');
         this.load.image('bookshelf', 'assets/images/scenes/room4/bookshelf.png');
         this.load.image('GoBoard', 'assets/images/scenes/room4/GoBoard.png');
-        this.load.image('wall-and-screen', 'assets/images/scenes/room4/wall-and-screen.png')
+        this.load.image('screen-top', 'assets/images/scenes/room4/screen-top.png')
+        this.load.image('screen-bottom', 'assets/images/scenes/room4/screen-bottom.png')
 
         Object.keys(items).forEach(id => {
             let item = items[id];
@@ -221,10 +223,12 @@ export default class GameScene extends Scene {
     createItems(sceneContext, requestedItems) {
         const sceneItems = [];
         requestedItems.forEach((item) => {
-            const newItem = new Item({scene: sceneContext, x: item.x, y: item.y, texture: 'item-' + item.id});
-            // console.log('creating', store.getAllItems(), item, item.id);
-            newItem.create(store.getAllItems()[item.id]);
-            sceneItems.push(newItem)
+            if (!store.searchInventory(item.id)) {
+                const newItem = new Item({scene: sceneContext, x: item.x, y: item.y, texture: 'item-' + item.id});
+                // console.log('creating', store.getAllItems(), item, item.id);
+                newItem.create(store.getAllItems()[item.id]);
+                sceneItems.push(newItem)
+            }
         });
 
         sceneItems.forEach((sceneItem) => {
@@ -375,6 +379,12 @@ export default class GameScene extends Scene {
                 this.readyForWind = false;
             } else {
                 this.readyForWind = true;
+            }
+
+            // speed it up!!!
+            if (MAKE_IT_SNAPPY) {
+                velX *= 3;
+                velY *= 3;
             }
 
             this.protag.setVelocityX(velX);
