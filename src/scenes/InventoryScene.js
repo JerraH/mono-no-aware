@@ -85,12 +85,12 @@ export default class InventoryScene extends Scene {
                 let dialogue = new Dialogue({
                     name: item.name,
                     text: item.description,
-                    responses: [{
+                    responses: [/*{
                         text: 'Use it',
                         cb: () => {
                             // use item
                         }
-                    }, {
+                    }, */{
                         text: 'Go back'
                     }]
                 });

@@ -5,7 +5,7 @@ let TWINS_DIALOGUE = [{
   type: 'Node',
   id: 'e3965eb9-2334-4fdb-82c6-f7b8bbf3c4cb',
   actor: 'Mizuko & Mizuno',
-  name: "\"You finally came,\" the twins say, almost in unison, with such an air of certainty that it's discomfiting.  \"We've been waiting for you.\"",
+  name: "\"You finally came,\" the twins say, almost in unison, with such an air of certainty that it's discomforting.  \"We've been waiting for you.\"",
   choices: ['f1421968-f4f8-496b-844b-6d8fad6bc6f2', '9a31ffee-c718-4804-8386-8d240a268d0a', '7bec5719-5b92-43ea-9946-e320921ba6e8']
 }, {
   type: 'Choice',
