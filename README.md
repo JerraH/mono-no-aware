@@ -6,16 +6,7 @@ See a live demo at http://fwoozy.com/mono
 
 Explore ancient Japan and save the Empress from the forces of darkness!
 
-### Requirements
+# How to Build
 
-We need [Node.js](https://nodejs.org) to install and run scripts.
-
-## Install and run
-
-Run next commands in your terminal:
-
-| Command | Description |
-|---------|-------------|
-| `npm install` | Install dependencies and launch browser with examples.|
-| `npm start` | Launch browser to show the examples. <br> Press `Ctrl + c` to kill **http-server** process. |
-=======
+npm i
+npm start
