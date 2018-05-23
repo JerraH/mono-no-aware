@@ -1,6 +1,6 @@
 # About
 
-Mono-no-aware is an adventure game.
+Mono-no-Aware is an adventure game.
 
 See a live demo at http://fwoozy.com/mono
 
