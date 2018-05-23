@@ -1,6 +1,10 @@
-# Phaser 3 Webpack Project Template
+# About
 
-A Phaser 3 Project Template
+Mono-no-aware is an adventure game.
+
+See a live demo at http://fwoozy.com/mono
+
+Explore ancient Japan and save the Empress from the forces of darkness!
 
 ### Requirements
 
