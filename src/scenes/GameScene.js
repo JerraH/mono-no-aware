@@ -32,7 +32,7 @@ export default class GameScene extends Scene {
 
         this.load.image('empress', 'assets/images/scenes/EmpressBedroom/Empress.png')
         this.load.image('akiko', 'assets/images/characters/akiko.png')
-        this.load.image('twins', '/assets/images/characters/TwinsSmall.png')
+        this.load.image('twins', 'assets/images/characters/TwinsSmall.png')
 
         //backgrounds
         this.load.image('bedroom', 'assets/images/scenes/EmpressBedroom/roomredo.jpg')
