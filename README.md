@@ -9,4 +9,5 @@ Explore ancient Japan and save the Empress from the forces of darkness!
 # How to Build
 
 npm i
+
 npm start
